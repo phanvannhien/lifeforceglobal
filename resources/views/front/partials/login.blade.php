@@ -6,7 +6,10 @@
             <h3 class="modal-title-site text-center"> Login </h3>
          </div>
          <div class="modal-body">
-            <form id="frm-login" action="">
+            <form id="frm-login" action="" method="post">
+                <div class="form-group">
+                    <label for="" id="msg-login" class="text-center"></label>
+                </div>
                 <div class="form-group login-username">
                    <div>
                       <input name="email" id="login-user" class="form-control input" size="20" placeholder="Enter Username" type="email">

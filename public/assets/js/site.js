@@ -14,8 +14,8 @@ $("form#frm-login").validate({
     },
     rules: {
         email:{
-            required: true
-            email : true,
+            required: true,
+            email : true
         },
         password: {
             required:true,
@@ -36,7 +36,7 @@ $("form#frm-login").validate({
 
         $.ajax({
             type: "POST",
-            url: "/login",
+            url: "/user/login",
             data: {
                  "email" : $( form ).find( 'input[name=email]' ).val(),
                  "password" : $( form ).find( 'input[name=password]' ).val()
@@ -53,7 +53,73 @@ $("form#frm-login").validate({
             }
          });
 
-                return false;
+        return false;
+
+    }
+});// end login form
+
+
+// form login
+$("form#frm-register").validate({
+    errorElement: "div",
+    errorPlacement: function(error, element) {
+        element.after(error).addClass('validate invalid error');
+        offset = element.offset();
+        error.addClass('text-danger');  // add a class to the wrapper
+    },
+    rules: {
+        email:{
+            required: true,
+            email : true
+        },
+        password: {
+            required:true,
+            minlength: 6
+        },  
+        confirm_password: {
+            required:true,
+            minlength: 6,
+            equalTo: "#password"
+        },         
+
+    },
+    messages: {
+        email:{
+            required : "Please input email",
+            email: "Email not wrong format"
+        },
+        password: {
+            required: "Please input password",
+            minlength:"The password must at least 6 character"
+        },
+         confirm_password: {
+            required: "Please input password",
+            minlength:"The password must at least 6 character",
+            equalTo: "The confirm password not match"
+        },  
+    },
+    submitHandler: function(form) {
+
+        $.ajax({
+            type: "POST",
+            url: "/user/register",
+            data: {
+                 "email" : $( form ).find( 'input[name=email]' ).val(),
+                 "password" : $( form ).find( 'input[name=password]' ).val()
+            },
+            dataType: 'json',
+            success: function(data)
+            {
+               if(data.msg == 'success'){
+                    window.location.reload();
+               }else{
+                    $( form ).find( '#msg-login' ).text(data.msg);
+               }
+               
+            }
+         });
+
+        return false;
 
     }
 });// end login form

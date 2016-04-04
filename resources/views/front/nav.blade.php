@@ -19,13 +19,21 @@
                     <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6 no-margin no-padding">
                         <div class="pull-right">
                             <ul class="userMenu">
-                                <li><a href="#"><span class="hidden-xs"> My Account</span> <i class="glyphicon glyphicon-user hide visible-xs "></i></a></li>
+                                @if (!Auth::check())
                                 <li>
                                     <a href="#" data-toggle="modal" data-target="#ModalLogin"> <span class="hidden-xs">Sign In</span>
                                         <i class="glyphicon glyphicon-log-in hide visible-xs "></i> </a>
                                 </li>
-                                <li class="hidden-xs"><a href="#" data-toggle="modal" data-target="#ModalSignup"> Create
-Account </a></li>
+                                <li class="hidden-xs">
+                                <a href="#" data-toggle="modal" data-target="#ModalSignup"> CreateAccount </a></li>
+                                @else
+                                    <li>
+                                        <a href=""><span>Welcome: <strong>{{ Auth::user()->email }}</strong></span></a>
+                                    </li>
+                                     <li>
+                                        <a href="{{ route('user.logout') }}">Logout</a>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
                     </div>

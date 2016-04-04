@@ -22,6 +22,11 @@ Route::group(
 
 
         Route::get('/user/forgot',array('as'=>'user.forgot', 'uses' => 'UserController@forgot'));
+        Route::post('/user/login',array('as'=>'user.login', 'uses' => 'UserController@login'));
+        Route::get('/user/logout',array('as'=>'user.logout', 'uses' => 'UserController@logout'));
+        Route::post('/user/register',array('as'=>'user.register', 'uses' => 'UserController@register'));
+
+        
 
        
 });
