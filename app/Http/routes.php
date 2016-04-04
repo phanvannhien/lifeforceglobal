@@ -20,6 +20,11 @@ Route::group(
         Route::get('/category/{id}',array('as'=>'front.category', 'uses' => 'HomeController@category'));
         Route::get('/product/{id}',array('as'=>'front.product', 'uses' => 'HomeController@product'));
 
+
+        Route::get('/user/forgot',array('as'=>'user.forgot', 'uses' => 'UserController@forgot'));
+
        
 });
+
+
 
