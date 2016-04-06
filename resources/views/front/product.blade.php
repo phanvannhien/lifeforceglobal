@@ -28,38 +28,37 @@
             <p>{{$product->product_sort_description}}</p>
          </div>
          
-         <div class="productFilter productFilterLook2">
-            <div class="row">
-               <div class="col-lg-6 col-sm-6 col-xs-6">
-                  <div class="filterBox">
-                     <select class="form-control">
-                        <option value="strawberries" selected>Quantity</option>
-                        <option value="mango">1</option>
-                        <option value="bananas">2</option>
-                        <option value="watermelon">3</option>
-                        <option value="grapes">4</option>
-                        <option value="oranges">5</option>
-                        <option value="pineapple">6</option>
-                        <option value="peaches">7</option>
-                        <option value="cherries">8</option>
-                     </select>
+         <form action="{{ route('front.cart') }}" method="post" >
+            <input type="hidden" name="product_id" value="{{ $product->id }}">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <div class="productFilter productFilterLook2">
+               <div class="row">
+                  <div class="col-lg-6 col-sm-6 col-xs-6">
+                     <div class="filterBox">
+                        <select name="qty" class="form-control">
+                           @for ($i = 1; $i <= 10 ;$i++)
+                           <option value="{{ $i }}">{{$i}}</option>
+                           @endfor
+                        </select>
+                     </div>
                   </div>
                </div>
             </div>
-         </div>
-         <div class="cart-actions">
-            <div class="addto row">
-               <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                  <button onclick="productAddToCartForm.submit(this);" class="button btn-block btn-cart cart first" title="Add to Cart" type="button">Add
-                  to Cart
-                  </button>
+            <div class="cart-actions">
+               <div class="addto row">
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                     <button onclick="" class="button btn-block btn-cart cart first" title="Add to Cart" type="submit">Add
+                     to Cart
+                     </button>
+                  </div>
                </div>
+               <div style="clear:both"></div>
+               <h3 class="incaps"><i class="fa fa fa-check-circle-o color-in"></i> In stock</h3>
+               <h3 style="display:none" class="incaps"><i class="fa fa-minus-circle color-out"></i> Out of stock</h3>
+               <h3 class="incaps"><i class="glyphicon glyphicon-lock"></i> Secure online ordering</h3>
             </div>
-            <div style="clear:both"></div>
-            <h3 class="incaps"><i class="fa fa fa-check-circle-o color-in"></i> In stock</h3>
-            <h3 style="display:none" class="incaps"><i class="fa fa-minus-circle color-out"></i> Out of stock</h3>
-            <h3 class="incaps"><i class="glyphicon glyphicon-lock"></i> Secure online ordering</h3>
-         </div>
+         </form>
+
          <div class="clear"></div>
          <div class="product-tab w100 clearfix">
             <ul class="nav nav-tabs">

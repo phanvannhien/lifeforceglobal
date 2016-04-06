@@ -172,7 +172,8 @@ return [
         /*
          * Load Helper Service Providers...
          */
-        App\Providers\HelperServiceProvider::class
+        App\Providers\HelperServiceProvider::class,
+        Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class
     ],
 
     /*
@@ -222,7 +223,7 @@ return [
          * Load helper...
          */
         'Site' => App\Helpers\SiteHelper::class,
-
+        'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
 
     ],
 

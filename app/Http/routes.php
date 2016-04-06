@@ -31,6 +31,11 @@ Route::group(
         
 
         
+        Route::get('/cart',array('as'=>'front.cart.page', 'uses' => 'CartController@getCart'));
+        Route::post('/cart',array('as'=>'front.cart', 'uses' => 'CartController@cart'));
+        Route::post('/cart/update',array('as'=>'front.cart.update', 'uses' => 'CartController@updateCart'));
+        Route::get('/cart/del/{pid}',array('as'=>'front.cart.delete', 'uses' => 'CartController@delCart'));
+        
 
        
 });
