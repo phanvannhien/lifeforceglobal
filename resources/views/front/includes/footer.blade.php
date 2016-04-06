@@ -127,7 +127,7 @@
       </div>
    </div>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script src="{{ url('assets/js/jquery/jquery-1.10.1.min.js') }}"></script>
 <script src="{{ url('assets/bootstrap/js/bootstrap.min.js') }}"></script>
 <script>
    /* this script required for subscribe modal

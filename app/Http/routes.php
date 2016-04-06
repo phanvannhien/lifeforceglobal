@@ -25,6 +25,10 @@ Route::group(
         Route::post('/user/login',array('as'=>'user.login', 'uses' => 'UserController@login'));
         Route::get('/user/logout',array('as'=>'user.logout', 'uses' => 'UserController@logout'));
         Route::post('/user/register',array('as'=>'user.register', 'uses' => 'UserController@register'));
+        Route::get('/user/register/success',array('as'=>'user.register.success', 'uses' => 'UserController@registerSuccess'));
+        Route::get('/user/verify/{code}',array('as'=>'user.verify', 'uses' => 'UserController@userVerify'));
+        Route::get('/user/resend-verify',array('as'=>'user.verify.resend', 'uses' => 'UserController@resendActivationCode'));
+        
 
         
 

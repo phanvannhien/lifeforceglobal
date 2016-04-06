@@ -105,15 +105,16 @@ $("form#frm-register").validate({
             url: "/user/register",
             data: {
                  "email" : $( form ).find( 'input[name=email]' ).val(),
-                 "password" : $( form ).find( 'input[name=password]' ).val()
+                 "password" : $( form ).find( 'input[name=password]' ).val(),
+                 "user_refferal" : $( form ).find( 'input[name=user_refferal]' ).val()
             },
             dataType: 'json',
             success: function(data)
             {
-               if(data.msg == 'success'){
-                    window.location.reload();
+               if(data.success){
+                    window.location.href = '/user/register/success';
                }else{
-                    $( form ).find( '#msg-login' ).text(data.msg);
+                    $( form ).find( '#msg' ).text(data.msg);
                }
                
             }

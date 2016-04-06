@@ -19,9 +19,10 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('user_code');
-            $table->integer('user_refferal');
+            $table->string('user_refferal');
             $table->dateTime('registration_date');
-            $table->integer('user_status')->default(0);
+            $table->integer('user_status')->default(0);// 0 is disable
+            $table->string('user_verify_code');
             $table->integer('register_fee')->default(0);
             $table->rememberToken();
             $table->timestamps();
