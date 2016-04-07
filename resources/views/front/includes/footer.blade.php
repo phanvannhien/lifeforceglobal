@@ -3,15 +3,16 @@
       <div class="container">
          <div class="row">
             <div class="col-lg-3  col-md-3 col-sm-4 col-xs-6">
-               <h3> Support </h3>
+               <h3> Contact Us </h3>
                <ul>
                   <li class="supportLi">
                      <p> Lorem ipsum dolor sit amet, consectetur </p>
                      <h4><a class="inline" href="callto:+12025550151"> <strong> <i class="fa fa-phone"> </i> +1-202-555-0151 </strong> </a></h4>
                      <h4>
-                        <a class="inline" href="/cdn-cgi/l/email-protection#5a323f362a1a23352f282d3f3874393537">
+                        <a class="inline" href="">
                            <i class="fa fa-envelope-o"> </i>
-                           <span class="__cf_email__" data-cfemail="2f474a435f6f56405a5d584a4d014c4042">[email&#160;protected]</span><script data-cfhash='f9e31' type="text/javascript">/* <![CDATA[ */!function(t,e,r,n,c,a,p){try{t=document.currentScript||function(){for(t=document.getElementsByTagName('script'),e=t.length;e--;)if(t[e].getAttribute('data-cfhash'))return t[e]}();if(t&&(c=t.previousSibling)){p=t.parentNode;if(a=c.getAttribute('data-cfemail')){for(e='',r='0x'+a.substr(0,2)|0,n=2;a.length-n;n+=2)e+='%'+('0'+('0x'+a.substr(n,2)^r).toString(16)).slice(-2);p.replaceChild(document.createTextNode(decodeURIComponent(e)),c)}p.removeChild(t)}}catch(u){}}()/* ]]> */</script> 
+                           <span> info@lifeforceglobal.com.au</span>
+                           
                         </a>
                      </h4>
                   </li>

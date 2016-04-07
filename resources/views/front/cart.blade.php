@@ -38,6 +38,7 @@
 		                        <td style="width:10%">Discount</td>
 		                        <td style="width:15%">Total</td>
 		                     </tr>
+		                     <?php $total = 0 ?>
 		                     @foreach($cart as $item)
 		                     <tr class="CartProduct">
 		                        <td class="CartProductThumb">
@@ -58,6 +59,7 @@
 		                        <td>0</td>
 		                        <td class="price">{{ $item->price * $item->qty }}</td>
 		                     </tr>
+		                      <?php $total += $item->price * $item->qty ?>
 		               		@endforeach
 		                     
 		                  </tbody>
@@ -92,23 +94,19 @@
 	                     <tbody>
 	                        <tr>
 	                           <td>Total products</td>
-	                           <td class="price">$216.51</td>
+	                           <td class="price">{{ $total }}</td>
 	                        </tr>
 	                        <tr style="">
 	                           <td>Shipping</td>
 	                           <td class="price"><span class="success">Free shipping!</span></td>
 	                        </tr>
-	                        <tr class="cart-total-price ">
-	                           <td>Total (tax excl.)</td>
-	                           <td class="price">$216.51</td>
-	                        </tr>
 	                        <tr>
 	                           <td>Total tax</td>
-	                           <td class="price" id="total-tax">$0.00</td>
+	                           <td class="price" id="total-tax">{{ $total * 0.1 }}</td>
 	                        </tr>
 	                        <tr>
 	                           <td> Total</td>
-	                           <td class=" site-color" id="total-price">$216.51</td>
+	                           <td class=" site-color" id="total-price">{{ $total * 1.1 }}</td>
 	                        </tr>
 	                        <tr>
 	                           <td colspan="2">

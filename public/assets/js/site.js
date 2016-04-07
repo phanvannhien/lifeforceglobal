@@ -86,7 +86,7 @@ $("form#frm-register").validate({
     messages: {
         email:{
             required : "Please input email",
-            email: "Email not wrong format"
+            email: "Email wrong format"
         },
         password: {
             required: "Please input password",
@@ -124,4 +124,31 @@ $("form#frm-register").validate({
 
     }
 });// end login form
+
+
+// form forgot
+$("form#frm-forgot").validate({
+    errorElement: "div",
+    errorPlacement: function(error, element) {
+        element.after(error).addClass('validate invalid error');
+        offset = element.offset();
+        error.addClass('text-danger');  // add a class to the wrapper
+    },
+    rules: {
+        email:{
+            required: true,
+            email : true
+        },
+    },
+    messages: {
+        email:{
+            required : "Please input email",
+            email: "Email wrong format"
+        }
+       
+    },
+    submitHandler: function(form) {
+        $(form).submit();
+    }
+});// end 
 

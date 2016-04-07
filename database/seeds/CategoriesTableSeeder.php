@@ -14,7 +14,8 @@ class CategoriesTableSeeder extends Seeder
         //
         //
         $faker = Faker\Factory::create();
-        DB::table('categories')->delete();
+        DB::table('categories')->truncate();
+        
         $arrayDataCate = array(
         	array(
         		'category_name' => 'Mobile', 

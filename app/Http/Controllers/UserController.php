@@ -16,7 +16,12 @@ class UserController extends Controller
 {
     //
     public function forgot(){
+        return view('front.users.forgot');
+    }
 
+    public function forgotSubmit(Request $request){
+
+        
     }
 
     public function login(Request $request){

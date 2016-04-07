@@ -13,7 +13,7 @@ class ProductTableSeeder extends Seeder
     {
         //
         $faker = Faker\Factory::create();
-        DB::table('product')->delete();
+        DB::table('product')->truncate();
 
     	for ($i = 0; $i < 100; $i++) {
             DB::table('product')->insert([ //,

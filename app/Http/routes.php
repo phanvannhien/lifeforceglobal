@@ -22,6 +22,11 @@ Route::group(
 
 
         Route::get('/user/forgot',array('as'=>'user.forgot', 'uses' => 'UserController@forgot'));
+        Route::post('/user/forgot',array('as'=>'user.forgot.submit', 'uses' => 'Auth\PasswordController@forgotSubmit'));
+        Route::get('/user/password/reset/{token}',array('as' => 'user.reset.password', 'uses' => 'Auth\PasswordController@getReset'));
+        Route::post('/user/password/reset/',array('as' => 'user.post.reset.password', 'uses' => 'Auth\PasswordController@postReset'));
+
+
         Route::post('/user/login',array('as'=>'user.login', 'uses' => 'UserController@login'));
         Route::get('/user/logout',array('as'=>'user.logout', 'uses' => 'UserController@logout'));
         Route::post('/user/register',array('as'=>'user.register', 'uses' => 'UserController@register'));
@@ -37,6 +42,13 @@ Route::group(
         Route::get('/cart/del/{pid}',array('as'=>'front.cart.delete', 'uses' => 'CartController@delCart'));
         
 
+        /*
+        |--------------------------------------------------------------------------
+        | Blog
+        |--------------------------------------------------------------------------
+        |*/
+
+         Route::get('/about-us',array('as'=>'front.contact', 'uses' => 'BlogController@aboutUs'));
        
 });
 
