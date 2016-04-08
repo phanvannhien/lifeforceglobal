@@ -14,7 +14,7 @@ class ProductTableSeeder extends Seeder
         //
         $faker = Faker\Factory::create();
         DB::table('product')->truncate();
-
+        /*
     	for ($i = 0; $i < 100; $i++) {
             DB::table('product')->insert([ //,
                 'category_id' => $faker->numberBetween($min = 1, $max = 6),
@@ -26,6 +26,6 @@ class ProductTableSeeder extends Seeder
                 'product_thumbnail' =>  $faker->imageUrl(285, 380, 'cats'),
                 'product_images' => $faker->imageUrl(600, 600, 'cats'),
             ]);
-        }
+        }*/
     }
 }

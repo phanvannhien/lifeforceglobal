@@ -18,10 +18,11 @@ class CategoriesTableSeeder extends Seeder
         
         $arrayDataCate = array(
         	array(
-        		'category_name' => 'Mobile', 
+        		'category_name' => 'Products', 
         		'parent_id' => 0,
-        		'category_description' => $faker->sentence($nbWords = 10, $variableNbWords = true),
+        		'category_description' => '',
         	),
+            /*
         	array(
         		'category_name' => 'Home Application', 
         		'parent_id' => 0,
@@ -47,7 +48,7 @@ class CategoriesTableSeeder extends Seeder
         		'parent_id' => 0,
         		'category_description' => $faker->sentence($nbWords = 10, $variableNbWords = true),
         	)
-
+            */
         );
     	
         DB::table('categories')->insert( $arrayDataCate );
