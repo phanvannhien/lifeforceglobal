@@ -48,9 +48,27 @@ Route::group(
         |--------------------------------------------------------------------------
         |*/
 
-         Route::get('/about-us',array('as'=>'front.contact', 'uses' => 'BlogController@aboutUs'));
+         Route::get('/about-us',array('as'=>'front.aboutus', 'uses' => 'BlogController@aboutUs'));
+         Route::get('/contact-us',array('as'=>'front.contactus', 'uses' => 'BlogController@contactUs'));
        
 });
+
+/*
+|--------------------------------------------------------------------------
+| Backend
+|--------------------------------------------------------------------------
+|*/
+
+Route::group( 
+    array( 
+        //'middleware' => 'web'
+    ),function () {
+        Route::get('/admin/product',array('as'=>'back.product', 'uses' => 'AdminController@allProduct'));
+        Route::get('/admin/product/create',array('as'=>'back.product.create', 'uses' => 'AdminController@createProduct'));
+        Route::post('/admin/product/create',array('as'=>'back.product.save', 'uses' => 'AdminController@saveProduct'));
+
+    });
+
 
 
 

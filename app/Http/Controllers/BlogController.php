@@ -12,4 +12,8 @@ class BlogController extends Controller
     public function aboutUs(){
     	return view('front.about_us');
     }
+
+    public function contactUs(){
+    	return view('front.contact_us');
+    }
 }

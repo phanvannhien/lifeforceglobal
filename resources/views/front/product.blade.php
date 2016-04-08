@@ -15,7 +15,8 @@
    <div class="row transitionfx">
       <div class="col-lg-6 col-md-6 col-sm-6">
          <div class="main-image sp-wrap col-lg-12 no-padding">
-            <a href="{{$product->product_images}}"><img src="{{$product->product_images}}" class="img-responsive" alt="img"></a>
+            <a href="{{ url('media/product/images/'.$product->product_images )}}">
+            <img src="{{ url('media/product/images/'.$product->product_images )}}" class="img-responsive" alt="img"></a>
          </div>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-5">
@@ -63,9 +64,14 @@
          <div class="product-tab w100 clearfix">
             <ul class="nav nav-tabs">
                <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
+               <li class=""><a href="#download-file" data-toggle="tab">Download File</a></li>
             </ul>
             <div class="tab-content">
-               <div class="tab-pane active" id="details">{{$product->product_description}}
+               <div class="tab-pane active" id="details">{!! $product->product_description !!}
+               </div>
+               <div class="tab-pane" id="download-file">
+                     <a href="{{ url('media/product/'.$product->download_file) }}">Click here to download File ( PDF )</a>
+
                </div>
             </div>
          </div>
@@ -88,3 +94,5 @@
 </div>
 <div class="gap"></div>
 @include ('front.includes.footer')
+
+<script type="text/javascript" src="{{ url('assets/js/smoothproducts.min.js') }}"></script>

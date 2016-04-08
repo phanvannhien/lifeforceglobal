@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ url('assets/ico/apple-touch-icon-72-precomposed.png') }}">
 <link rel="apple-touch-icon-precomposed" href="{{ url('ico/apple-touch-icon-57-precomposed.png') }}">
 <link rel="shortcut icon" href="{{ url('assets/ico/favicon.png') }}">
-<title>TSHOP - Bootstrap E-Commerce Parallax Theme</title>
+<title>Lifeforce Global</title>
  
 <link href="{{ url('assets/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
  

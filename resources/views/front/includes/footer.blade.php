@@ -6,8 +6,6 @@
                <h3> Contact Us </h3>
                <ul>
                   <li class="supportLi">
-                     <p> Lorem ipsum dolor sit amet, consectetur </p>
-                     <h4><a class="inline" href="callto:+12025550151"> <strong> <i class="fa fa-phone"> </i> +1-202-555-0151 </strong> </a></h4>
                      <h4>
                         <a class="inline" href="">
                            <i class="fa fa-envelope-o"> </i>
@@ -21,22 +19,8 @@
             <div class="col-lg-2  col-md-2 col-sm-4 col-xs-6">
                <h3> Shop </h3>
                <ul>
-                  <li><a href="#">
-                     Men's
-                     </a>
-                  </li>
-                  <li><a href="#">
-                     Women's</a>
-                  </li>
-                  <li><a href="#">
-                     Kids'
-                     </a>
-                  </li>
-                  <li><a href="#">Shoes
-                     </a>
-                  </li>
-                  <li><a href="#">
-                     Gift Cards
+                  <li><a href="">
+                     Products
                      </a>
                   </li>
                </ul>
@@ -45,18 +29,7 @@
             <div class="col-lg-2  col-md-2 col-sm-4 col-xs-6">
                <h3> Information </h3>
                <ul class="list-unstyled footer-nav">
-                  <li><a href="#">Questions?
-                     </a>
-                  </li>
-                  <li><a href="#"> Order Status
-                     </a>
-                  </li>
-                  <li><a href="#"> Sizing Charts
-                     </a>
-                  </li>
-                  <li><a href="#"> Return Policy </a></li>
-                  <li><a href="#">
-                     Contact Us
+                  <li><a href="{{ route('front.aboutus') }}"> About Us
                      </a>
                   </li>
                </ul>
@@ -64,16 +37,18 @@
             <div class="col-lg-2  col-md-2 col-sm-4 col-xs-6">
                <h3> My Account </h3>
                <ul>
-                  <li><a href="account.html"> My Account </a></li>
-                  <li><a href="my-address.html"> My Address </a></li>
-                  <li><a href="wishlist.html"> Wish List </a></li>
-                  <li><a href="order-list.html"> Order list </a></li>
-                  <li><a href="order-status.html"> Order Status </a></li>
+                  <li><a href="#"> My Account </a></li>
+                  <!--
+                  <li><a href="#"> My Address </a></li>
+                  <li><a href="#"> Wish List </a></li>
+                  <li><a href="#"> Order list </a></li>
+                  <li><a href="#"> Order Status </a></li>-->
                </ul>
             </div>
             <div style="clear:both" class="hide visible-xs"></div>
             <div class="col-lg-3  col-md-3 col-sm-6 col-xs-12 ">
                <h3> Stay in touch </h3>
+               <!--
                <ul>
                   <li>
                      <div class="input-append newsLatterBox text-center">
@@ -82,6 +57,7 @@
                      </div>
                   </li>
                </ul>
+               -->
                <ul class="social">
                   <li><a href="http://facebook.com"> <i class=" fa fa-facebook"> &nbsp; </i> </a></li>
                   <li><a href="http://twitter.com"> <i class="fa fa-twitter"> &nbsp; </i> </a></li>
@@ -95,7 +71,7 @@
    </div>
    <div class="footer-bottom">
       <div class="container">
-         <p class="pull-left"> &copy; TSHOP 2014. All right reserved. </p>
+         <p class="pull-left"> &copy; lifeforce Global 2016. All right reserved. </p>
          <div class="pull-right paymentMethodImg">
          	<img height="30" class="pull-right" src="{{ url('images/site/payment/master_card.png') }}" alt="img">
          	<img height="30" class="pull-right" src="{{ url('images/site/payment/visa_card.png') }}" alt="img">

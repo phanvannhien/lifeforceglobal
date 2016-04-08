@@ -22,6 +22,7 @@ class CreateProductTable extends Migration
             $table->integer('price_RPP');
             $table->integer('price_discount');
             $table->string('product_thumbnail');
+            $table->string('download_file');
             $table->string('product_images');
             $table->datetime('created_at');
         });

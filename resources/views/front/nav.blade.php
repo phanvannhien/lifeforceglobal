@@ -10,7 +10,7 @@
                                     <a href="#"> <span class="hidden-xs">HELP</span><i class="glyphicon glyphicon-info-sign hide visible-xs "></i> </a>
                                 </li>
                                 <li class="phone-number">
-                                    <a href="callto:+12025550151"> <span> <i class="glyphicon glyphicon-phone-alt "></i></span> <span class="hidden-xs" style="margin-left:5px"> +1-202-555-0151 </span>
+                                    <a href="mailto:info@lifeforceglobal.com.au"> <span> <i class="glyphicon glyphicon-mail "></i></span> <span class="hidden-xs" style="margin-left:5px"> info@lifeforceglobal.com.au </span>
                                     </a>
                                 </li>
                             </ul>
@@ -115,6 +115,12 @@
 
                             </li>
                         </ul>
+                    </li>
+                    <li>
+                        <a href="{{ route('front.aboutus') }}">About Us</a>
+                    </li>
+                     <li>
+                        <a href="{{ route('front.contactus') }}">Contact Us</a>
                     </li>
                 </ul>
       
