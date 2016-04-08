@@ -57,11 +57,12 @@
 
             <div class="navbar-cart  collapse">
                 <div class="cartMenu  col-lg-4 col-xs-12 col-md-4 ">
+                    <?php $total = 0 ?>
                      @if ( count(Cart::content()) > 0)
                     <div class="w100 miniCartTable scroll-pane">
                         <table>
                             <tbody>
-                                <?php $total = 0 ?>
+                                
                                 @foreach (Cart::content() as $item)
 
                                 <tr class="miniCartProduct">
@@ -127,7 +128,7 @@
 
                 <div class="nav navbar-nav navbar-right hidden-xs">
                     <div class="dropdown  cartMenu ">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-shopping-cart"> </i> <span class="cartRespons"> Cart ($210.00) </span> <b class="caret"> </b> </a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-shopping-cart"> </i> <span class="cartRespons"> Cart (${{$total}}) </span> <b class="caret"> </b> </a>
                         <div class="dropdown-menu col-lg-4 col-xs-12 col-md-4 ">
 
                             @if ( count(Cart::content()) > 0)

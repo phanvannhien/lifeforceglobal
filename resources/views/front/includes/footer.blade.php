@@ -72,6 +72,7 @@
    <div class="footer-bottom">
       <div class="container">
          <p class="pull-left"> &copy; lifeforce Global 2016. All right reserved. </p>
+         <!--
          <div class="pull-right paymentMethodImg">
          	<img height="30" class="pull-right" src="{{ url('images/site/payment/master_card.png') }}" alt="img">
          	<img height="30" class="pull-right" src="{{ url('images/site/payment/visa_card.png') }}" alt="img">
@@ -79,7 +80,7 @@
             <img height="30" class="pull-right" src="{{ url('images/site/payment/american_express_card.png') }}" alt="img">
             <img height="30" class="pull-right" src="{{ url('images/site/payment/discover_network_card.png') }}" alt="img">
             <img height="30" class="pull-right" src="{{ url('images/site/payment/google_wallet.png') }}" alt="img">
-         </div>
+         </div>-->
       </div>
    </div>
 </footer>
