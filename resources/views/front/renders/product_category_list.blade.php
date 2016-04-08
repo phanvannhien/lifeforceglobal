@@ -9,7 +9,7 @@
                 <div class="product">
                     <div class="image">
                         <a href="{{route('front.product',$product->id)}}">
-                        <img src="{{$product->product_thumbnail}}" alt="img" class="img-responsive"></a>
+                        <img src="{{ url('media/product/images/'.$product->product_thumbnail) }}" alt="img" class="img-responsive"></a>
                     </div>
                     <div class="description">
                         <h4><a href="{{route('front.product',$product->id)}}">{{$product->product_name}}</a></h4>
