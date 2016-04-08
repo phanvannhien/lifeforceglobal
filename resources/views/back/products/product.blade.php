@@ -13,16 +13,19 @@
     <h1>
       All Product
       <small>it all starts here</small>
+      <a class="btn btn-success" href="{{ route('back.product.create') }}">Create new</a>
     </h1>
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li><a href="#">Product</a></li>
+      <li><a class="" href="#">Product</a></li>
     </ol>
   </section>
 
+
+
   <!-- Main content -->
   <section class="content">
-
+    
     <!-- Default box -->
     <div class="box">
       <div class="box-header with-border">
@@ -37,15 +40,17 @@
        			<tr>
        				<td>Product Name</td>
        				<td>Product Category</td>
-       				<td>Thumnail</td>
+       				<td>Price </td>
        				<td>Function</td>
        			</tr>
        			@foreach( $products as $product)
 				<tr>
        				<td>{{ $product->product_name }}</td>
        				<td>{{ $product->category_id }}</td>
-       				<td><img src="{{ url('media/product/images/'.$product->product_thumbnail) }}" width="100" alt=""> </td>
-       				<td></td>
+       				<td>{{ $product->price_RPP }}</td>
+       				<td>
+              <a href="{{ route('back.product.edit',$product->id) }}">Edit</a>   
+              </td>
        			</tr>
 
        			@endforeach

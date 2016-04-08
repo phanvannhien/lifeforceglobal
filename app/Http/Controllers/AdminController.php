@@ -20,7 +20,7 @@ class AdminController extends Controller
     }
 
     public function saveProduct(Request $request){
-    	$isCreated = DB::table('product')->insert(
+    	$id = DB::table('product')->insertGetId(
     		array(
     			'category_id' => $request->input('category_id'),
     			'product_name' => $request->input('product_name'),
@@ -36,10 +36,43 @@ class AdminController extends Controller
     		)
     	);
 
-    	if($isCreated){
-    		Session::flash('msg','Created successful!');
-    		return view('back.products.create',array('product' => DB::table('product')->where('id',$isCreated)->first()) );
+    	if($id){
+    		Session::flash('message','Created successful!');
+    		return redirect()->route('back.product.edit',$id);
     	}
 
     }
+
+    public function editProduct($id){
+        return view('back.products.edit',array('product' => DB::table('product')->where('id',$id)->first()) );
+    }
+
+    public function updateProduct(Request $request, $id){
+        $id = DB::table('product')
+            ->where('id',  $request->input('id'))
+            ->update(
+
+                array(
+                    'category_id' => $request->input('category_id'),
+                    'product_name' => $request->input('product_name'),
+                    'product_sort_description' => $request->input('product_sort_description'),
+                    'product_description' => $request->input('product_description'),
+                    'price_RPP' => $request->input('price_RPP'),
+                    'price_discount' => $request->input('price_discount'),
+                    'download_file' => $request->input('download_file'),
+                    'product_thumbnail' => $request->input('product_thumbnail'),
+                    'product_images' => $request->input('product_images'),
+                    'category_id' => $request->input('category_id'),
+                    'created_at' => date('Y-m-d H:s:i')
+                )
+            );
+
+        if($id){
+            Session::flash('message','Update successful!');
+            return view('back.products.edit',array('product' => DB::table('product')->where('id',$id)->first()) );
+        }
+       
+    }
+
+    
 }

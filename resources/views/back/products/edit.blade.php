@@ -11,16 +11,16 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Add product
+      Edit product : {{ $product->product_name }}
       <small>it all starts here</small>
     </h1>
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li><a href="#">Examples</a></li>
-      <li class="active">Blank page</li>
+      <li><a href="#">Edit product</a></li>
     </ol>
   </section>
-	<!-- Main content -->
+
+  <!-- Main content -->
   <section class="content">
 	@if (Session::has('message') )
 		<div class="alert alert-success alert-dismissable">
@@ -29,7 +29,6 @@
 	    {{ Session::get('message') }}
 	  </div>
   	@endif
-
     <!-- Default box -->
     <div class="box">
       <div class="box-header with-border">
@@ -40,8 +39,10 @@
         </div>
       </div>
       <div class="box-body">
-       	<form action="{{ route('back.product.save') }}" method="post">
+       	<form action="{{ route('back.product.update',$product->id) }}" method="post">
        		<input type="hidden" name="_token" value="{{ csrf_token() }}">
+       		<input type="hidden" name="id" value="{{ $product->id }}">
+
        		<div class="box-body">
 	            <div class="form-group">
 	              	<label for="">Category ID</label>
@@ -51,42 +52,42 @@
 	            </div>
 	            <div class="form-group">
 		            <label for="">Product Name</label>
-		            <input type="text" class="form-control" id="" name="product_name" placeholder="">
+		            <input type="text" class="form-control" id="" name="product_name" placeholder="" value="{{ $product->product_name }}">
 	            </div>
 
 	            <div class="form-group">
 		            <label for="">Sort Description</label>
-					<textarea class="form-control" name="product_sort_description" id="" cols="30" rows="10"></textarea>
+					<textarea class="form-control" name="product_sort_description" id="" cols="30" rows="10">{{ $product->product_sort_description }}</textarea>
 	            </div>
 
 	             <div class="form-group">
 		            <label for="">Description</label>
-					<textarea class="form-control textarea" name="product_description" id="" cols="30" rows="10"></textarea>
+					<textarea class="form-control textarea" name="product_description" id="" cols="30" rows="10">{{ $product->product_description }}</textarea>
 	            </div>
 
 	            <div class="form-group">
 		            <label for="">Product Price </label>
-		            <input type="text" class="form-control" id="" name="price_RPP" placeholder="">
+		            <input type="text" class="form-control" id="" name="price_RPP" placeholder="" value="{{ $product->price_RPP }}">
 	            </div>
 
 	            <div class="form-group">
 		            <label for="">Product Discount (Member Only) </label>
-		            <input type="text" class="form-control" id="" name="price_discount" placeholder="">
+		            <input type="text" class="form-control" id="" name="price_discount" placeholder="" value="{{ $product->price_discount }}">
 	            </div>
 
 	            <div class="form-group">
 		            <label for="">Download File </label>
-		            <input type="text" class="form-control" id="" name="download_file" placeholder="">
+		            <input type="text" class="form-control" id="" name="download_file" placeholder=""  value="{{ $product->download_file }}">
 	            </div>
 
 	            <div class="form-group">
 		            <label for="">Thumnail</label>
-		            <input type="text" class="form-control" id="" name="product_thumbnail" placeholder="">
+		            <input type="text" class="form-control" id="" name="product_thumbnail" placeholder=""  value="{{ $product->product_thumbnail }}">
 	            </div>
 
 	             <div class="form-group">
 		            <label for="">Images</label>
-		            <input type="text" class="form-control" id="" name="product_images" placeholder="">
+		            <input type="text" class="form-control" id="" name="product_images" placeholder=""  value="{{ $product->product_images }}">
 	            </div>
 	         
 	         </div>
