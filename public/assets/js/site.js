@@ -126,7 +126,7 @@ $("form#frm-register").validate({
 });// end login form
 
 
-// form forgot
+/*
 $("form#frm-forgot").validate({
     errorElement: "div",
     errorPlacement: function(error, element) {
@@ -150,5 +150,6 @@ $("form#frm-forgot").validate({
     submitHandler: function(form) {
         $(form).submit();
     }
-});// end 
+}); 
+*/
 

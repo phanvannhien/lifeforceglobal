@@ -48,13 +48,12 @@ class PasswordController extends Controller
     public function forgotSubmit(Request $request) {
 
         $email = User::where('email',$request->input('email'))->count();
-        //dd($email);
+        
         if ($email == 0){
             Session::flash('message', 'Email does not exist!'); 
-            return redirect()
-                ->back()
-                ->withInput();
+            return back()->withInput();
         }
+        dd('im here');
 
         $this->validate($request, ['email' => 'required|email']);
 

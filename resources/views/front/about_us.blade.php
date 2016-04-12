@@ -13,6 +13,7 @@
 	<div class="row innerPage">
 		<div class="col-lg-12 col-md-12 col-sm-12">
 			<h2>About Us</h2>
+			<img src="{{ url('media/product/images/product.jpg') }}" class="pull-left" alt="">
 			<p>
 			Life Force global is formed by a group of Australian in 2015 with a vision to provide the best natural organic products as close to the mother nature could provided to us.  
 			</p>

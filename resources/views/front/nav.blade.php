@@ -43,8 +43,11 @@
 
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only"> Toggle navigation </span> <span class="icon-bar"> </span> <span class="icon-bar"> </span> <span class="icon-bar"> </span></button>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only"> Toggle navigation </span> <span class="icon-bar"> </span> <span class="icon-bar"> </span> <span class="icon-bar"> </span></button>
+                @if (Auth::check())
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-cart"><i class="fa fa-shopping-cart colorWhite"> </i> <span class="cartRespons colorWhite"> Cart ($210.00) </span></button>
+                @endif
                 <a class="navbar-brand " href="{{ route('front.index') }}"> <img src="{{ url('images/logo.png') }}" alt=""> </a>
 
                 <div class="search-box pull-right hidden-lg hidden-md hidden-sm">
@@ -127,6 +130,7 @@
       
 
                 <div class="nav navbar-nav navbar-right hidden-xs">
+                    @if (Auth::check())
                     <div class="dropdown  cartMenu ">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-shopping-cart"> </i> <span class="cartRespons"> Cart (${{$total}}) </span> <b class="caret"> </b> </a>
                         <div class="dropdown-menu col-lg-4 col-xs-12 col-md-4 ">
@@ -171,8 +175,8 @@
     
                             @endif
                         </div>
-
                     </div>
+                    @endif
 
                     <div class="search-box">
                         <div class="input-group">

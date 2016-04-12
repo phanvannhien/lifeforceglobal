@@ -10,6 +10,16 @@
 	</ul>
 	</div>
 	</div>
+
+	@if(Session::has('message'))
+	<div class="alert alert-success alert-dismissable">
+	    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+	    <h4>  <i class="icon fa fa-check"></i> Alert!</h4>
+	    {{ Session::get('message') }}
+	  </div>
+	@endif
+
+
 	<div class="row">
 		<div class="col-lg-9 col-md-9 col-sm-7">
 			<h1 class="section-title-inner"><span> <i class="fa fa-unlock-alt"> </i> Forgot your password? </span></h1>
@@ -26,9 +36,7 @@
 					<button type="submit" class="btn btn-primary"><i class="fa fa-unlock"> </i> Retrieve Password
 					</button>
 				</form>
-				@if(Session::has('message'))
-				<p>{{ Session::get('message') }}</p>
-				@endif
+				
 				</div>
 			</div>
 		 
