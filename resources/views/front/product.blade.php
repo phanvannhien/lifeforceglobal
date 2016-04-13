@@ -23,8 +23,17 @@
          <h1 class="product-title">{{$product->product_name}}</h1>
          <h3 class="product-code"></h3>
         
-         <div class="product-price"><span class="price-sales">{{$product->price_discount}}</span>
-         <span class="price-standard">{{$product->price_RPP}}</span></div>
+         <div class="product-price">
+        
+         <div class="price">
+            @if (Auth::check())
+               <span>{{ PriceHelper::formatPrice($product->price_RPP) }} </span>
+            @else
+               <span>{{  PriceHelper::formatPrice($product->price_discount) }}</span>
+            @endif
+         </div>
+      
+         </div>
          <div class="details-description">
             <p>{{$product->product_sort_description}}</p>
          </div>

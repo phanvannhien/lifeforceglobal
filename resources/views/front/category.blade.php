@@ -53,7 +53,13 @@
                            </div>
                            
                         </div>
-                        <div class="price"><span>{{$product->price_RPP}}</span></div>
+                        <div class="price">
+                        @if (Auth::check())
+                           <span>{{ PriceHelper::formatPrice($product->price_RPP) }} </span>
+                        @else
+                           <span>{{  PriceHelper::formatPrice($product->price_discount) }}</span>
+                        @endif
+                        </div>
                         <div class="action-control"><a class="btn btn-primary"> <span class="add2cart"><i class="glyphicon glyphicon-shopping-cart"> </i> Add to cart </span> </a></div>
                      </div>
                    </div>

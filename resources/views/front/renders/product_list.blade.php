@@ -15,8 +15,13 @@
                         <h4><a href="{{route('front.product',$product->id)}}">{{$product->product_name}}</a></h4>
                         <p>{{$product->product_sort_description}}</p>
                     </div>
-                    <div class="price">{{$product->price_RPP}}<span></span>
-                    <span class="old-price">{{$product->price_discount}}</span></div>
+                     <div class="price">
+                    @if (Auth::check())
+                        <span>{{ PriceHelper::formatPrice($product->price_RPP) }} </span>
+                    @else
+                        <span>{{  PriceHelper::formatPrice($product->price_discount) }}</span>
+                    @endif
+                    </div>
                     <div class="action-control">
                         <a class="btn btn-primary"> <span class="add2cart"><i class="glyphicon glyphicon-shopping-cart"> </i> Add to cart </span> </a>
                     </div>

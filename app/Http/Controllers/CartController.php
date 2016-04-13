@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use DB;
 use Cart;
+use Auth;
 
 class CartController extends Controller
 {
@@ -15,8 +16,10 @@ class CartController extends Controller
        if ($request->isMethod('post')) {
            $product_id = $request->input('product_id');
            $product = DB::table('product')->where('id',$product_id)->first();
+           $price = (Auth::check()) ? $product->price_discount : $product->price_RPP;
+
            if($product){
-           		Cart::add(array('id' => $product_id, 'name' => $product->product_name, 'qty' => $request->input('qty'), 'price' => $product->price_RPP));
+           		Cart::add(array('id' => $product_id, 'name' => $product->product_name, 'qty' => $request->input('qty'), 'price' => $price ));
            }
            
        }

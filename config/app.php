@@ -223,6 +223,7 @@ return [
          * Load helper...
          */
         'Site' => App\Helpers\SiteHelper::class,
+        'PriceHelper' => App\Helpers\PriceHelper::class,
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
 
     ],
