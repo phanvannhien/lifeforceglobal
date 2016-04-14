@@ -19,11 +19,11 @@
         <div class="panel-body fill">
           <div class="row fill">
             <div class="wrapper fill">
-              <div class="col-md-2 col-lg-2 col-sm-3 col-xs-12 left-nav fill" id="lfm-leftcol">
+              <div class="col-md-2 col-lg-2 col-sm-3 col-xs-4 left-nav fill" id="lfm-leftcol">
                 <div id="tree1">
                 </div>
               </div>
-              <div class="col-md-10 col-lg-10 col-sm-9 col-xs-12 right-nav" id="right-nav">
+              <div class="col-md-10 col-lg-10 col-sm-9 col-xs-8 right-nav" id="right-nav">
                 <nav class="navbar navbar-default">
                   <div class="container-fluid">
                     <div class="navbar-header">
