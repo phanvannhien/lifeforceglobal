@@ -15,7 +15,7 @@ return array(
     | Supported: "gd", "imagick", "gmagick"
     |
     */
-    'driver' => 'gd',
+    'driver' => 'imagick',
     
     /*
     |--------------------------------------------------------------------------
