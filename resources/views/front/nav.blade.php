@@ -71,18 +71,18 @@
                                 <tr class="miniCartProduct">
                                     <td style="width:20%" class="miniCartProductThumb">
                                         <div>
-                                            <a href="product-details.html"> <img src="images/product/3.jpg" alt="img"> </a>
+                                            <a href="{{ route('front.product',$item->id) }}"> <img src="{{ ProductHelper::getThumbnail($item->id) }}" alt="img"> </a>
                                         </div>
                                     </td>
                                     <td style="width:40%">
                                         <div class="miniCartDescription">
-                                            <h4><a href="product-details.html"> {{ $item->product_name }} </a></h4>
+                                            <h4><a href="{{ route('front.product',$item->id) }}"> {{ $item->product_name }} </a></h4>
                                             <div class="price"><span> {{ $item->price }} </span></div>
                                         </div>
                                     </td>
                                     <td style="width:10%" class="miniCartQuantity"><a> X {{ $item->qty }}</a></td>
                                     <td style="width:15%" class="miniCartSubtotal"><span> {{ $item->price * $item->qty }} </span></td>
-                                    <td style="width:5%" class="delete"><a> x </a></td>
+                                    <td style="width:5%" class="delete"><a href="{{ route('front.cart.delete',$item->rowid) }}"> x </a></td>
                                 </tr>
                                 <?php $total +=  $item->price * $item->qty ?>
                                @endforeach
@@ -145,7 +145,7 @@
                                          <tr class="miniCartProduct">
                                             <td style="width:20%" class="miniCartProductThumb">
                                                 <div>
-                                                    <a href="{{ route('front.product',$item->id) }}"> <img src="images/product/3.jpg" alt="img">
+                                                    <a href="{{ route('front.product',$item->id) }}"> <img src="{{ ProductHelper::getThumbnail($item->id) }}" alt="img">
                                                     </a>
                                                 </div>
                                             </td>
@@ -157,7 +157,7 @@
                                             </td>
                                             <td style="width:10%" class="miniCartQuantity"><a> X {{ $item->qty }}</a></td>
                                             <td style="width:15%" class="miniCartSubtotal"><span> {{ $item->price * $item->qty }} </span></td>
-                                            <td style="width:5%" class="delete"><a> x </a></td>
+                                            <td style="width:5%" class="delete"><a href="{{ route('front.cart.delete',$item->rowid) }}"> x </a></td>
                                         </tr>
                                         <?php $total +=  $item->price * $item->qty ?>
                                         @endforeach

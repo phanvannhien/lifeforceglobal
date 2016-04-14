@@ -49,7 +49,8 @@
        				<td>{{ $product->category_id }}</td>
        				<td>{{ $product->price_RPP }}</td>
        				<td>
-              <a href="{{ route('back.product.edit',$product->id) }}">Edit</a>   
+              <a href="{{ route('back.product.edit',$product->id) }}"><i class="fa fa-edit"></i> Edit</a>   
+              <a onclick="return confirm('Are you sure?')" href="{{ route('back.product.delete',$product->id) }}"><i class="fa fa-remove"></i> Delete</a>   
               </td>
        			</tr>
 

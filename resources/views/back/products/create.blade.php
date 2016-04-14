@@ -61,7 +61,7 @@
 
 	             <div class="form-group">
 		            <label for="">Description</label>
-					<textarea class="form-control textarea" name="product_description" id="" cols="30" rows="10"></textarea>
+					<textarea id="product-description" class="form-control" name="product_description" id="" cols="30" rows="10"></textarea>
 	            </div>
 
 	            <div class="form-group">
@@ -76,18 +76,72 @@
 
 	            <div class="form-group">
 		            <label for="">Download File </label>
-		            <input type="text" class="form-control" id="" name="download_file" placeholder="">
+		            <div class="input-group">
+	                  <span class="input-group-btn">
+	                    <a id="lfm-file-download" data-input="download-file"class="btn btn-primary">
+	                      <i class="fa fa-picture-o"></i> Choose File
+	                    </a>
+	                  </span>
+	                  <input id="download-file" class="form-control" type="text" name="download_file">
+	                </div>
+	              
 	            </div>
 
 	            <div class="form-group">
 		            <label for="">Thumnail</label>
-		            <input type="text" class="form-control" id="" name="product_thumbnail" placeholder="">
+		            <div class="input-group">
+	                  <span class="input-group-btn">
+	                    <a id="lfm-thumbnail" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
+	                      <i class="fa fa-picture-o"></i> Choose Image
+	                    </a>
+	                  </span>
+	                  <input id="thumbnail" class="form-control" type="text" name="product_thumbnail">
+	                </div>
+	                <img id="holder" style="margin-top:15px;max-height:100px;">
 	            </div>
 
-	             <div class="form-group">
-		            <label for="">Images</label>
-		            <input type="text" class="form-control" id="" name="product_images" placeholder="">
+	            <div class="form-group">
+		            <label for="">Images 1</label>
+		            <div class="input-group">
+	                  <span class="input-group-btn">
+	                    <a id="lfm-gallery1" data-input="gallery1" data-preview="gallery-holder1" class="btn btn-primary">
+	                      <i class="fa fa-picture-o"></i> Choose Image
+	                    </a>
+	                  </span>
+	                  <input id="gallery1" class="form-control" type="text" name="product_images[]">
+
+	                </div>
+					<img id="gallery-holder1" style="margin-top:15px;max-height:100px;">
 	            </div>
+
+	            <div class="form-group">
+		            <label for="">Images 2</label>
+		            <div class="input-group">
+	                  <span class="input-group-btn">
+	                    <a id="lfm-gallery2" data-input="gallery2" data-preview="gallery-holder2" class="btn btn-primary">
+	                      <i class="fa fa-picture-o"></i> Choose Image
+	                    </a>
+	                  </span>
+	                  <input id="gallery2" class="form-control" type="text" name="product_images[]">
+
+	                </div>
+					<img id="gallery-holder2" style="margin-top:15px;max-height:100px;">
+	            </div>
+
+	            <div class="form-group">
+		            <label for="">Images 3</label>
+		            <div class="input-group">
+	                  <span class="input-group-btn">
+	                    <a id="lfm-gallery3" data-input="gallery3" data-preview="gallery-holder3" class="btn btn-primary">
+	                      <i class="fa fa-picture-o"></i> Choose Image
+	                    </a>
+	                  </span>
+	                  <input id="gallery3" class="form-control" type="text" name="product_images[]">
+
+	                </div>
+					<img id="gallery-holder3" style="margin-top:15px;max-height:100px;">
+	            </div>
+
 	         
 	         </div>
 	         <div class="box-footer">
@@ -101,4 +155,25 @@
   </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
 
+
+
+
 @include('back.footer')
+<script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
+<script src="/vendor/unisharp/laravel-ckeditor/adapters/jquery.js"></script>
+<script src="/vendor/laravel-filemanager/js/lfm.js"></script>
+<script>
+	$('textarea#product-description').ckeditor({
+			filebrowserImageBrowseUrl: '/filemanager?type=Images',
+		   filebrowserImageUploadUrl: '/filemanager/upload?type=Images&_token={{csrf_token()}}',
+		   filebrowserBrowseUrl: '/filemanager?type=Files',
+		   filebrowserUploadUrl: '/filemanager/upload?type=Files&_token={{csrf_token()}}'
+	});
+
+	$('#lfm-thumbnail').filemanager('image');
+	$('#lfm-gallery1').filemanager('image');
+	$('#lfm-gallery2').filemanager('image');
+	$('#lfm-gallery3').filemanager('image');
+	$('#lfm-file-download').filemanager('file');
+ 
+</script>

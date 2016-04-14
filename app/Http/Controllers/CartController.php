@@ -19,7 +19,11 @@ class CartController extends Controller
            $price = (Auth::check()) ? $product->price_discount : $product->price_RPP;
 
            if($product){
-           		Cart::add(array('id' => $product_id, 'name' => $product->product_name, 'qty' => $request->input('qty'), 'price' => $price ));
+           		Cart::add(array('id' => $product_id, 
+                'thumbnail' => $product->product_thumbnail,
+                'name' => $product->product_name, 
+                'qty' => $request->input('qty'), 
+                'price' => $price ));
            }
            
        }
@@ -36,7 +40,7 @@ class CartController extends Controller
 
    public function delCart($pid){
    		Cart::remove($pid);
-   		return redirect()->route('front.cart.page');
+   		return back();
    }
 
    public function destroyCart($pid){

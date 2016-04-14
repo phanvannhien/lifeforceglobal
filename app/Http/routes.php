@@ -68,6 +68,7 @@ Route::group(
         Route::get('/admin/product',array('as'=>'back.product', 'uses' => 'AdminController@allProduct'));
         Route::get('/admin/product/{id}',array('as'=>'back.product.edit', 'uses' => 'AdminController@editProduct'));
         Route::post('/admin/product/{id}',array('as'=>'back.product.update', 'uses' => 'AdminController@updateProduct'));
+        Route::get('/admin/product/delete/{id}',array('as'=>'back.product.delete', 'uses' => 'AdminController@deleteProduct'));
         
 
     });

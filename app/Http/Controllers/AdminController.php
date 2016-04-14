@@ -20,6 +20,10 @@ class AdminController extends Controller
     }
 
     public function saveProduct(Request $request){
+
+        $gallery = implode($request->input('product_images'), ',');
+
+
     	$id = DB::table('product')->insertGetId(
     		array(
     			'category_id' => $request->input('category_id'),
@@ -30,7 +34,7 @@ class AdminController extends Controller
     			'price_discount' => $request->input('price_discount'),
     			'download_file' => $request->input('download_file'),
     			'product_thumbnail' => $request->input('product_thumbnail'),
-    			'product_images' => $request->input('product_images'),
+    			'product_images' => $gallery ,
     			'category_id' => $request->input('category_id'),
     			'created_at' => date('Y-m-d H:s:i')
     		)
@@ -48,8 +52,11 @@ class AdminController extends Controller
     }
 
     public function updateProduct(Request $request, $id){
-        $id = DB::table('product')
-            ->where('id',  $request->input('id'))
+        $gallery = implode($request->input('product_images'), ',');
+        $id = $request->input('id');
+
+        $updated = DB::table('product')
+            ->where('id', $id )
             ->update(
 
                 array(
@@ -61,18 +68,24 @@ class AdminController extends Controller
                     'price_discount' => $request->input('price_discount'),
                     'download_file' => $request->input('download_file'),
                     'product_thumbnail' => $request->input('product_thumbnail'),
-                    'product_images' => $request->input('product_images'),
+                    'product_images' => $gallery,
                     'category_id' => $request->input('category_id'),
                     'created_at' => date('Y-m-d H:s:i')
                 )
             );
 
-        if($id){
+
+
+        if($updated){
             Session::flash('message','Update successful!');
             return view('back.products.edit',array('product' => DB::table('product')->where('id',$id)->first()) );
         }
        
     }
 
+    public function deleteProduct($id){
+        DB::table('product')->where('id', $id)->delete();
+        return $this->allProduct();
+    }
     
 }

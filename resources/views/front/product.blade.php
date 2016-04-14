@@ -15,8 +15,14 @@
    <div class="row transitionfx">
       <div class="col-lg-6 col-md-6 col-sm-6">
          <div class="main-image sp-wrap col-lg-12 no-padding">
-            <a href="{{ url('media/product/images/'.$product->product_images )}}">
-            <img src="{{ url('media/product/images/'.$product->product_images )}}" class="img-responsive" alt="img"></a>
+            <?php $gallery = explode(',', $product->product_images); ?>
+            @if (count ($gallery) > 0)
+               @for ( $i = 0; $i < count($gallery) ; $i ++ )
+                 <a href="{{ url($gallery[$i]) }}">
+                 <img src="{{ Image::url($gallery[$i],500,500,array('crop')) }}" class="img-responsive" alt="img"></a>
+               @endfor
+            @endif   
+            
          </div>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-5">
@@ -79,7 +85,7 @@
                <div class="tab-pane active" id="details">{!! $product->product_description !!}
                </div>
                <div class="tab-pane" id="download-file">
-                     <a href="{{ url('media/product/'.$product->download_file) }}">Click here to download File ( PDF )</a>
+                     <a href="{{ url($product->download_file) }}">Click here to download File ( PDF )</a>
 
                </div>
             </div>
@@ -104,4 +110,10 @@
 <div class="gap"></div>
 @include ('front.includes.footer')
 
+<link rel="stylesheet" href="{{ url('assets/css/smoothproducts.css') }}">
+
+<script src="{{ url('assets/js/jquery-migrate-1.2.1.js') }}"></script>
 <script type="text/javascript" src="{{ url('assets/js/smoothproducts.min.js') }}"></script>
+<script type="text/javascript" src="{{ url('assets/js/helper-plugins/jquery.mousewheel.min.js') }}"></script>
+<script type="text/javascript" src="{{ url('assets/js/jquery.mCustomScrollbar.js') }}"></script>
+<script src="{{ url('assets/js/bootstrap.touchspin.js') }}"></script>

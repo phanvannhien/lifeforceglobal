@@ -1,6 +1,6 @@
 @include ('front.includes.header')
 @include ('front.nav')
-
+<?php $total = 0 ?>
 <div class="container main-container headerOffset">
 	<div class="row">
 		<div class="breadcrumbDiv col-lg-12">
@@ -38,11 +38,12 @@
 		                        <td style="width:10%">Discount</td>
 		                        <td style="width:15%">Total</td>
 		                     </tr>
-		                     <?php $total = 0 ?>
+		                     
 		                     @foreach($cart as $item)
+
 		                     <tr class="CartProduct">
 		                        <td class="CartProductThumb">
-		                           <div><a href="product-details.html"><img src="images/product/a1.jpg" alt="img"></a></div>
+		                           <div><a href="{{ route('front.product',$item->id) }}"><img src="{{ ProductHelper::getThumbnail($item->id) }}" alt="img"></a></div>
 		                        </td>
 		                        <td>
 		                           <div class="CartDescription">
@@ -87,7 +88,7 @@
 	      <div class="contentBox">
 	         <div class="w100 costDetails">
 	            <div class="table-block" id="order-detail-content">
-	               <a class="btn btn-primary btn-lg btn-block " title="checkout" href="checkout-0.html" style="margin-bottom:20px"> Proceed to
+	               <a class="btn btn-primary btn-lg btn-block " title="checkout" href="#" style="margin-bottom:20px"> Proceed to
 	               checkout &nbsp; <i class="fa fa-arrow-right"></i> </a>
 	               <div class="w100 cartMiniTable">
 	                  <table id="cart-summary" class="std table">
@@ -108,6 +109,7 @@
 	                           <td> Total</td>
 	                           <td class=" site-color" id="total-price">{{ $total * 1.1 }}</td>
 	                        </tr>
+	                        <!--
 	                        <tr>
 	                           <td colspan="2">
 	                              <div class="input-append couponForm">
@@ -116,6 +118,7 @@
 	                              </div>
 	                           </td>
 	                        </tr>
+	                        -->
 	                     </tbody>
 	                     <tbody></tbody>
 	                  </table>
