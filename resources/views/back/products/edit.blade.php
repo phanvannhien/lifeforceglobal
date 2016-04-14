@@ -106,6 +106,7 @@
 	       
 				<?php
 					$gallery = explode(',', $product->product_images);
+					$numMissing = 3 - count($gallery);
 					$i = 1;
 				?>
 				
@@ -128,6 +129,28 @@
 		            <?php $i++ ?>
 					@endforeach
 				@endif
+
+				@if ( $numMissing > 0 )
+					@for ($j = count ($gallery) ; $j <= 3 ; $j++ )
+
+		            <div class="form-group">
+			            <label for="">Images {{$j}}</label>
+			            <div class="input-group">
+		                  <span class="input-group-btn">
+		                    <a id="lfm-gallery{{$j}}" data-input="gallery{{$j}}" data-preview="gallery-holder{{$j}}" class="btn btn-primary">
+		                      <i class="fa fa-picture-o"></i> Choose Image
+		                    </a>
+		                  </span>
+		                  <input id="gallery{{$j}}" class="form-control" type="text" value="" name="product_images[]">
+
+		                </div>
+						<img id="gallery-holder{{$j}}" src="" style="margin-top:15px;max-height:100px;">
+		            </div>
+					@endfor
+				@endif
+
+	
+
 	         </div>
 	         <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Save</button>
@@ -158,7 +181,13 @@
 
 	@if (count ($gallery) > 0)
 		@for ( $i = 1; $i <= count($gallery) ; $i ++ )
-		 	$('#lfm-gallery'.{{$i}}).filemanager('image');
+		 	$('#lfm-gallery{{$i}}').filemanager('image');
+		@endfor
+	@endif
+
+	@if ( $numMissing > 0)
+		@for ( $i = count($gallery) ; $i <= 3 ; $i ++ )
+		 	$('#lfm-gallery{{$i}}').filemanager('image');
 		@endfor
 	@endif	
 
