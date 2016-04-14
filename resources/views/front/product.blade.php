@@ -18,7 +18,7 @@
             <?php $gallery = explode(',', $product->product_images); ?>
             @if (count ($gallery) > 0)
                @for ( $i = 0; $i < count($gallery) ; $i ++ )
-                 <a href="{{ url($gallery[$i]) }}">
+                 <a href="{{ Image::url($gallery[$i],800,800,array('crop')) }}">
                  <img src="{{ Image::url($gallery[$i],500,500,array('crop')) }}" class="img-responsive" alt="img"></a>
                @endfor
             @endif   

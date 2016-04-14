@@ -19,11 +19,11 @@
         <div class="panel-body fill">
           <div class="row fill">
             <div class="wrapper fill">
-              <div class="col-md-2 col-lg-2 col-sm-2 col-xs-2 left-nav fill" id="lfm-leftcol">
+              <div class="col-md-2 col-lg-2 col-sm-3 col-xs-12 left-nav fill" id="lfm-leftcol">
                 <div id="tree1">
                 </div>
               </div>
-              <div class="col-md-10 col-lg-10 col-sm-10 col-xs-10 right-nav" id="right-nav">
+              <div class="col-md-10 col-lg-10 col-sm-9 col-xs-12 right-nav" id="right-nav">
                 <nav class="navbar navbar-default">
                   <div class="container-fluid">
                     <div class="navbar-header">
@@ -34,14 +34,14 @@
                         <span class="icon-bar"></span>
                       </button>
                     </div>
-                    <div class="collapse navbar-collapse">
+                    <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
                       <ul class="nav navbar-nav" id="nav-buttons">
                         <li>
                           <a href="#!" id="to-previous">
                             <i class="fa fa-arrow-left"></i> {{ Lang::get('laravel-filemanager::lfm.nav-back') }}
                           </a>
                         </li>
-                        <li><a style='cursor:default;'>|</a></li>
+                        <li class="hidden-xs" ><a style='cursor:default;'>|</a></li>
                         <li>
                           <a href="#!" id="add-folder">
                             <i class="fa fa-plus"></i> {{ Lang::get('laravel-filemanager::lfm.nav-new') }}
@@ -52,7 +52,7 @@
                             <i class="fa fa-upload"></i> {{ Lang::get('laravel-filemanager::lfm.nav-upload') }}
                           </a>
                         </li>
-                        <li><a style='cursor:default;'>|</a></li>
+                        <li class="hidden-xs"><a style='cursor:default;'>|</a></li>
                         <li>
                           <a href="#!" id="thumbnail-display">
                             <i class="fa fa-picture-o"></i> {{ Lang::get('laravel-filemanager::lfm.nav-thumbnails') }}
