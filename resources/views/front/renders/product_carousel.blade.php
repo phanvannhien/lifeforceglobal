@@ -3,15 +3,16 @@
    @foreach ($products as $product)
    <div class="item">
       <div class="product">
-         <a href="{{route('front.product',$product->id)}}" class="product-image"> <img src="{{ url($product->product_thumbnail) }}" alt="img"> </a>
+         <a href="{{route('front.product',$product->id)}}" class="product-image">
+         <img src="{{ Image::url($product->product_thumbnail,285,380,array('crop')) }}" alt="img"> </a>
          <div class="description">
             <h4><a href="{{route('front.product',$product->id)}}">{{$product->product_name}}</a></h4>
             <div class="price">
-            @if (Auth::check())
+           @if (!Auth::check())
                <span>{{ PriceHelper::formatPrice($product->price_RPP) }} </span>
-            @else
+           @else
                <span>{{  PriceHelper::formatPrice($product->price_discount) }}</span>
-            @endif
+           @endif
             </div>
          </div>
       </div>

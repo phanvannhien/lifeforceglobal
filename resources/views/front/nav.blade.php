@@ -71,7 +71,7 @@
                                 <tr class="miniCartProduct">
                                     <td style="width:20%" class="miniCartProductThumb">
                                         <div>
-                                            <a href="{{ route('front.product',$item->id) }}"> <img src="{{ ProductHelper::getThumbnail($item->id) }}" alt="img"> </a>
+                                            <a href="{{ route('front.product',$item->id) }}"> <img src="{{ Image::url(ProductHelper::getThumbnail($item->id),285,380,array('crop')) }}" alt="img"> </a>
                                         </div>
                                     </td>
                                     <td style="width:40%">
@@ -145,7 +145,7 @@
                                          <tr class="miniCartProduct">
                                             <td style="width:20%" class="miniCartProductThumb">
                                                 <div>
-                                                    <a href="{{ route('front.product',$item->id) }}"> <img src="{{ ProductHelper::getThumbnail($item->id) }}" alt="img">
+                                                    <a href="{{ route('front.product',$item->id) }}"> <img src="{{ Image::url(ProductHelper::getThumbnail($item->id),285,380,array('crop')) }}" alt="img">
                                                     </a>
                                                 </div>
                                             </td>

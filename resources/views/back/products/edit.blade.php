@@ -131,7 +131,7 @@
 				@endif
 
 				@if ( $numMissing > 0 )
-					@for ($j = count ($gallery) ; $j <= 3 ; $j++ )
+					@for ($j = ( count ($gallery) + 1) ; $j <= 3 ; $j++ )
 
 		            <div class="form-group">
 			            <label for="">Images {{$j}}</label>
@@ -186,7 +186,7 @@
 	@endif
 
 	@if ( $numMissing > 0)
-		@for ( $i = count($gallery) ; $i <= 3 ; $i ++ )
+		@for ( $i = (count($gallery) + 1) ; $i <= 3 ; $i ++ )
 		 	$('#lfm-gallery{{$i}}').filemanager('image');
 		@endfor
 	@endif	

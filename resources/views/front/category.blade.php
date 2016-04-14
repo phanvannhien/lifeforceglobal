@@ -40,7 +40,7 @@
                      <div class="product">
                         <div class="image">
                            <a href="{{route('front.product',$product->id)}}">
-                           <img src="{{ url($product->product_thumbnail) }}" alt="img" class="img-responsive"></a>
+                           <img src="{{ Image::url($product->product_thumbnail,285,380,array('crop')) }}" alt="img" class="img-responsive"></a>
                         </div>
                         <div class="description">
                            <h4><a href="{{route('front.product',$product->id)}}">{{$product->product_name}}</a></h4>
@@ -54,11 +54,11 @@
                            
                         </div>
                         <div class="price">
-                        @if (Auth::check())
-                           <span>{{ PriceHelper::formatPrice($product->price_RPP) }} </span>
-                        @else
-                           <span>{{  PriceHelper::formatPrice($product->price_discount) }}</span>
-                        @endif
+                       @if (!Auth::check())
+                        <span>{{ PriceHelper::formatPrice($product->price_RPP) }} </span>
+                    @else
+                        <span>{{  PriceHelper::formatPrice($product->price_discount) }}</span>
+                    @endif
                         </div>
                         <form action="{{ route('front.cart') }}" method="post" >
                            <input type="hidden" name="product_id" value="{{ $product->id }}">

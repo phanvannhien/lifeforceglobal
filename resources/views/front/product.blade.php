@@ -32,11 +32,11 @@
          <div class="product-price">
         
          <div class="price">
-            @if (Auth::check())
+           @if (!Auth::check())
                <span>{{ PriceHelper::formatPrice($product->price_RPP) }} </span>
-            @else
+           @else
                <span>{{  PriceHelper::formatPrice($product->price_discount) }}</span>
-            @endif
+           @endif
          </div>
       
          </div>
