@@ -158,7 +158,7 @@
 
 	@if (count ($gallery) > 0)
 		@for ( $i = 1; $i <= count($gallery) ; $i ++ )
-		 	$('#lfm-gallery'.$i).filemanager('image');
+		 	$('#lfm-gallery'.{{$i}}).filemanager('image');
 		@endfor
 	@endif	
 
