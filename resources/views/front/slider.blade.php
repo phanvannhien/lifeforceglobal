@@ -7,6 +7,7 @@
          <div class="slider slider-v1" data-cycle-swipe=true data-cycle-prev=".prevControl" data-cycle-next=".nextControl" data-cycle-loader="wait">
 
             <div class="slider-item slider-item-img1">
+               <!--   
                <div class="sliderInfo">
                   <div class="container">
                      <div class="col-lg-12 col-md-12 col-sm-12 sliderTextFull ">
@@ -21,9 +22,11 @@
                      </div>
                   </div>
                </div>
+               -->
                <img src="{{ url('images/slider/slide3.jpg') }}" class="img-responsive parallaximg sliderImg" alt="img">
             </div>
             <div class="slider-item slider-item-img2 ">
+               <!--   
                <div class="sliderInfo">
                   <div class="container">
                      <div class="col-lg-12 col-md-12 col-sm-12 sliderTextFull  ">
@@ -37,9 +40,11 @@
                      </div>
                   </div>
                </div>
+               -->
                <img src="{{ url('images/slider/slide2.jpg') }}" class="img-responsive parallaximg sliderImg" alt="img">
             </div>
             <div class="slider-item slider-item-img3 ">
+               <!--   
                <div class="sliderInfo">
                   <div class="container">
                      <div class="col-lg-5 col-md-4 col-sm-6 col-xs-8   pull-left sliderText white hidden-xs">
@@ -52,6 +57,7 @@
                      </div>
                   </div>
                </div>
+               -->
                <img src="{{ url('images/slider/slide1.jpg') }}" class="img-responsive parallaximg sliderImg" alt="img">
             </div>
             

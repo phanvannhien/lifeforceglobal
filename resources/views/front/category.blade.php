@@ -56,10 +56,12 @@
                         <div class="price">
                        @if (!Auth::check())
                         <span>{{ PriceHelper::formatPrice($product->price_RPP) }} </span>
-                    @else
+                        @else
                         <span>{{  PriceHelper::formatPrice($product->price_discount) }}</span>
-                    @endif
+                        @endif
                         </div>
+
+                        @if (Auth::check())
                         <form action="{{ route('front.cart') }}" method="post" >
                            <input type="hidden" name="product_id" value="{{ $product->id }}">
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -67,6 +69,9 @@
                            <div class="action-control"><button type="submit" class="btn btn-primary">
                             <span class="add2cart"><i class="glyphicon glyphicon-shopping-cart"> </i> Add to cart </span> </button></div>
                         </form>
+                        @else
+                          <p>&nbsp;</p>
+                        @endif
 
                      </div>
                    </div>

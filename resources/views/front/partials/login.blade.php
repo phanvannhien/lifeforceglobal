@@ -30,7 +30,7 @@
          </div>
          <div class="modal-footer">
             <p class="text-center"> Not here before? 
-               <a data-toggle="modal" data-dismiss="modal" href="#ModalSignup"> Sign Up. </a>
+               <a data-toggle="modal" data-dismiss="modal" href="#ModalSignup"> Become a member . </a>
                <br>
                <a href="{{ route('user.forgot') }}"> Lost your password? </a>
             </p>

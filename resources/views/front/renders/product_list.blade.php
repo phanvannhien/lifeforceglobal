@@ -15,13 +15,14 @@
                         <h4><a href="{{route('front.product',$product->id)}}">{{$product->product_name}}</a></h4>
                         <p>{{$product->product_sort_description}}</p>
                     </div>
-                     <div class="price">
+                    <div class="price">
                     @if (!Auth::check())
                         <span>{{ PriceHelper::formatPrice($product->price_RPP) }} </span>
                     @else
                         <span>{{  PriceHelper::formatPrice($product->price_discount) }}</span>
                     @endif
                     </div>
+                    @if (Auth::check())
                     <div class="action-control">
                         <form action="{{ route('front.cart') }}" method="post" >
                            <input type="hidden" name="product_id" value="{{ $product->id }}">
@@ -31,6 +32,9 @@
                             <span class="add2cart"><i class="glyphicon glyphicon-shopping-cart"> </i> Add to cart </span> </button></div>
                         </form>
                     </div>
+                    @else
+                          <p>&nbsp;</p>
+                    @endif
                 </div>
             </div>
            @endforeach 

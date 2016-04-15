@@ -3,7 +3,7 @@
       <div class="modal-content">
          <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times; </button>
-            <h3 class="modal-title-site text-center"> REGISTER </h3>
+            <h3 class="modal-title-site text-center">  Become a member   </h3>
          </div>
          <div class="modal-body">
             <form action="" id="frm-register" method="post">
@@ -32,7 +32,7 @@
                
                <div>
                   <div>
-                     <input name="submit" class="btn  btn-block btn-lg btn-primary" value="REGISTER" type="submit">
+                     <input name="submit" class="btn  btn-block btn-lg btn-primary" value="SUBMIT" type="submit">
                   </div>
                </div>
             </form>
@@ -40,7 +40,7 @@
 
          <div class="modal-footer">
             <p class="text-center"> Already member? <a data-toggle="modal" data-dismiss="modal" href="#ModalLogin">
-               Sign in </a>
+               Member login </a>
             </p>
          </div>
 

@@ -22,6 +22,7 @@
                         <span>{{  PriceHelper::formatPrice($product->price_discount) }}</span>
                     @endif
                 </div>
+                @if (Auth::check())
                 <div class="action-control">
                     <form action="{{ route('front.cart') }}" method="post" >
                        <input type="hidden" name="product_id" value="{{ $product->id }}">
@@ -31,6 +32,9 @@
                         <span class="add2cart"><i class="glyphicon glyphicon-shopping-cart"> </i> Add to cart </span> </button></div>
                     </form>
                 </div>
+                @else
+                          <p>&nbsp;</p>
+                @endif
             </div>
         </div>
         @endforeach 

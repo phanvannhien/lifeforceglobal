@@ -21,11 +21,11 @@
                             <ul class="userMenu">
                                 @if (!Auth::check())
                                 <li>
-                                    <a href="#" data-toggle="modal" data-target="#ModalLogin"> <span class="hidden-xs">Sign In</span>
+                                    <a href="#" data-toggle="modal" data-target="#ModalLogin"> <span class="hidden-xs">Member login</span>
                                         <i class="glyphicon glyphicon-log-in hide visible-xs "></i> </a>
                                 </li>
                                 <li class="hidden-xs">
-                                <a href="#" data-toggle="modal" data-target="#ModalSignup"> CreateAccount </a></li>
+                                <a href="#" data-toggle="modal" data-target="#ModalSignup"> Become a member  </a></li>
                                 @else
                                     <li>
                                         <a href=""><span>Welcome: <strong>{{ Auth::user()->email }}</strong></span></a>
