@@ -59,11 +59,12 @@
                </ul>
                -->
                <ul class="social">
-                  <li><a href="http://facebook.com"> <i class=" fa fa-facebook"> &nbsp; </i> </a></li>
+                  <li><a target="_blank" href="https://www.facebook.com/lifeforceglobal/"> <i class=" fa fa-facebook"> &nbsp; </i> </a></li>
+                  <!--   
                   <li><a href="http://twitter.com"> <i class="fa fa-twitter"> &nbsp; </i> </a></li>
                   <li><a href="https://plus.google.com"> <i class="fa fa-google-plus"> &nbsp; </i> </a></li>
                   <li><a href="http://youtube.com"> <i class="fa fa-pinterest"> &nbsp; </i> </a></li>
-                  <li><a href="http://youtube.com"> <i class="fa fa-youtube"> &nbsp; </i> </a></li>
+                  <li><a href="http://youtube.com"> <i class="fa fa-youtube"> &nbsp; </i> </a></li>-->
                </ul>
             </div>
          </div>
