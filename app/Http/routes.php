@@ -14,7 +14,7 @@
 
 Route::group( 
     array( 
-        'middleware' => 'web'
+        'middleware' => ['web']
     ),function () {
         Route::get('/',array('as'=>'front.index', 'uses' => 'HomeController@index'));
         Route::get('/category/{id}',array('as'=>'front.category', 'uses' => 'HomeController@category'));
@@ -33,14 +33,10 @@ Route::group(
         Route::get('/user/register/success',array('as'=>'user.register.success', 'uses' => 'UserController@registerSuccess'));
         Route::get('/user/verify/{code}',array('as'=>'user.verify', 'uses' => 'UserController@userVerify'));
         Route::get('/user/resend-verify',array('as'=>'user.verify.resend', 'uses' => 'UserController@resendActivationCode'));
-        
+                
+        Route::get('/login',array('as'=>'home.login', 'uses' => 'HomeController@login'));
+        Route::post('/login',array('as'=>'home.login.post', 'uses' => 'UserController@login'));
 
-        
-        Route::get('/cart',array('as'=>'front.cart.page', 'uses' => 'CartController@getCart'));
-        Route::post('/cart',array('as'=>'front.cart', 'uses' => 'CartController@cart'));
-        Route::post('/cart/update',array('as'=>'front.cart.update', 'uses' => 'CartController@updateCart'));
-        Route::get('/cart/del/{pid}',array('as'=>'front.cart.delete', 'uses' => 'CartController@delCart'));
-        
 
         /*
         |--------------------------------------------------------------------------
@@ -52,6 +48,21 @@ Route::group(
          Route::get('/contact-us',array('as'=>'front.contactus', 'uses' => 'BlogController@contactUs'));
        
 });
+
+
+Route::group( 
+    array( 
+        'middleware' => array('web','auth')
+
+    ),function () {
+        Route::get('/cart',array('as'=>'front.cart.page', 'uses' => 'CartController@getCart'));
+        Route::post('/cart',array('as'=>'front.cart', 'uses' => 'CartController@cart'));
+        Route::post('/cart/update',array('as'=>'front.cart.update', 'uses' => 'CartController@updateCart'));
+        Route::get('/cart/del/{pid}',array('as'=>'front.cart.delete', 'uses' => 'CartController@delCart'));
+
+        Route::get('/checkout',array('as'=>'front.checkout', 'uses' => 'CheckoutController@checkout'));        
+
+    });
 
 /*
 |--------------------------------------------------------------------------

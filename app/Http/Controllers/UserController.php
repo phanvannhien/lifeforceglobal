@@ -11,6 +11,7 @@ use Auth;
 use Hash;
 use Mail;
 use App\User;
+use Session;
 
 class UserController extends Controller
 {
@@ -26,30 +27,58 @@ class UserController extends Controller
 
     public function login(Request $request){
     	// Authentication data
-        $authData = array(
-        	'email' =>  $request->input( 'email' ), 
-        	'password' => $request->input( 'password' ), 
+         $authData = array(
+            'email' =>  $request->input( 'email' ), 
+            'password' => $request->input( 'password' ), 
         );
+        if($request->ajax()){
+            // Check if login with username
+            if ( strpos($authData['email'],'@') == false ) {
+                return response()->json( array('msg' => 'Email wrong!'));
+                
+            }else{
+                $userLogin = DB::table('users')->where( 'email', $request->input('email') )->first();
+            }
+          
+            if( $userLogin ){
+                if($userLogin->user_status == 0){
+                    return response()->json(array('msg' => 'Account is locked!'));
+                }
+
+                if (Auth::attempt($authData))
+                {
+                    return response()->json(array('msg' => 'success'));
+                }
+            }
+
+            return response()->json(array('msg' => 'Email or password wrong!'));
+        }
+
         // Check if login with username
         if ( strpos($authData['email'],'@') == false ) {
-            return response()->json( array('msg' => 'Email wrong!'));
+            Session::flash('message', 'Wrong email format!');
+            return back()->withInput();
             
         }else{
             $userLogin = DB::table('users')->where( 'email', $request->input('email') )->first();
         }
-      
-      	if( $userLogin ){
-      		if($userLogin->user_status == 0){
-      		    return response()->json(array('msg' => 'Account is locked!'));
-      		}
+        
+        if( $userLogin ){
+            if($userLogin->user_status == 0){
+                Session::flash('message', 'Account is locked!');
+                return back()->withInput();
+            }
 
-	        if (Auth::attempt($authData))
-	        {
-	        	return response()->json(array('msg' => 'success'));
-	        }
-      	}
+            if (Auth::attempt($authData))
+            {
+                return redirect('/');
+                
+            }
+        }
 
-      	return response()->json(array('msg' => 'Email or password wrong!'));
+        Session::flash('message', 'Email or password wrong!');
+        return back()->withInput();
+               
     }
 
     public function logout(){

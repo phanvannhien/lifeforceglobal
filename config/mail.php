@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => 'phanvannhien@gmail.com', 'name' => 'nhienphan'],
+    'from' => ['address' =>  env('MAIL_USERNAME'), 'name' => 'lifeforce'],
 
     /*
     |--------------------------------------------------------------------------
@@ -81,7 +81,7 @@ return [
     |
     */
 
-    'username' => 'phanvannhien@gmail.com',
+    'username' => env('MAIL_USERNAME'),
 
     /*
     |--------------------------------------------------------------------------
@@ -94,7 +94,7 @@ return [
     |
     */
 
-    'password' => 'OFFVwOnKgeDc',
+    'password' => env('MAIL_PASSWORD'),
 
     /*
     |--------------------------------------------------------------------------

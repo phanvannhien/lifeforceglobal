@@ -24,4 +24,8 @@ class HomeController extends Controller
     	$product =  DB::table('product')->where('id',$id)->first();
     	return view('front.product',array('product' => $product));
     }
+
+    public function login(){
+        return view('front.login');
+    }
 }
