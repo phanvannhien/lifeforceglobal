@@ -28,18 +28,14 @@ Route::group(
 
 
         Route::post('/user/login',array('as'=>'user.login', 'uses' => 'UserController@login'));
-        Route::get('/user/logout',array('as'=>'user.logout', 'uses' => 'UserController@logout'));
+        
         Route::post('/user/register',array('as'=>'user.register', 'uses' => 'UserController@register'));
         Route::get('/user/register/success',array('as'=>'user.register.success', 'uses' => 'UserController@registerSuccess'));
         Route::get('/user/verify/{code}',array('as'=>'user.verify', 'uses' => 'UserController@userVerify'));
         Route::get('/user/resend-verify',array('as'=>'user.verify.resend', 'uses' => 'UserController@resendActivationCode'));
         
-        Route::get('/user/my-account',array('as'=>'user.dashboard', 'uses' => 'UserController@myAccount'));
-        Route::get('/user/order-history',array('as'=>'user.order.history', 'uses' => 'UserController@orderHistory'));
-                 
-
         
-
+        
         Route::get('/login',array('as'=>'home.login', 'uses' => 'HomeController@login'));
         Route::post('/login',array('as'=>'home.login.post', 'uses' => 'UserController@login'));
 
@@ -69,6 +65,11 @@ Route::group(
         Route::get('/checkout',array('as'=>'front.checkout', 'uses' => 'CheckoutController@checkout'));        
         Route::post('/checkout',array('as'=>'front.checkout.final', 'uses' => 'CheckoutController@checkoutFinal'));  
 
+        Route::get('/order/status/{id}',array('as'=>'front.order.status', 'uses' => 'UserController@orderStatus'));  
+
+        Route::get('/user/my-account',array('as'=>'user.dashboard', 'uses' => 'UserController@myAccount'));
+        Route::get('/user/order-history',array('as'=>'user.order.history', 'uses' => 'UserController@orderHistory'));
+        Route::get('/user/logout',array('as'=>'user.logout', 'uses' => 'UserController@logout'));
     });
 
 /*

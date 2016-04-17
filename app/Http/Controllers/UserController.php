@@ -184,4 +184,8 @@ class UserController extends Controller
         return view('front.customer.order_history');
     }
 
+    public function orderStatus($id){
+        return view('front.customer.order_status');
+    }
+
 }
