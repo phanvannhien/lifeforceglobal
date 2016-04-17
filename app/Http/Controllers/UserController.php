@@ -174,6 +174,12 @@ class UserController extends Controller
         return view('front.users.verify')->with('isSuccessVerify',$isSuccessVerify ) ;   
     }
 
+    public function myAccount(){
+        return view('front.customer.dashboard');
+    }
 
+    public function orderHistory(){
+        return view('front.customer.order_history');
+    }
 
 }

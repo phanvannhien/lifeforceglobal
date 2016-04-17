@@ -234,7 +234,7 @@ return [
 
         'Image' => Intervention\Image\Facades\Image::class,
         'ImageResizer' => Folklore\Image\Facades\Image::class,
-
+        'Str' => Illuminate\Support\Str::class
     ],
 
 ];

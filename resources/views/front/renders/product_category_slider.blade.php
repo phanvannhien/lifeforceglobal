@@ -7,12 +7,12 @@
         <div class="item">
             <div class="product">
                 <div class="image">
-                    <a href="{{route('front.product',$product->id)}}">
+                    <a href="{{route('front.product',[ $product->id, Str::slug($product->product_name)] )}}">
                     <img src="{{ Image::url($product->product_thumbnail,285,380,array('crop')) }}" alt="img" class="img-responsive"></a>
                     
                 </div>
                 <div class="description">
-                    <h4><a href="{{route('front.product',$product->id)}}">{{$product->product_name}}</a></h4>
+                    <h4><a href="{{route('front.product',[ $product->id, Str::slug($product->product_name)] )}}">{{$product->product_name}}</a></h4>
                     <p>{{$product->product_sort_description}}</p>
                 </div>
                  <div class="price">

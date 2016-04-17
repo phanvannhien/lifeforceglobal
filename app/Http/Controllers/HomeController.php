@@ -20,7 +20,8 @@ class HomeController extends Controller
     	return view('front.category',array('category' => $category, 'products' => $products));
     }
 
-    public function product($id){
+    public function product($id,$slug){
+        
     	$product =  DB::table('product')->where('id',$id)->first();
     	return view('front.product',array('product' => $product));
     }

@@ -18,7 +18,7 @@ Route::group(
     ),function () {
         Route::get('/',array('as'=>'front.index', 'uses' => 'HomeController@index'));
         Route::get('/category/{id}',array('as'=>'front.category', 'uses' => 'HomeController@category'));
-        Route::get('/product/{id}',array('as'=>'front.product', 'uses' => 'HomeController@product'));
+        Route::get('/product/{id}/{slug}',array('as'=>'front.product', 'uses' => 'HomeController@product'));
 
 
         Route::get('/user/forgot',array('as'=>'user.forgot', 'uses' => 'UserController@forgot'));
@@ -33,7 +33,13 @@ Route::group(
         Route::get('/user/register/success',array('as'=>'user.register.success', 'uses' => 'UserController@registerSuccess'));
         Route::get('/user/verify/{code}',array('as'=>'user.verify', 'uses' => 'UserController@userVerify'));
         Route::get('/user/resend-verify',array('as'=>'user.verify.resend', 'uses' => 'UserController@resendActivationCode'));
-                
+        
+        Route::get('/user/my-account',array('as'=>'user.dashboard', 'uses' => 'UserController@myAccount'));
+        Route::get('/user/order-history',array('as'=>'user.order.history', 'uses' => 'UserController@orderHistory'));
+                 
+
+        
+
         Route::get('/login',array('as'=>'home.login', 'uses' => 'HomeController@login'));
         Route::post('/login',array('as'=>'home.login.post', 'uses' => 'UserController@login'));
 

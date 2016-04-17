@@ -31,6 +31,9 @@
                                         <a href=""><span>Welcome: <strong>{{ Auth::user()->email }}</strong></span></a>
                                     </li>
                                      <li>
+                                        <a href="{{ route('user.dashboard') }}">My Account</a>
+                                    </li>
+                                     <li>
                                         <a href="{{ route('user.logout') }}">Logout</a>
                                     </li>
                                 @endif
@@ -71,12 +74,12 @@
                                 <tr class="miniCartProduct">
                                     <td style="width:20%" class="miniCartProductThumb">
                                         <div>
-                                            <a href="{{ route('front.product',$item->id) }}"> <img src="{{ Image::url(ProductHelper::getThumbnail($item->id),285,380,array('crop')) }}" alt="img"> </a>
+                                            <a href="{{ route('front.product', [ $item->id, Str::slug($item->name)] ) }}"> <img src="{{ Image::url(ProductHelper::getThumbnail($item->id),285,380,array('crop')) }}" alt="img"> </a>
                                         </div>
                                     </td>
                                     <td style="width:40%">
                                         <div class="miniCartDescription">
-                                            <h4><a href="{{ route('front.product',$item->id) }}"> {{ $item->product_name }} </a></h4>
+                                            <h4><a href="{{ route('front.product',[ $item->id, Str::slug($item->name)]) }}"> {{ $item->name }} </a></h4>
                                             <div class="price"><span> {{ $item->price }} </span></div>
                                         </div>
                                     </td>
@@ -145,13 +148,13 @@
                                          <tr class="miniCartProduct">
                                             <td style="width:20%" class="miniCartProductThumb">
                                                 <div>
-                                                    <a href="{{ route('front.product',$item->id) }}"> <img src="{{ Image::url(ProductHelper::getThumbnail($item->id),285,380,array('crop')) }}" alt="img">
+                                                    <a href="{{ route('front.product',[ $item->id, Str::slug($item->name)] ) }}"> <img src="{{ Image::url(ProductHelper::getThumbnail($item->id),285,380,array('crop')) }}" alt="img">
                                                     </a>
                                                 </div>
                                             </td>
                                             <td style="width:40%">
                                                 <div class="miniCartDescription">
-                                                    <h4><a href="{{ route('front.product',$item->id) }}"> {{ $item->product_name }} </a></h4>
+                                                    <h4><a href="{{ route('front.product',[ $item->id, Str::slug($item->name)] ) }}"> {{ $item->name }} </a></h4>
                                                     <div class="price"><span> {{ $item->price }} </span></div>
                                                 </div>
                                             </td>

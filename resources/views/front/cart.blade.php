@@ -43,11 +43,11 @@
 
 		                     <tr class="CartProduct">
 		                        <td class="CartProductThumb">
-		                           <div><a href="{{ route('front.product',$item->id) }}"><img src="{{ Image::url(ProductHelper::getThumbnail($item->id),285,380,array('crop')) }}" alt="img"></a></div>
+		                           <div><a href="{{ route('front.product',[ $item->id, Str::slug($item->name)] ) }}"><img src="{{ Image::url(ProductHelper::getThumbnail($item->id),285,380,array('crop')) }}" alt="img"></a></div>
 		                        </td>
 		                        <td>
 		                           <div class="CartDescription">
-		                              <h4><a href="{{ route('front.product',$item->id) }}">{{ $item->name }} </a></h4>
+		                              <h4><a href="{{ route('front.product',[ $item->id, Str::slug($item->name)] ) }}">{{ $item->name }} </a></h4>
 		                              <div class="price"><span>{{ $item->price }}</span></div>
 		                           </div>
 		                        </td>

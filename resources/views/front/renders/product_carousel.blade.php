@@ -3,10 +3,10 @@
    @foreach ($products as $product)
    <div class="item">
       <div class="product">
-         <a href="{{route('front.product',$product->id)}}" class="product-image">
+         <a href="{{route('front.product',[ $product->id, Str::slug($product->product_name)] )}}" class="product-image">
          <img src="{{ Image::url($product->product_thumbnail,285,380,array('crop')) }}" alt="img"> </a>
          <div class="description">
-            <h4><a href="{{route('front.product',$product->id)}}">{{$product->product_name}}</a></h4>
+            <h4><a href="{{route('front.product',[ $product->id, Str::slug($product->product_name)])}}">{{$product->product_name}}</a></h4>
             <div class="price">
            @if (!Auth::check())
                <span>{{ PriceHelper::formatPrice($product->price_RPP) }} </span>
