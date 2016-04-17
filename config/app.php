@@ -230,6 +230,7 @@ return [
         'Site' => App\Helpers\SiteHelper::class,
         'PriceHelper' => App\Helpers\PriceHelper::class,
         'ProductHelper' => App\Helpers\ProductHelper::class,
+        'CustomerHelper' => App\Helpers\CustomerHelper::class,
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
 
         'Image' => Intervention\Image\Facades\Image::class,

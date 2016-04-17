@@ -20,7 +20,7 @@
                     <ul class="myAccountList row">
                         <li class="col-lg-2 col-md-2 col-sm-3 col-xs-4  text-center ">
                             <div class="thumbnail equalheight" style="height: 104px;">
-                            <a title="Orders" href="{{  }}"><i class="fa fa-calendar"></i> Order history </a>
+                            <a title="Orders" href="{{ route('user.order.history') }}"><i class="fa fa-calendar"></i> Order history </a>
                             </div>
                         </li>
                      

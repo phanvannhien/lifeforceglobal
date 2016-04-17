@@ -179,6 +179,8 @@ class UserController extends Controller
     }
 
     public function orderHistory(){
+        
+        
         return view('front.customer.order_history');
     }
 

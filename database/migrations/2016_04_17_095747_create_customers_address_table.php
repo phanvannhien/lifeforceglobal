@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMediaTable extends Migration
+class CreateCustomersAddressTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,11 @@ class CreateMediaTable extends Migration
     public function up()
     {
         //
-        Schema::create('media', function(Blueprint $table)
-        {
+         Schema::create('customers_address', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('media_name');
-            $table->string('media_directory');
-            $table->string('media_directory_url');
-            $table->string('media_full_url');
-            $table->string('media_size');
-            $table->timestamps();
+            $table->integer('user_id');
+            $table->string('address');
+            $table->datetime('created_at');
         });
     }
 
@@ -33,5 +29,6 @@ class CreateMediaTable extends Migration
     public function down()
     {
         //
+        Schema::drop('customers_address');
     }
 }
