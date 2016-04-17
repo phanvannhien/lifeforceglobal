@@ -45,11 +45,11 @@
                                 </td>
                                 <td><a target="_blank">-</a>
                                 </td>
-                                <td>{{ $order->total }}</td>
+                                <td>{{ PriceHelper::formatPrice($order->total) }}</td>
                                 <td data-value="">{{ $order->created_at }}</td>
                                 <td data-value=""><span class="label label-success">{{ $order->status }}</span>
                                 </td>
-                                <td><a href="{{ route('front.order.status',$order->id) }}" class="btn btn-primary btn-sm">view status</a>
+                                <td><a href="{{ route('front.order.status',$order->id) }}" class="btn btn-primary btn-sm">view</a>
                                 </td>
                                 
                                 

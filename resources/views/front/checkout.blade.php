@@ -88,16 +88,16 @@
                <tbody>
                   <tr>
                      <td>Total products</td>
-                     <td class="price">{{ Config('site.currency').Cart::total() }}</td>
+                     <td class="price">{{ PriceHelper::formatPrice(Cart::total()) }}</td>
                   </tr>
                  
                   <tr>
                      <td>Total tax</td>
-                     <td class="price" id="total-tax">{{ Config('site.currency').Cart::total()*0.1 }}</td>
+                     <td class="price" id="total-tax">{{ PriceHelper::formatPrice(Cart::total()*0.1) }}</td>
                   </tr>
                   <tr>
                      <td> Total</td>
-                     <td class=" site-color" id="total-price">{{ Config('site.currency').Cart::total()*1.1 }}</td>
+                     <td class=" site-color" id="total-price">{{ PriceHelper::formatPrice(Cart::total()*1.1) }}</td>
                   </tr>
                </tbody>
                <tbody>

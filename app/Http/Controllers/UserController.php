@@ -12,6 +12,7 @@ use Hash;
 use Mail;
 use App\User;
 use Session;
+use App\Models\Orders;
 
 class UserController extends Controller
 {
@@ -185,7 +186,9 @@ class UserController extends Controller
     }
 
     public function orderStatus($id){
-        return view('front.customer.order_status');
+        $order = Orders::find($id);
+        //dd($order);
+        return view('front.customer.order_status',array('order' => $order) );
     }
 
 }
