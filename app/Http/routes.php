@@ -35,7 +35,7 @@ Route::group(
         Route::get('/user/resend-verify',array('as'=>'user.verify.resend', 'uses' => 'UserController@resendActivationCode'));
         
         
-        
+
         Route::get('/login',array('as'=>'home.login', 'uses' => 'HomeController@login'));
         Route::post('/login',array('as'=>'home.login.post', 'uses' => 'UserController@login'));
 
@@ -68,6 +68,10 @@ Route::group(
         Route::get('/order/status/{id}',array('as'=>'front.order.status', 'uses' => 'UserController@orderStatus'));  
 
         Route::get('/user/my-account',array('as'=>'user.dashboard', 'uses' => 'UserController@myAccount'));
+        Route::get('/user/address',array('as'=>'user.address', 'uses' => 'UserController@userAddress'));
+        Route::post('/user/address',array('as'=>'user.address.add', 'uses' => 'UserController@userAddressAdd'));
+        Route::get('/user/address/edit/{id}',array('as'=>'user.address.edit', 'uses' => 'UserController@userAddressEdit'));
+        Route::get('/user/address/remove/{id}',array('as'=>'user.address.remove', 'uses' => 'UserController@userAddressRemove'));
         Route::get('/user/order-history',array('as'=>'user.order.history', 'uses' => 'UserController@orderHistory'));
         Route::get('/user/logout',array('as'=>'user.logout', 'uses' => 'UserController@logout'));
     });

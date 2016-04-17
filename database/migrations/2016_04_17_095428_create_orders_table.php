@@ -20,7 +20,7 @@ class CreateOrdersTable extends Migration
             $table->string('status'); // pending, cancel, done
             $table->integer('updated_by'); // by user updated
 
-            $table->integer('address_id');
+            $table->string('address');
             $table->datetime('created_at');
             $table->datetime('updated_at');
         });

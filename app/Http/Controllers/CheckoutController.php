@@ -8,6 +8,8 @@ use App\Http\Requests;
 use Cart;
 use DB;
 use Auth;
+use App\Models\CustomersAddress;
+
 class CheckoutController extends Controller
 {
     //
@@ -32,15 +34,13 @@ class CheckoutController extends Controller
 
     	if($request->input('add') == 'new_address'){
     		// Saving new address
-    		$addedAddress = DB::table('customers_address')->insertGetId(
-    			array(
-    				'user_id' => Auth::user()->id,
-    				'address' => $request->input('address'),
-    				'created_at' => $created_at
-    			)
-    		);
+    		$newAddress = new CustomersAddress;
+    		$newAddress->user_id =  Auth::user()->id;
+    		$newAddress->address =  $request->input('address');
+    		$newAddress->created_at = $created_at;
+    		$newAddress->save();
 
-
+    		$addedAddress = $newAddress->address;
     	}else{
     		$addedAddress = $request->input('SelectAddress');
     	}
@@ -52,7 +52,7 @@ class CheckoutController extends Controller
 				'total' => Cart::total(),
 				'status' => 'pending',
 				'updated_by' =>  Auth::user()->id,
-				'address_id' => $addedAddress,
+				'address' => $addedAddress,
 				'created_at' =>  $created_at
 			)
 		);

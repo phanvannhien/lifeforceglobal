@@ -191,4 +191,77 @@ class UserController extends Controller
         return view('front.customer.order_status',array('order' => $order) );
     }
 
+    public function userAddress(){
+
+        $address = DB::table('customers_address')->where('user_id', Auth::user()->id )->get();
+        return view('front.customer.address',array('address' =>  $address));
+    }
+
+    public function userAddressEdit($id){
+        $address = DB::table('customers_address')->where('user_id', Auth::user()->id )->get();
+        $addressEdit = DB::table('customers_address')->where('id',$id)->first();
+        if($address){
+            return view('front.customer.address',
+                array('address' =>  $address, 'address_edit' 
+                => $addressEdit )); 
+        }
+
+
+    }
+
+    public function userAddressRemove($id){
+        
+        $removed = DB::table('customers_address')
+            ->where('id',$id)
+            ->where('user_id',Auth::user()->id)
+            ->delete();
+        if ($removed){
+            Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'Removed successful!') );
+            return $this->userAddress();
+        }  
+        Session::flash( 'message', array('class' => 'alert-danger', 'detail' => 'Removed fail!') );
+        return $this->userAddress();
+    }
+
+    public function userAddressAdd(Request $request){
+        if( $request->has('address') ){
+
+            if( $request->has('mode_edit') ){
+                $updated = DB::table('customers_address')
+                    ->where('user_id', Auth::user()->id)
+                    ->where('id',$request->input('id'))
+                    ->update(
+                        array(
+                            'address' => $request->input('address'),
+                        )
+                    );
+                if ($updated){
+                    Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'Updated successful!') );
+                    
+                }else{
+                    Session::flash( 'message', array('class' => 'alert-danger', 'detail' => 'Updated fail!') );
+                }
+                return $this->userAddress();
+            }else{
+                $inserted = DB::table('customers_address')->insert(
+                    array(
+                        'user_id' => Auth::user()->id,
+                        'address' => $request->input('address'),
+                        'created_at' => date('Y-m-d H:s:i')
+                    )
+                );
+                if ($inserted){
+                    Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'Add successful!') );
+                    return $this->userAddress();
+                }else{
+                    Session::flash( 'message', array('class' => 'alert-danger', 'detail' => 'Add fail!') );
+                }
+                return $this->userAddress();
+            }
+
+           
+        }    
+        
+        return back();
+    }
 }

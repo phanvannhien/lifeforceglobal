@@ -26,7 +26,7 @@
                      
                         <li class="col-lg-2 col-md-2 col-sm-3 col-xs-4  text-center ">
                             <div class="thumbnail equalheight" style="height: 104px;">
-                                <a title="Add  address" href=""> <i class="fa fa-edit"> </i> Add address</a>
+                                <a title="Add  address" href="{{ route('user.address') }}"> <i class="fa fa-edit"> </i> Add address</a>
                             </div>
                         </li>
                         <li class="col-lg-2 col-md-2 col-sm-3 col-xs-4  text-center ">

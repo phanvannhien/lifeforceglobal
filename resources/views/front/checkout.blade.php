@@ -51,7 +51,7 @@
                                              <select class="form-control" required aria-required="true" id="SelectAddress" name="SelectAddress">
                                                 <option value="-1">Select your address</option>
                                                 @foreach ( CustomerHelper::getAddressBook() as $address )
-                                                   <option value="{{ $address->id }}">{{ $address->address }}</option>
+                                                   <option value="{{ $address->address }}">{{ $address->address }}</option>
                                                 @endforeach
                                              </select>
                                           </div>
