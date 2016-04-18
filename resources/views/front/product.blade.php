@@ -1,6 +1,20 @@
-@include ('front.includes.header')
-@include ('front.nav')
+@extends('master')
+@section('seo')
+   {!!
+      SEOHelper::renderSEO(array(
+         'title' => 'Lifeforce | '.$product->product_name,
+         'keywords' => 'Lifeforce'.$product->product_name,
+         'description' => $product->product_sort_description,
+         'og_title' => 'Lifeforce',
+         'og_description' => 'Lifeforce',
+         'og_url' => url('/') ,
+         'og_sitename' => config('app.appname'),
+         'og_img' => asset('img/logo.png'),
+      ))
 
+   !!}
+@endsection
+@section('content')
 <div class="container main-container headerOffset">
    {!! Breadcrumbs::render('product',$product) !!}
    <div class="row transitionfx">
@@ -100,12 +114,13 @@
    <div style="clear:both"></div>
 </div>
 <div class="gap"></div>
-@include ('front.includes.footer')
+@endsection
 
+@section('footer')
 <link rel="stylesheet" href="{{ url('assets/css/smoothproducts.css') }}">
-
 <script src="{{ url('assets/js/jquery-migrate-1.2.1.js') }}"></script>
 <script type="text/javascript" src="{{ url('assets/js/smoothproducts.min.js') }}"></script>
 <script type="text/javascript" src="{{ url('assets/js/helper-plugins/jquery.mousewheel.min.js') }}"></script>
 <script type="text/javascript" src="{{ url('assets/js/jquery.mCustomScrollbar.js') }}"></script>
 <script src="{{ url('assets/js/bootstrap.touchspin.js') }}"></script>
+@endsection

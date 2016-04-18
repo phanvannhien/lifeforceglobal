@@ -144,5 +144,5 @@
         $('.footable').footable();
     });
 </script>
-
+@yield('footer')
 </html>

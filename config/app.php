@@ -232,6 +232,7 @@ return [
         'PriceHelper' => App\Helpers\PriceHelper::class,
         'ProductHelper' => App\Helpers\ProductHelper::class,
         'CustomerHelper' => App\Helpers\CustomerHelper::class,
+        'SEOHelper' => App\Helpers\SEOHelper::class,
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
         'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
 
