@@ -149,11 +149,12 @@ class UserController extends Controller
 
     public function resendActivationCode(){
         if( session()->has('user_registered') ){
+            $dataEmail = session()->get('user_registered');
             Mail::send('emails.new_register',
-                session()->get('user_registered')
+                array('mail' => $dataEmail)
                ,function($message) use ($dataEmail) {
-                        $message->from( config('email.username') );
-                        $message->to($dataEmail['email'])
+                        $message->from( env('MAIL_USERNAME','Lifeforce') );
+                        $message->to( $dataEmail['email'] )
                         //->cc()
                         ->subject(config('app.sitename').' - Wellcome new register');  
             });

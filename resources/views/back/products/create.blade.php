@@ -108,7 +108,7 @@
 	                      <i class="fa fa-picture-o"></i> Choose Image
 	                    </a>
 	                  </span>
-	                  <input id="gallery1" class="form-control" type="text" name="product_images[]">
+	                  <input id="gallery1" class="form-control" type="text" name="product_images[]" multiple>
 
 	                </div>
 					<img id="gallery-holder1" style="margin-top:15px;max-height:100px;">
@@ -122,7 +122,7 @@
 	                      <i class="fa fa-picture-o"></i> Choose Image
 	                    </a>
 	                  </span>
-	                  <input id="gallery2" class="form-control" type="text" name="product_images[]">
+	                  <input id="gallery2" class="form-control" type="text" name="product_images[]" multiple>
 
 	                </div>
 					<img id="gallery-holder2" style="margin-top:15px;max-height:100px;">
