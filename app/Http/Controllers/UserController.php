@@ -158,8 +158,14 @@ class UserController extends Controller
                         //->cc()
                         ->subject(config('app.sitename').' - Wellcome new register');  
             });
+            Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'Resend successful!') );
+            return view('front.users.register_success');
 
         }
+
+        Session::flash( 'message', array('class' => 'alert-danger', 'detail' => 'Resend fail!') );
+        return view('front.users.register_success');
+
     }
 
     public function userVerify($code){
