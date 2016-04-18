@@ -30,7 +30,8 @@
                             </div>
                         </li>
                         <li class="col-lg-2 col-md-2 col-sm-3 col-xs-4  text-center ">
-                            <div class="thumbnail equalheight" style="height: 104px;"><a title="Personal information" href="user-information.html"><i class="fa fa-cog"></i>
+                            <div class="thumbnail equalheight" style="height: 104px;">
+                            <a title="Personal information" href="{{ route('user.info') }}"><i class="fa fa-cog"></i>
 Personal information</a>
                             </div>
                         </li>

@@ -11,14 +11,7 @@
 	</div>
 	</div>
 
-	@if(Session::has('message'))
-	<div class="alert alert-success alert-dismissable">
-	    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-	    <h4>  <i class="icon fa fa-check"></i> Alert!</h4>
-	    {{ Session::get('message') }}
-	  </div>
-	@endif
-
+	@include('front.partials.message')
 
 	<div class="row">
 		<div class="col-lg-9 col-md-9 col-sm-7">

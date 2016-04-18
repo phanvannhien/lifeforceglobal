@@ -49,12 +49,11 @@ class PasswordController extends Controller
 
         $email = User::where('email',$request->input('email'))->count();
         
-        if ($email == 0){
-            Session::flash('message', 'Email does not exist!'); 
-            return back()->withInput();
+        if ($email <= 0){
+            Session::flash( 'message', array('class' => 'alert-danger', 'detail' => 'Email not found!') );
+            return view('front.users.forgot');
         }
-        dd('im here');
-
+       
         $this->validate($request, ['email' => 'required|email']);
 
         $response = $this->passwords->sendResetLink($request->only('email'), function($m) {
@@ -63,11 +62,12 @@ class PasswordController extends Controller
 
         switch ($response) {
             case PasswordBroker::RESET_LINK_SENT:
-                return redirect()->back()->with('success_msg',"Please check your email to reset password.");
+                Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'Please check your email to reset password.!') );
+                return view('front.users.forgot');
 
             case PasswordBroker::INVALID_USER:
-                return redirect()->back()->withErrors(['email' => trans($response)]);
-            
+                return view('front.users.forgot')->withErrors(['email' => $response]);
+               
         }
     }
 
@@ -78,21 +78,27 @@ class PasswordController extends Controller
             throw new NotFoundHttpException;
         }
 
-        return view('users.resetpass')->with('token', $token);
+        return view('front.users.reset')->with('token', $token);
     }
 
 
     public function postReset(Request $request)
     {
+
+
         $this->validate($request, [
             'token' => 'required',
             'email' => 'required|email',
             'password' => 'required|confirmed',
         ]);
 
+
+
+
         $credentials = $request->only(
             'email', 'password', 'password_confirmation', 'token'
         );
+
 
         $response = $this->passwords->reset($credentials, function($user, $password)
         {
@@ -103,15 +109,18 @@ class PasswordController extends Controller
             $this->auth->login($user);
         });
 
+
         switch ($response)
         {
             case PasswordBroker::PASSWORD_RESET:
                 return redirect('/');
 
             default:
-                return redirect()->back()
-                            ->withInput($request->only('email'))
-                            ->withErrors(['email' => trans($response)]);
+                Session::flash( 'message', array('class' => 'alert-success', 'detail' => $response) );
+                //return redirect('/');
+                return view('front.users.reset')->with('token', $request->input('token'));
+                
+
         }
     }
 }

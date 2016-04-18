@@ -197,6 +197,44 @@ class UserController extends Controller
         return view('front.customer.address',array('address' =>  $address));
     }
 
+    public function userInfo(){
+
+        return view('front.customer.info',array('user' => User::find(Auth::user()->id) ));
+    }
+
+    public function userInfoSave(Request $request){
+        $user = User::find(Auth::user()->id);
+        $old_password = $request->input('InputPasswordCurrent');
+        $new_password = $request->input('InputPasswordnew');
+
+        if( !empty($old_password) ){
+            // test input password against the existing one
+            if( Hash::check($old_password, $user->getAuthPassword()) ){
+                $user->password = Hash::make($new_password);
+                // save the new password
+                if($user->save()) {
+                     Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'Update successful!') );
+                    return $this->userInfo();
+                }
+            } else {
+                Session::flash( 'message', array('class' => 'alert-danger', 'detail' => 'Current password does not match!') );
+               
+            }
+        }else{
+            $user->name = $request->input('name');
+            if($user->save()) {
+                Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'Update successful!') );
+               
+            }
+        }
+        return view('front.customer.info',array('user' => User::find(Auth::user()->id) ));
+
+
+
+
+        
+    }
+
     public function userAddressEdit($id){
         $address = DB::table('customers_address')->where('user_id', Auth::user()->id )->get();
         $addressEdit = DB::table('customers_address')->where('id',$id)->first();

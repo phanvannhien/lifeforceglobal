@@ -21,6 +21,7 @@
 	});
 
 
+
 	// Home > Category
 	Breadcrumbs::register('category', function($breadcrumbs,$category)
 	{

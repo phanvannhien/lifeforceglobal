@@ -1,5 +1,5 @@
 <h1>Thanks for your Orders: <a href="{{ route('front.order.status',$order->id) }}">#{{$order->id}}</a></h1>
-<p>Lifefore happy to order your <a href="{{ route('front.order.status',$order->id) }}">#{{$order->id}}</a> has been received and is in processing. Tiki will inform you as soon as the goods are delivered prepared.</p>
+<p>Lifefore happy to order your order: <a href="{{ route('front.order.status',$order->id) }}">#{{$order->id}}</a> has been received and is in processing. Lifefore will inform you as soon as the goods are delivered prepared.</p>
 
 <h2>Order Infomations</h2>
 <p><b>Shipping address:</b> {{ $order->address }}</p>

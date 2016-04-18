@@ -23,10 +23,10 @@ Route::group(
 
         Route::get('/user/forgot',array('as'=>'user.forgot', 'uses' => 'UserController@forgot'));
         Route::post('/user/forgot',array('as'=>'user.forgot.submit', 'uses' => 'Auth\PasswordController@forgotSubmit'));
-        Route::get('/user/password/reset/{token}',array('as' => 'user.reset.password', 'uses' => 'Auth\PasswordController@getReset'));
-        Route::post('/user/password/reset/',array('as' => 'user.post.reset.password', 'uses' => 'Auth\PasswordController@postReset'));
-
-
+      
+        Route::get('/password/reset/{token}',array('as' => 'user.resetpassword', 'uses' => 'Auth\PasswordController@getReset'));
+        Route::post('/password/reset',array('as' => 'user.postresetpassword', 'uses' => 'Auth\PasswordController@postReset'));
+        
         Route::post('/user/login',array('as'=>'user.login', 'uses' => 'UserController@login'));
         
         Route::post('/user/register',array('as'=>'user.register', 'uses' => 'UserController@register'));
@@ -73,6 +73,8 @@ Route::group(
         Route::get('/user/address/edit/{id}',array('as'=>'user.address.edit', 'uses' => 'UserController@userAddressEdit'));
         Route::get('/user/address/remove/{id}',array('as'=>'user.address.remove', 'uses' => 'UserController@userAddressRemove'));
         Route::get('/user/order-history',array('as'=>'user.order.history', 'uses' => 'UserController@orderHistory'));
+        Route::get('/user/my-info',array('as'=>'user.info', 'uses' => 'UserController@userInfo'));
+        Route::post('/user/my-info',array('as'=>'user.info.post', 'uses' => 'UserController@userInfoSave'));
         Route::get('/user/logout',array('as'=>'user.logout', 'uses' => 'UserController@logout'));
     });
 
