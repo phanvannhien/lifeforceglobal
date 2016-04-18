@@ -23,13 +23,13 @@ Route::group(
 
         Route::get('/user/forgot',array('as'=>'user.forgot', 'uses' => 'UserController@forgot'));
         Route::post('/user/forgot',array('as'=>'user.forgot.submit', 'uses' => 'Auth\PasswordController@forgotSubmit'));
-      
         Route::get('/password/reset/{token}',array('as' => 'user.resetpassword', 'uses' => 'Auth\PasswordController@getReset'));
         Route::post('/password/reset',array('as' => 'user.postresetpassword', 'uses' => 'Auth\PasswordController@postReset'));
-        
+        // Ajax login and register
         Route::post('/user/login',array('as'=>'user.login', 'uses' => 'UserController@login'));
-        
         Route::post('/user/register',array('as'=>'user.register', 'uses' => 'UserController@register'));
+        
+
         Route::get('/user/register/success',array('as'=>'user.register.success', 'uses' => 'UserController@registerSuccess'));
         Route::get('/user/verify/{code}',array('as'=>'user.verify', 'uses' => 'UserController@userVerify'));
         Route::get('/user/resend-verify',array('as'=>'user.verify.resend', 'uses' => 'UserController@resendActivationCode'));
@@ -61,13 +61,16 @@ Route::group(
         Route::post('/cart',array('as'=>'front.cart', 'uses' => 'CartController@cart'));
         Route::post('/cart/update',array('as'=>'front.cart.update', 'uses' => 'CartController@updateCart'));
         Route::get('/cart/del/{pid}',array('as'=>'front.cart.delete', 'uses' => 'CartController@delCart'));
-
         Route::get('/checkout',array('as'=>'front.checkout', 'uses' => 'CheckoutController@checkout'));        
         Route::post('/checkout',array('as'=>'front.checkout.final', 'uses' => 'CheckoutController@checkoutFinal'));  
+
+        
+        Route::get('/user/membersof',array('as'=>'user.memberssof', 'uses' => 'UserController@getMembersOf')); 
 
         Route::get('/order/status/{id}',array('as'=>'front.order.status', 'uses' => 'UserController@orderStatus'));  
 
         Route::get('/user/my-account',array('as'=>'user.dashboard', 'uses' => 'UserController@myAccount'));
+        // User address book
         Route::get('/user/address',array('as'=>'user.address', 'uses' => 'UserController@userAddress'));
         Route::post('/user/address',array('as'=>'user.address.add', 'uses' => 'UserController@userAddressAdd'));
         Route::get('/user/address/edit/{id}',array('as'=>'user.address.edit', 'uses' => 'UserController@userAddressEdit'));
@@ -86,14 +89,21 @@ Route::group(
 
 Route::group( 
     array( 
-        //'middleware' => 'web'
+        'middleware' => ['web','auth'],
+        'prefix' => 'admin'
     ),function () {
-        Route::get('/admin/product/create',array('as'=>'back.product.create', 'uses' => 'AdminController@createProduct'));
-        Route::post('/admin/product/create',array('as'=>'back.product.save', 'uses' => 'AdminController@saveProduct'));
-        Route::get('/admin/product',array('as'=>'back.product', 'uses' => 'AdminController@allProduct'));
-        Route::get('/admin/product/{id}',array('as'=>'back.product.edit', 'uses' => 'AdminController@editProduct'));
-        Route::post('/admin/product/{id}',array('as'=>'back.product.update', 'uses' => 'AdminController@updateProduct'));
-        Route::get('/admin/product/delete/{id}',array('as'=>'back.product.delete', 'uses' => 'AdminController@deleteProduct'));
+        Route::get('/',array('as'=>'back.admin.dashboard', 'uses' => 'AdminController@adminDashboard'));
+        // Login
+        Route::get('/login',array('as'=>'back.admin.login', 'uses' => 'AdminController@adminLogin'));
+
+
+        // Product
+        Route::get('product/create',array('as'=>'back.product.create', 'uses' => 'AdminController@createProduct'));
+        Route::post('product/create',array('as'=>'back.product.save', 'uses' => 'AdminController@saveProduct'));
+        Route::get('product',array('as'=>'back.product', 'uses' => 'AdminController@allProduct'));
+        Route::get('product/{id}',array('as'=>'back.product.edit', 'uses' => 'AdminController@editProduct'));
+        Route::post('product/{id}',array('as'=>'back.product.update', 'uses' => 'AdminController@updateProduct'));
+        Route::get('product/delete/{id}',array('as'=>'back.product.delete', 'uses' => 'AdminController@deleteProduct'));
         
 
     });

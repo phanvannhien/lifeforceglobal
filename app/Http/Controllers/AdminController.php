@@ -7,10 +7,28 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use DB;
 use Session;
+use Auth;
 
 class AdminController extends Controller
 {
     //
+
+    public function __construct(){
+        
+        if (Auth::user()->role != 'admin'){
+
+            return $this->adminLogin();
+        }
+    }
+
+    public function adminDashboard(){
+
+    }
+
+    public function adminLogin(){
+        return view('back.login');
+    }
+
 	public function allProduct(){
 		return view('back.products.product', array('products'=> DB::table('product')->get() ));
 	}

@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' =>  env('MAIL_USERNAME'), 'name' => 'lifeforce'],
+    'from' => ['address' =>  env('MAIL_USERNAME','info@lifeforceglobal.com.au'), 'name' => 'lifeforce'],
 
     /*
     |--------------------------------------------------------------------------

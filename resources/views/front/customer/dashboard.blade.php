@@ -35,6 +35,13 @@
 Personal information</a>
                             </div>
                         </li>
+
+                        <li class="col-lg-2 col-md-2 col-sm-3 col-xs-4  text-center ">
+                            <div class="thumbnail equalheight" style="height: 104px;">
+                            <a title="Personal information" href="{{ route('user.memberssof') }}"><i class="fa fa-user"></i>
+Members Of</a>
+                            </div>
+                        </li>
                       
                     </ul>
                     <div class="clear clearfix"></div>

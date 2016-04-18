@@ -309,4 +309,11 @@ class UserController extends Controller
         
         return back();
     }
+
+    public function getMembersOf(){
+        $members = DB::table('users')
+            ->where('user_refferal', Auth::user()->user_code )
+            ->orderBy('id','DESC')->paginate(20);
+        return view('front.customer.membersof', array('members' => $members));
+    }
 }
