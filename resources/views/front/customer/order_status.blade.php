@@ -34,7 +34,7 @@
                      <div class="order-box-content">
                         <div class="address">
                            <div class="adr">
-                              {{ $order->getAddress->address }}
+                              {{ $order->address }}
                            </div>
                         </div>
                      </div>

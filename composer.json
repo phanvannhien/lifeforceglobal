@@ -10,7 +10,8 @@
         "gloudemans/shoppingcart": "~1.3",
         "unisharp/laravel-filemanager": "^1.5",
         "unisharp/laravel-ckeditor": "^4.5",
-        "folklore/image": "*"
+        "folklore/image": "*",
+        "davejamesmiller/laravel-breadcrumbs": "^3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

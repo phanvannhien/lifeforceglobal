@@ -2,16 +2,7 @@
 @include ('front.nav')
 
 <div class="container main-container headerOffset">
-   <div class="row">
-      <div class="breadcrumbDiv col-lg-12">
-         <ul class="breadcrumb">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="category.html">MEN COLLECTION</a></li>
-            <li><a href="sub-category.html">TSHIRT</a></li>
-            <li class="active">Lorem ipsum dolor sit amet</li>
-         </ul>
-      </div>
-   </div>
+   {!! Breadcrumbs::render('product',$product) !!}
    <div class="row transitionfx">
       <div class="col-lg-6 col-md-6 col-sm-6">
          <div class="main-image sp-wrap col-lg-12 no-padding">

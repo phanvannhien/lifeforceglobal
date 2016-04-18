@@ -9,6 +9,8 @@ use Cart;
 use DB;
 use Auth;
 use App\Models\CustomersAddress;
+use App\Models\Orders;
+use Mail;
 
 class CheckoutController extends Controller
 {
@@ -59,8 +61,8 @@ class CheckoutController extends Controller
 
 		// saving detail
 		if($orderedID){
-
 			
+
 			foreach ($cart as $item) {
 				# code...
 				DB::table('orders_detail')->insert(
@@ -74,16 +76,29 @@ class CheckoutController extends Controller
 					)
 				);
 			}
-			if( $orderedID ){
-				Cart::destroy();
-				return view('front.checkout_success',array('orderID' => $orderedID ) );
-			}
+			
+			$ordersMail = Orders::find($orderedID);
+			 Mail::send('emails.orders',
+                array('order' => $ordersMail)
+               ,function($message) use ($ordersMail) {
+                        $message->from( env('MAIL_USERNAME','Lifeforce') );
+                        $message->to( Auth::user()->email)
+                        //->cc()
+                        ->subject(config('app.sitename').' - Thanks for order:#'.$ordersMail->id);  
+            });
+
+
+			Cart::destroy();
+			return view('front.checkout_success',array('orderID' => $orderedID ) );
+			
 		
 		}
 		return view('front.checkout_fail');
 	
 
     }//end function
+
+
 
 
 }//end class

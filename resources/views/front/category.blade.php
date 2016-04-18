@@ -1,14 +1,7 @@
 @include ('front.includes.header')
 @include ('front.nav')
 <div class="container main-container headerOffset">
-	 <div class="row">
-        <div class="breadcrumbDiv col-lg-12">
-           <ul class="breadcrumb">
-              <li><a href="index.html">Home</a></li>
-              <li class="active">MEN COLLECTION</li>
-           </ul>
-        </div>
-     </div>
+	 {!! Breadcrumbs::render('category',$category) !!}
 	<div class="row">
             <div class="col-lg-3 col-md-3 col-sm-12">
               @include('front.sidebar')

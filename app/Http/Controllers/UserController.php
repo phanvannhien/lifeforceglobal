@@ -126,16 +126,16 @@ class UserController extends Controller
 
             session()->put('user_registered',$dataEmail);
 
-            /*
+            
             Mail::send('emails.new_register',
-                $dataEmail
+                array('mail' => $dataEmail)
                ,function($message) use ($dataEmail) {
-                        $message->from( config('email.username') );
-                        $message->to($dataEmail['email'])
+                        $message->from( env('MAIL_USERNAME','Lifeforce') );
+                        $message->to( $dataEmail['email'] )
                         //->cc()
                         ->subject(config('app.sitename').' - Wellcome new register');  
             });
-            */
+            
             return response()->json(array('success'=> true));
         }
         return response()->json(array('success'=> false, 'msg' => "Registration fails!"));

@@ -174,6 +174,7 @@ return [
          */
         App\Providers\HelperServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
+        DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
 
         Unisharp\Laravelfilemanager\LaravelFilemanagerServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
@@ -232,6 +233,7 @@ return [
         'ProductHelper' => App\Helpers\ProductHelper::class,
         'CustomerHelper' => App\Helpers\CustomerHelper::class,
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
+        'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
 
         'Image' => Intervention\Image\Facades\Image::class,
         'ImageResizer' => Folklore\Image\Facades\Image::class,
