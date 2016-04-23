@@ -14,8 +14,7 @@ class Orders extends Model
         return $this->hasMany('App\Models\OrdersDetail','order_id','id');
     }
 
-     public function getAddress()
-    {
-        return $this->hasOne('App\Models\CustomersAddress','id','address_id');
+    public function user(){
+        return $this->belongsTo('App\User','user_id');
     }
 }

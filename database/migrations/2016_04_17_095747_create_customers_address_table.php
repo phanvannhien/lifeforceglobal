@@ -14,10 +14,11 @@ class CreateCustomersAddressTable extends Migration
     {
         //
          Schema::create('customers_address', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id');
-            $table->string('address');
-            $table->datetime('created_at');
+             $table->increments('id');
+             $table->integer('user_id');
+             $table->string('address');
+             $table->datetime('created_at');
+             $table->datetime('updated_at');
         });
     }
 

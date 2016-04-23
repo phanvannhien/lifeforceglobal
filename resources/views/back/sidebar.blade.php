@@ -35,7 +35,29 @@
                 <li><a href="{{ route('back.product') }}"><i class="fa fa-circle-o"></i> All Products</a></li>
                 <li><a href="{{ route('back.product.create') }}"><i class="fa fa-circle-o"></i> Create Products</a></li>
               </ul>
-            </li>            
+              
+            </li> 
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-user"></i> <span>Users</span> <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="{{ route('back.users') }}"><i class="fa fa-circle-o"></i> All Users</a></li>
+                <li><a href="{{ route('back.users.create') }}"><i class="fa fa-circle-o"></i> Create User</a></li>
+              </ul>
+              
+            </li>   
+
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-user"></i> <span>Orders</span> <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="{{ route('back.orders') }}"><i class="fa fa-circle-o"></i> All Orders</a></li>
+              </ul>
+            </li>   
+
+
             <li class="header">LABELS</li>
             <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
             <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>

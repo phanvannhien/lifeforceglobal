@@ -77,21 +77,25 @@ class CheckoutController extends Controller
 				);
 			}
 			
-			$ordersMail = Orders::find($orderedID);
-			 Mail::send('emails.orders',
-                array('order' => $ordersMail)
-               ,function($message) use ($ordersMail) {
-                        $message->from( env('MAIL_USERNAME','Lifeforce') );
-                        $message->to( Auth::user()->email)
-                        //->cc()
-                        ->subject(config('app.sitename').' - Thanks for order:#'.$ordersMail->id);  
-            });
+			 $ordersMail = Orders::find($orderedID);
+			 try{
+				// try
+				 Mail::send('emails.orders',
+					 array('order' => $ordersMail)
+					 ,function($message) use ($ordersMail) {
+						 $message->from( env('MAIL_USERNAME','Lifeforce') );
+						 $message->to( Auth::user()->email)
+							 //->cc()
+							 ->subject(config('app.sitename').' - Thanks for order:#'.$ordersMail->id);
+					 });
+			 }
+			 catch(Exception $e){
+				// fail
+			 }
 
+			 Cart::destroy();
+			 return view('front.checkout_success',array('orderID' => $orderedID ) );
 
-			Cart::destroy();
-			return view('front.checkout_success',array('orderID' => $orderedID ) );
-			
-		
 		}
 		return view('front.checkout_fail');
 	

@@ -15,7 +15,7 @@ class CreateOrdersTable extends Migration
         //
          Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
+            $table->integer('user_id')->unsigned()->index();
             $table->integer('total');
             $table->string('status'); // pending, cancel, done
             $table->integer('updated_by'); // by user updated
@@ -23,8 +23,14 @@ class CreateOrdersTable extends Migration
             $table->string('address');
             $table->datetime('created_at');
             $table->datetime('updated_at');
+
+        });
+
+        Schema::table('orders', function($table) {
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
+
 
     /**
      * Reverse the migrations.

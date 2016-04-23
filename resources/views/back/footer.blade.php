@@ -21,5 +21,8 @@
         $(".textarea").wysihtml5();
       });
     </script>
+    @include('back.modal')
+    @yield('footer')
+
   </body>
 </html>

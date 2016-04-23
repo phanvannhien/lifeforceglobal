@@ -8,5 +8,6 @@ class ProductModel extends Model
 {
     //
     protected $table = 'product';
+
     
 }

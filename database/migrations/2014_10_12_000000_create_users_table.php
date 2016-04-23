@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->dateTime('registration_date');
             $table->integer('user_status')->default(0);// 0 is disable
             $table->string('user_verify_code');
+            $table->boolean('admin');
             $table->integer('register_fee')->default(0);
             $table->rememberToken();
             $table->timestamps();

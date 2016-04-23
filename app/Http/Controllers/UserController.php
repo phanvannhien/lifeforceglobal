@@ -236,10 +236,6 @@ class UserController extends Controller
         }
         return view('front.customer.info',array('user' => User::find(Auth::user()->id) ));
 
-
-
-
-        
     }
 
     public function userAddressEdit($id){
@@ -250,7 +246,6 @@ class UserController extends Controller
                 array('address' =>  $address, 'address_edit' 
                 => $addressEdit )); 
         }
-
 
     }
 
@@ -316,4 +311,7 @@ class UserController extends Controller
             ->orderBy('id','DESC')->paginate(20);
         return view('front.customer.membersof', array('members' => $members));
     }
+
+
+    //public function 
 }

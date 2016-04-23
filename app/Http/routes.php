@@ -52,7 +52,7 @@ Route::group(
 });
 
 
-Route::group( 
+Route::group(
     array( 
         'middleware' => array('web','auth')
 
@@ -89,9 +89,10 @@ Route::group(
 
 Route::group( 
     array( 
-        'middleware' => ['web','auth'],
+        'middleware' => ['web','auth','admin'],
         'prefix' => 'admin'
     ),function () {
+
         Route::get('/',array('as'=>'back.admin.dashboard', 'uses' => 'AdminController@adminDashboard'));
         // Login
         Route::get('/login',array('as'=>'back.admin.login', 'uses' => 'AdminController@adminLogin'));
@@ -105,6 +106,20 @@ Route::group(
         Route::post('product/{id}',array('as'=>'back.product.update', 'uses' => 'AdminController@updateProduct'));
         Route::get('product/delete/{id}',array('as'=>'back.product.delete', 'uses' => 'AdminController@deleteProduct'));
         
+        // Users
+
+        Route::get('users',array('as'=>'back.users', 'uses' => 'AdminController@allUsers'));
+        Route::post('users',array('as'=>'back.users.post', 'uses' => 'AdminController@allUsers'));
+        Route::get('users/create',array('as'=>'back.users.create', 'uses' => 'AdminController@createUsers'));
+        Route::get('users/edit/{id}',array('as'=>'back.users.edit', 'uses' => 'AdminController@editUsers'));
+        Route::post('users/edit/{id}',array('as'=>'back.users.edit.save', 'uses' => 'AdminController@updateUsers'));
+        Route::get('users/delete/{id}',array('as'=>'back.users.delete', 'uses' => 'AdminController@deleteUsers'));
+
+        // Orders
+        Route::get('orders',array('as'=>'back.orders', 'uses' => 'AdminController@allOrders'));
+        Route::post('orders',array('as'=>'back.orders.post', 'uses' => 'AdminController@allOrders'));
+        Route::get('orders/edit/{id}',array('as'=>'back.orders.edit', 'uses' => 'AdminController@editOrders'));
+        Route::get('orders/delete/{id}',array('as'=>'back.orders.delete', 'uses' => 'AdminController@deleteOrders'));
 
     });
 
