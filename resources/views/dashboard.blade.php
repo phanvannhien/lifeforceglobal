@@ -1,1 +1,0 @@
-<h1>Wellcome is dashboard</h1>

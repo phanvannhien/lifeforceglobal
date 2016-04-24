@@ -87,6 +87,17 @@ Route::group(
 |--------------------------------------------------------------------------
 |*/
 
+
+// Login
+Route::group( 
+    array( 
+        'middleware' => ['web'],
+        'prefix' => 'admin'
+    ),function () {
+    Route::get('/login',array('as'=>'back.admin.login', 'uses' => 'AdminController@adminLogin'));
+    Route::post('/login',array('as'=>'back.admin.login.post', 'uses' => 'AdminController@adminLoginPost'));
+});
+
 Route::group( 
     array( 
         'middleware' => ['web','auth','admin'],
@@ -94,9 +105,12 @@ Route::group(
     ),function () {
 
         Route::get('/',array('as'=>'back.admin.dashboard', 'uses' => 'AdminController@adminDashboard'));
-        // Login
-        Route::get('/login',array('as'=>'back.admin.login', 'uses' => 'AdminController@adminLogin'));
 
+        // Categories
+
+        Route::get('product/categories',array('as'=>'back.categories', 'uses' => 'AdminController@categories'));
+
+        
 
         // Product
         Route::get('product/create',array('as'=>'back.product.create', 'uses' => 'AdminController@createProduct'));
@@ -115,11 +129,17 @@ Route::group(
         Route::post('users/edit/{id}',array('as'=>'back.users.edit.save', 'uses' => 'AdminController@updateUsers'));
         Route::get('users/delete/{id}',array('as'=>'back.users.delete', 'uses' => 'AdminController@deleteUsers'));
 
+        Route::get('users/active/{id}',array('as'=>'back.users.active', 'uses' => 'AdminController@activeUsers'));
+
         // Orders
         Route::get('orders',array('as'=>'back.orders', 'uses' => 'AdminController@allOrders'));
         Route::post('orders',array('as'=>'back.orders.post', 'uses' => 'AdminController@allOrders'));
         Route::get('orders/edit/{id}',array('as'=>'back.orders.edit', 'uses' => 'AdminController@editOrders'));
         Route::get('orders/delete/{id}',array('as'=>'back.orders.delete', 'uses' => 'AdminController@deleteOrders'));
+        Route::post('orders/changestatus',array('as'=>'back.order.changestatus', 'uses' => 'AdminController@changeStatusOrders'));
+
+        Route::get('configuration',array('as'=>'back.configuration', 'uses' => 'AdminController@configuration'));
+        Route::post('configuration',array('as'=>'back.configuration.save', 'uses' => 'AdminController@configurationSave'));
 
     });
 

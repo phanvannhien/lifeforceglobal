@@ -61,7 +61,7 @@
                 <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Filter</button>
               </td>
             </tr>
-                <?php $total = 0; ?>
+                <?php $total = 0 ?>
                 @if (count($orders) > 0)
 
                     @foreach( $orders as $item)
@@ -74,7 +74,6 @@
                       <td>{{ $item->created_at }}</td>
                       <td>
                       <a href="{{ route('back.orders.edit',$item->id) }}"><i class="fa fa-edit"></i> View</a>   <br>
-                      <a onclick="return confirm('Are you sure?')" href="{{ route('back.orders.delete',$item->id) }}"><i class="fa fa-remove"></i> Delete</a>
                       </td>
                     </tr>
                       <?php  $total += $item->total;?>
@@ -83,7 +82,7 @@
                     <tr>
                         <td colspan="7">Orders not found</td>
                     </tr>
-                @endif;
+                @endif
                 <tfoot>
                     <tr>
                         <td colspan="7" align="right">Total: <strong>{{ PriceHelper::formatPrice($total)}}</strong></td>
@@ -117,7 +116,12 @@
   <script>
 
     //Date range picker
-    $('.reservation').daterangepicker();
+    $('.reservation').daterangepicker({
+      format: 'YYYY-DD-MM'
+    },function (start, end) {
+        $('#reportrange span').html(start + ' / ' + end);
+    });
+  
     $('#data-table').DataTable({
           "paging": false,
           "lengthChange": false,

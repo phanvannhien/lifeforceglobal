@@ -9,7 +9,10 @@ use DB;
 use Session;
 use Auth;
 use App\User;
+use Mail;
 use App\Models\Orders;
+use App\Models\Categories;
+use App\Models\Configurations;
 
 class AdminController extends Controller
 {
@@ -20,6 +23,30 @@ class AdminController extends Controller
     }
 
     public function adminLogin(){
+        return view('back.login');
+    }
+
+    public function adminLoginPost(Request $request){
+        // Authentication data
+         $authData = array(
+            'email' =>  $request->input( 'email' ), 
+            'password' => $request->input( 'password' ), 
+        );
+
+        $userLogin = DB::table('users')->where( 'email', $request->input('email') )->first();
+        
+        if( $userLogin ){
+            if($userLogin->user_status == 0){
+                Session::flash('message', 'Account is locked!');
+                return back()->withInput();
+            }
+
+            if (Auth::attempt($authData))
+            {
+                return redirect()->route('back.admin.dashboard');
+                
+            }
+        }
         return view('back.login');
     }
 
@@ -39,6 +66,12 @@ class AdminController extends Controller
                 break;
         }
 
+    }
+
+    // Categories
+
+    public function categories(){
+        return view('back.categories.view',Categories::paginate(50));
     }
 
     // Product
@@ -166,6 +199,29 @@ class AdminController extends Controller
 
     }
 
+    public function activeUsers($id){
+        $user = User::find($id);
+        $user->user_status = 1;
+        $user->save();     
+      
+        try {
+            Mail::send('emails.user_verified',
+                 array('user' => $user)
+                 ,function($message) use ($user) {
+                     $message->from( env('MAIL_USERNAME','Lifeforce') );
+                     $message->to( $user->email )
+                         //->cc()
+                         ->subject(config('app.sitename').' - Account actived');
+                 });
+
+        } catch (Exception $e) {
+            
+        }        
+        Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'User: '.$user->email.' actived!') );
+        return view('back.users.dashboard')->with('users', User::paginate(50));
+
+    }
+
     public function deleteUsers(Request $request,$id){
         return;
     }
@@ -183,7 +239,8 @@ class AdminController extends Controller
                 foreach ($arrFilter as $key => $value) {
                     if ($value != '') {
                         if ($key == 'created_at') {
-                            $orders->whereBetween($key, explode('-', $value));
+                            
+                            $orders->whereDate($key, explode('-', $value));
                         } elseif ($key == 'email') {
                             $user = User::where('email', $value)->first();
                             if ($user->count() > 0) {
@@ -221,4 +278,98 @@ class AdminController extends Controller
     public function deleteOrders($id){
         //return view('back.orders.delete')->with('orders',Order::find($id));
     }
+
+    public function changeStatusOrders(Request $request){
+        $status = $request->input('status');
+        $orders = Orders::find($request->input('id'));
+
+        switch ($status) {
+            case 'processing':
+                # code...
+                $orders->status = 'processing';
+                // try
+                try {
+                    Mail::send('emails.order_processing',
+                         array('order' => $orders)
+                         ,function($message) use ($orders) {
+                             $message->from( env('MAIL_USERNAME','Lifeforce') );
+                             $message->to( $orders->user->email )
+                                 //->cc()
+                                 ->subject(config('app.sitename').' - Your orders :#'.$orders->id.' are processing');
+                         });
+
+                } catch (Exception $e) {
+                    
+                }
+                $orders->save();
+                break;
+
+            case 'done':
+                $orders->status = 'done';
+                // try
+                try {
+                    Mail::send('emails.order_processing',
+                         array('order' => $orders)
+                         ,function($message) use ($orders) {
+                             $message->from( env('MAIL_USERNAME','Lifeforce') );
+                             $message->to( $orders->user->email )
+                                 //->cc()
+                                 ->subject(config('app.sitename').' - Thanks for your orders :#'.$orders->id.' are done');
+                         });
+
+                } catch (Exception $e) {
+                    
+                }
+                $orders->save();
+                break;    
+
+            case 'cancel':
+                $orders->status = 'cancel';
+                // try
+                try {
+                    Mail::send('emails.order_processing',
+                         array('order' => $orders)
+                         ,function($message) use ($orders) {
+                             $message->from( env('MAIL_USERNAME','Lifeforce') );
+                             $message->to( $orders->user->email )
+                                 //->cc()
+                                 ->subject(config('app.sitename').' - Thanks for your orders :#'.$orders->id.' are done');
+                         });
+
+                } catch (Exception $e) {
+                    
+                }
+                $orders->save();
+                break;    
+            
+            default:
+                # code...
+                break;
+        }//end switch
+
+        Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'Orders status updated to: '. $status) );
+        return view('back.orders.edit')->with('order',$orders);
+
+    }
+
+    public function configuration(){
+        return view('back.configuration',array('configuration' => DB::table('configuration')->get()) );
+    }
+    public function configurationSave(Request $request){
+        $arrConfigs = $request->input('config');
+        
+        foreach ($arrConfigs as $key => $value) {
+            # code...
+            $config = Configurations::where('name',$key)->update(
+                array( 'value' => $value)
+            );
+         
+        }
+        
+        Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'Update successful!') );
+        return view('back.configuration',array('configuration' => DB::table('configuration')->get()) ); 
+        
+    }
+
+
 }

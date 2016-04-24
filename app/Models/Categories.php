@@ -8,4 +8,8 @@ class Categories extends Model
 {
     //
     protected $table = 'categories'; 
+
+    public function product(){
+    	return $this->hasmany('App\Models\Products','category_id','id');
+    }
 }

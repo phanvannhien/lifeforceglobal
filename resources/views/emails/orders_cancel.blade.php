@@ -1,6 +1,6 @@
-<h1>Thanks for your Orders: <a href="{{ route('front.order.status',$order->id) }}">#{{$order->id}}</a></h1>
-<p>Lifefore happy to order your order: <a href="{{ route('front.order.status',$order->id) }}">#{{$order->id}}</a> has been received and is in processing. Lifefore will inform you as soon as the goods are delivered prepared.</p>
+<h1>Your Orders are canceled: <a href="{{ route('front.order.status',$order->id) }}">#{{$order->id}}</a></h1>
 
+<p>Your Orders canceled at {{ config('app.sitename') }}.</p>
 <h2>Order Infomations</h2>
 <p><b>Shipping address:</b> {{ $order->address }}</p>
 <hr>
@@ -28,17 +28,11 @@
    <tfoot>
    		<tr>
    			<td colspan="4" align="right">
-   				<strong>Total: {{ PriceHelper::formatPrice(Cart::total()) }}</strong>
+   				<strong>Total: {{ PriceHelper::formatPrice($order->total) }}</strong>
    			</td>
    		</tr>
    </tfoot>
 </table>
-
-<hr>
-<h3>Payment infomations</h3>
-{!! Site::getConfig('bank') !!}
-
-<hr>
 
 <p>You need support now? Just email <a href="mailto:info@lifeforceglobal.com.au">info@lifeforceglobal.com.au</a>.</p>
 <hr>

@@ -13,6 +13,7 @@ use Mail;
 use App\User;
 use Session;
 use App\Models\Orders;
+use Site;
 
 class UserController extends Controller
 {
@@ -108,7 +109,7 @@ class UserController extends Controller
             'user_refferal' => $request->input('user_refferal'),
             'registration_date' => date('Y-m-d H:s:i'),
             'user_verify_code' => str_random(64),
-            'register_fee' => 50
+            'register_fee' => \App\Helpers\SiteHelper::getConfig('register_fee')
         );
 
 

@@ -40,7 +40,34 @@
                     <div class="box-body">
                         <p>Order Date: {{$order->created_at }}</p>
                         <p>Shipping Address: {{$order->address }}</p>
+                        <p>Status: <label for="" class="label label-info">{{ $order->status }}</label></p>
+                        <form action="{{ route('back.order.changestatus') }}" method="post">
+                            <input type="hidden" value="{{ csrf_token() }}" name="_token">
+                            <input type="hidden" value="{{ $order->id }}" name="id">
+                            <div class="form-group">
+                                <label for="">Change status</label>
+                                
+                                    @if ( $order->status == 'pending' )
+                                        <select name="status" id="" class="form-control">
+                                        <option value="processing">processing</option>
+                                        <option value="done">done</option>
+                                        <option value="cancel">cancel</option>
+                                        </select>
+                                        <br>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    @elseif ( $order->status == 'processing' )
+                                        <select name="status" id="" class="form-control">
+                                        <option value="done">done</option>
+                                        <option value="cancel">cancel</option>
+                                        </select><br>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    @else
+                                        <p>Can't change status</p>
+                                    @endif
+                            </div>
 
+                            
+                        </form>
                     </div>
                 </div><!-- /.box -->
             </div>

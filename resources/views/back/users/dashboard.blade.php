@@ -74,7 +74,7 @@
                 <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Filter</button>
               </td>
             </tr>
-
+            <?php $total = 0 ?>
        			@foreach( $users as $item)
 				<tr>
               <td>{{ $item->name }}</td>
@@ -83,15 +83,27 @@
               <td>{{ $item->user_code }}</td>
        				<td>{{ $item->user_refferal }}</td>
        				<td>{{ $item->registration_date }}</td>
-       				<td><span class="label label-info">{{ ($item->user_status == 1) ? 'active' :'unactive' }}</span> </td>
+       				<td>
+              
+              <span class="label label-info">{{ ($item->user_status == 1) ? 'active' :'unactive' }}</span> 
+             
+              </td>
               <td>{{ PriceHelper::formatPrice($item->register_fee) }}</td>
        				<td>
               <a href="{{ route('back.users.edit',$item->id) }}"><i class="fa fa-edit"></i> Edit</a>   <br>
-              <a onclick="return confirm('Are you sure?')" href="{{ route('back.users.delete',$item->id) }}"><i class="fa fa-remove"></i> Delete</a>   
+              <a onclick="return confirm('Are you sure?')" href="{{ route('back.users.delete',$item->id) }}"><i class="fa fa-remove"></i> Delete</a>   <br>
+               @if ($item->user_status == 0)
+                <a href="{{ route('back.users.active',$item->id) }}" class="label label-success">Active User</a>
+              @endif
               </td>
        			</tr>
-
+            <?php $total += $item->register_fee ?>
        			@endforeach
+            <tfoot>
+              <tr>
+                <td colspan="9">Total: <strong>{{ PriceHelper::formatPrice($total) }}</strong></td>
+              </tr>
+            </tfoot>
        		</table>
         </form>
         <div class="dataTables_paginate paging_simple_numbers">

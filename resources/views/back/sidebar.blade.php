@@ -14,7 +14,7 @@
               <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
           </div>
-          <!-- search form -->
+          <!-- search form 
           <form action="#" method="get" class="sidebar-form">
             <div class="input-group">
               <input type="text" name="q" class="form-control" placeholder="Search...">
@@ -27,6 +27,9 @@
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
+            <li>
+              <a href="{{ route('back.admin.dashboard') }}">Dashboard</a>
+            </li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-dashboard"></i> <span>Products</span> <i class="fa fa-angle-left pull-right"></i>
@@ -50,13 +53,16 @@
 
             <li class="treeview">
               <a href="#">
-                <i class="fa fa-user"></i> <span>Orders</span> <i class="fa fa-angle-left pull-right"></i>
+                <i class="fa fa-cube"></i> <span>Orders</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="{{ route('back.orders') }}"><i class="fa fa-circle-o"></i> All Orders</a></li>
+                <li><a href="{{ route('back.orders') }}"><i class="fa fa-fa-cube-o"></i> All Orders</a></li>
               </ul>
             </li>   
-
+            
+            <li>
+              <a href="{{ route('back.configuration') }}"><i class="fa fa-cogs"></i> Configuration</a>
+            </li>
 
             <li class="header">LABELS</li>
             <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>

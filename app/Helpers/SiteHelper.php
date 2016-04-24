@@ -49,4 +49,59 @@
 			return view('front.renders.product_list',array( "products" => $products))->render();		
 
 		}
+
+		public static function getTotalOrders(){
+			return DB::table('orders')->count();
+		}
+		public static function getTotalUsers(){
+			return DB::table('users')->count();
+		}
+
+		public static function getTotalRevenue(){
+			return DB::table('orders')->where('status','done')->sum('total');
+		}
+
+		public static function getDataSalesCurrentWeek(){
+			
+
+			$sunday = strtotime('last sunday', strtotime('tomorrow'));
+			$statuday = strtotime('+6 days', $sunday);
+			$arrSaleOfWeek = array();
+			for($i = date('d',$sunday); $i<= date('d',$statuday); $i++  ) {
+				# code...
+
+				$vanue = DB::table('orders')
+					->whereDate('created_at','=',date('Y-m-'.$i.' 00:00:00'))
+					->count();
+
+				array_push($arrSaleOfWeek,$vanue);
+
+			}
+			
+			return json_encode($arrSaleOfWeek);
+		}
+
+		public static function getUsersRegistredToday(){
+			return DB::table('users')
+				->whereDate('created_at','=',date('Y-m-d 00:00:00'))
+				->where('user_status',0)
+				->count();
+		} 
+
+		public static function getSalesPendingToday(){
+			return DB::table('orders')
+				->whereDate('created_at','<=',date('Y-m-d 00:00:00'))
+				->where('status','pending')
+				->count();
+		} 
+
+		public static function renderConfig($config){
+			return view('back.renders.config', array('config' => $config ) );
+		}
+
+		public static function getConfig($name){
+			$config = DB::table('configuration')
+				->where('name',$name)->first();
+			return 	$config->value;
+		}
 	}
