@@ -1,8 +1,5 @@
-
-@include('back.header')
-@include('back.nav')
-@include('back.sidebar')
-
+@extends('back.master')
+@section('content')
 
 <!-- =============================================== -->
 
@@ -46,7 +43,9 @@
 	            <div class="form-group">
 	              	<label for="">Category ID</label>
 	              	<select class="form-control" name="category_id" id="">
-	              		<option value="1">Products Category</option>
+	              		@foreach( Site::allCategories() as $item )
+	              		<option value="{{ $item->id }}">{{ $item->category_name }}</option>
+	              		@endforeach
 	            	</select>
 	            </div>
 	            <div class="form-group">
@@ -99,50 +98,52 @@
 	                </div>
 	                <img id="holder" style="margin-top:15px;max-height:100px;">
 	            </div>
+				<div class="panel panel-primary">
+					<div class="panel-body">
+			            <div class="form-group">
+				            <label for="">Images 1</label>
+				            <div class="input-group">
+			                  <span class="input-group-btn">
+			                    <a id="lfm-gallery1" data-input="gallery1" data-preview="gallery-holder1" class="btn btn-primary gallery">
+			                      <i class="fa fa-picture-o"></i> Choose Image
+			                    </a>
+			                  </span>
+			                  <input id="gallery1" class="form-control" type="text" name="product_images[]" multiple>
 
-	            <div class="form-group">
-		            <label for="">Images 1</label>
-		            <div class="input-group">
-	                  <span class="input-group-btn">
-	                    <a id="lfm-gallery1" data-input="gallery1" data-preview="gallery-holder1" class="btn btn-primary">
-	                      <i class="fa fa-picture-o"></i> Choose Image
-	                    </a>
-	                  </span>
-	                  <input id="gallery1" class="form-control" type="text" name="product_images[]" multiple>
+			                </div>
+							<img id="gallery-holder1" style="margin-top:15px;max-height:100px;">
+			            </div>
 
-	                </div>
-					<img id="gallery-holder1" style="margin-top:15px;max-height:100px;">
-	            </div>
+			            <div class="form-group">
+				            <label for="">Images 2</label>
+				            <div class="input-group">
+			                  <span class="input-group-btn">
+			                    <a id="lfm-gallery2" data-input="gallery2" data-preview="gallery-holder2" class="btn btn-primary gallery">
+			                      <i class="fa fa-picture-o"></i> Choose Image
+			                    </a>
+			                  </span>
+			                  <input id="gallery2" class="form-control" type="text" name="product_images[]" multiple>
 
-	            <div class="form-group">
-		            <label for="">Images 2</label>
-		            <div class="input-group">
-	                  <span class="input-group-btn">
-	                    <a id="lfm-gallery2" data-input="gallery2" data-preview="gallery-holder2" class="btn btn-primary">
-	                      <i class="fa fa-picture-o"></i> Choose Image
-	                    </a>
-	                  </span>
-	                  <input id="gallery2" class="form-control" type="text" name="product_images[]" multiple>
+			                </div>
+							<img id="gallery-holder2" style="margin-top:15px;max-height:100px;">
+			            </div>
 
-	                </div>
-					<img id="gallery-holder2" style="margin-top:15px;max-height:100px;">
-	            </div>
+			            <div class="form-group">
+			   
+				            <label for="">Images 3</label>
+				            <div class="input-group">
+			                  <span class="input-group-btn">
+			                    <a id="lfm-gallery3" data-input="gallery3" data-preview="gallery-holder3" class="btn btn-primary gallery">
+			                      <i class="fa fa-picture-o"></i> Choose Image
+			                    </a>
+			                  </span>
+			                  <input id="gallery3" class="form-control" type="text" name="product_images[]">
 
-	            <div class="form-group">
-		            <label for="">Images 3</label>
-		            <div class="input-group">
-	                  <span class="input-group-btn">
-	                    <a id="lfm-gallery3" data-input="gallery3" data-preview="gallery-holder3" class="btn btn-primary">
-	                      <i class="fa fa-picture-o"></i> Choose Image
-	                    </a>
-	                  </span>
-	                  <input id="gallery3" class="form-control" type="text" name="product_images[]">
-
-	                </div>
-					<img id="gallery-holder3" style="margin-top:15px;max-height:100px;">
-	            </div>
-
-	         
+			                </div>
+							<img id="gallery-holder3" style="margin-top:15px;max-height:100px;">
+			            </div>
+					</div>            
+				</div>
 	         </div>
 	         <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Save</button>
@@ -155,25 +156,21 @@
   </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
 
+@endsection
 
-
-
-@include('back.footer')
+@section('footer')
 <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
 <script src="/vendor/unisharp/laravel-ckeditor/adapters/jquery.js"></script>
 <script src="/vendor/laravel-filemanager/js/lfm.js"></script>
 <script>
-	$('textarea#product-description').ckeditor({
-			filebrowserImageBrowseUrl: '/filemanager?type=Images',
-		   filebrowserImageUploadUrl: '/filemanager/upload?type=Images&_token={{csrf_token()}}',
-		   filebrowserBrowseUrl: '/filemanager?type=Files',
-		   filebrowserUploadUrl: '/filemanager/upload?type=Files&_token={{csrf_token()}}'
-	});
-
-	$('#lfm-thumbnail').filemanager('image');
-	$('#lfm-gallery1').filemanager('image');
-	$('#lfm-gallery2').filemanager('image');
-	$('#lfm-gallery3').filemanager('image');
-	$('#lfm-file-download').filemanager('file');
- 
+  $('textarea').ckeditor({
+    filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
+    filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token={{csrf_token()}}',
+    filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
+    filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token={{csrf_token()}}'
+  });
+  $('#lfm-file-download').filemanager('file');
+  $('.gallery').filemanager('image');
 </script>
+
+@endsection

@@ -13,6 +13,7 @@ use Mail;
 use App\Models\Orders;
 use App\Models\Categories;
 use App\Models\Configurations;
+use Validator;
 
 class AdminController extends Controller
 {
@@ -71,7 +72,60 @@ class AdminController extends Controller
     // Categories
 
     public function categories(){
-        return view('back.categories.view',Categories::paginate(50));
+        return view('back.categories.view',array('categories' => Categories::paginate(50)) );
+    }
+
+    public function categoriesCreate(){
+        return view('back.categories.create');
+    }
+
+    public function categoriesSave(Request $request){
+        $rule = array(
+            'category_name' => 'required',
+        );
+
+        $v = Validator::make($request->all(),$rule);
+        if ($v->fails())
+        {
+            return view('back.categories.create')->withErrors($v);
+        }
+
+        $category = new Categories;
+        $category->category_name = $request->input('category_name');
+        $category->category_description = $request->input('category_description');
+        $category->category_status = $request->input('category_status');
+
+        $category->save();
+
+
+        return redirect()->route('back.categories.edit', $category->id);
+
+    }
+
+    public function categoriesEdit($id){
+        return view('back.categories.edit',array( 'category' => Categories::find($id)) );
+    }
+
+    public function categoriesUpdate(Request $request,$id){
+        $rule = array(
+            'category_name' => 'required',
+        );
+
+        $v = Validator::make($request->all(),$rule);
+        if ($v->fails())
+        {
+            return back()->withErrors($v);
+        }
+
+        $category = Categories::find($request->input('id'));
+        $category->category_name = $request->input('category_name');
+        $category->category_description = $request->input('category_description');
+        $category->category_status = $request->input('category_status');
+        $category->save();
+
+        Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'Updated successful!') );
+        return view('back.categories.edit',array( 'category' => $category));
+
     }
 
     // Product
@@ -85,8 +139,7 @@ class AdminController extends Controller
 
     public function saveProduct(Request $request){
 
-        $gallery = implode($request->input('product_images'), ',');
-
+        $gallery = implode(array_filter($request->input('product_images')), ',');
 
     	$id = DB::table('product')->insertGetId(
     		array(
@@ -116,7 +169,9 @@ class AdminController extends Controller
     }
 
     public function updateProduct(Request $request, $id){
-        $gallery = implode($request->input('product_images'), ',');
+        $gallery = implode( array_filter($request->input('product_images')), ',');
+
+
         $id = $request->input('id');
 
         $updated = DB::table('product')
@@ -161,7 +216,10 @@ class AdminController extends Controller
             foreach ($arrFilter as $key => $value) {
                 if( $value != '' ){
                     if( $key == 'registration_date' ){
-                        $users->whereBetween($key, explode('-', $value));
+                        $arrDate =  explode('-', $value);
+                        $startDate = date('Y-m-d H:s:i',strtotime($arrDate[0]));
+                        $endDate = date('Y-m-d H:s:i',strtotime($arrDate[1]));
+                        $users->whereBetween( $key,array($startDate,$endDate) );
                     }else{
                         $users->where($key,'like',$value.'%');
                     }
@@ -239,8 +297,10 @@ class AdminController extends Controller
                 foreach ($arrFilter as $key => $value) {
                     if ($value != '') {
                         if ($key == 'created_at') {
-                            
-                            $orders->whereDate($key, explode('-', $value));
+                            $arrDate =  explode('-', $value);
+                            $startDate = date('Y-m-d H:s:i',strtotime($arrDate[0]));
+                            $endDate = date('Y-m-d H:s:i',strtotime($arrDate[1]));
+                            $orders->whereBetween($key, array($startDate,$endDate));
                         } elseif ($key == 'email') {
                             $user = User::where('email', $value)->first();
                             if ($user->count() > 0) {

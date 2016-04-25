@@ -117,9 +117,7 @@
 
     //Date range picker
     $('.reservation').daterangepicker({
-      format: 'YYYY-DD-MM'
-    },function (start, end) {
-        $('#reportrange span').html(start + ' / ' + end);
+     // format: 'YYYY/DD/MM'
     });
   
     $('#data-table').DataTable({

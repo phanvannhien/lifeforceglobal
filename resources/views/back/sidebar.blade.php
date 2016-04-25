@@ -40,6 +40,18 @@
               </ul>
               
             </li> 
+
+            <li class="treeview">
+              <a href="#">
+                <i class="fa  fa-folder"></i> <span>Categories</span> <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="{{ route('back.categories') }}"><i class="fa fa-circle-o"></i> All Categories</a></li>
+                <li><a href="{{ route('back.categories.create') }}"><i class="fa fa-circle-o"></i> Create Categories</a></li>
+              </ul>
+              
+            </li>   
+
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-user"></i> <span>Users</span> <i class="fa fa-angle-left pull-right"></i>

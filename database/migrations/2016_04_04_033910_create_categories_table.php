@@ -18,7 +18,9 @@ class CreateCategoriesTable extends Migration
             $table->string('category_name');
             $table->integer('parent_id')->default(0);
             $table->string('category_description');
+            $table->boolean('category_status')->default(1);
             $table->datetime('created_at');
+            $table->datetime('updated_at');
         });
     }
 

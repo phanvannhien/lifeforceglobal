@@ -3,7 +3,11 @@
 	use DB;
 	class SiteHelper{
 		public static function NavData(){
-			return DB::table('categories')->get();
+			return DB::table('categories')->where('category_status',1)->get();
+		}
+
+		public static function allCategories(){
+			return DB::table('categories')->where('category_status',1)->get(); 
 		}
 
 		public static function renderProductCarousel($title, $category_id, $excluded_id){

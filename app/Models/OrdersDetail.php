@@ -15,6 +15,6 @@ class OrdersDetail extends Model
 
      public function getProduct()
      {
-          return $this->hasOne('App\Models\ProductModel','id','product_id');
+          return $this->hasOne('App\Models\Products','id','product_id');
      }
 }

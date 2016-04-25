@@ -1,7 +1,5 @@
-
-@include('back.header')
-@include('back.nav')
-@include('back.sidebar')
+@extends('back.master')
+@section('content')
 
 
 <!-- =============================================== -->
@@ -48,7 +46,9 @@
 	            <div class="form-group">
 	              	<label for="">Category ID</label>
 	              	<select class="form-control" name="category_id" id="">
-	              		<option value="1">Products Category</option>
+	              		@foreach( Site::allCategories() as $item )
+	              		<option {{ ( $item->id == $product->category_id ) ? 'selected' : '' }} value="{{ $item->id }}">{{ $item->category_name }}</option>
+	              		@endforeach
 	            	</select>
 	            </div>
 	            <div class="form-group">
@@ -103,53 +103,38 @@
 
 	            </div>
 
-	       
-				<?php
-					$gallery = explode(',', $product->product_images);
-					$numMissing = 3 - count($gallery);
-					$i = 1;
-				?>
-				
-				@if (count ($gallery) > 0)
-					@foreach ($gallery as $image)
+	            <div class="panel panel-primary">
+	            	<div class="panel-body">
+					<?php
+						
+						$gallery = explode(',', $product->product_images);
 
-		            <div class="form-group">
-			            <label for="">Images {{$i}}</label>
-			            <div class="input-group">
-		                  <span class="input-group-btn">
-		                    <a id="lfm-gallery{{$i}}" data-input="gallery{{$i}}" data-preview="gallery-holder{{$i}}" class="btn btn-primary">
-		                      <i class="fa fa-picture-o"></i> Choose Image
-		                    </a>
-		                  </span>
-		                  <input id="gallery{{$i}}" class="form-control" type="text" value="{{ $image }}" name="product_images[]">
+					?>
+					
+					@if (count ($gallery) > 0)
+						@for ($i = 1; $i <= 3 ; $i++)
+							<?php $img = ''; ?>
+							@if ( isset($gallery[$i-1]) )
+								<?php $img = $gallery[$i-1] ?>
+							@endif
+			            <div class="form-group">
+				            <label for="">Images {{$i}}</label>
+				            <div class="input-group">
+			                  <span class="input-group-btn">
+			                    <a id="lfm-gallery{{$i}}" data-input="gallery{{$i}}" data-preview="gallery-holder{{$i}}" class="btn btn-primary gallery">
+			                      <i class="fa fa-picture-o"></i> Choose Image
+			                    </a>
+			                  </span>
+			                  <input id="gallery{{$i}}" class="form-control" type="text" value="{{ $img }}" name="product_images[]">
 
-		                </div>
-						<img id="gallery-holder{{$i}}" src="{{ $image }}" style="margin-top:15px;max-height:100px;">
-		            </div>
-		            <?php $i++ ?>
-					@endforeach
-				@endif
-
-				@if ( $numMissing > 0 )
-					@for ($j = ( count ($gallery) + 1) ; $j <= 3 ; $j++ )
-
-		            <div class="form-group">
-			            <label for="">Images {{$j}}</label>
-			            <div class="input-group">
-		                  <span class="input-group-btn">
-		                    <a id="lfm-gallery{{$j}}" data-input="gallery{{$j}}" data-preview="gallery-holder{{$j}}" class="btn btn-primary">
-		                      <i class="fa fa-picture-o"></i> Choose Image
-		                    </a>
-		                  </span>
-		                  <input id="gallery{{$j}}" class="form-control" type="text" value="" name="product_images[]">
-
-		                </div>
-						<img id="gallery-holder{{$j}}" src="" style="margin-top:15px;max-height:100px;">
-		            </div>
-					@endfor
-				@endif
-
-	
+			                </div>
+							<img id="gallery-holder{{$i}}" src="{{ $img }}" style="margin-top:15px;max-height:100px;">
+			            </div>
+			           
+						@endfor
+					@endif
+					</div>
+	            </div>
 
 	         </div>
 	         <div class="box-footer">
@@ -162,34 +147,26 @@
 
   </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
+@endsection
 
-@include('back.footer')
+@section('footer')
 <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
 <script src="/vendor/unisharp/laravel-ckeditor/adapters/jquery.js"></script>
 <script src="/vendor/laravel-filemanager/js/lfm.js"></script>
+
 <script>
 	$('textarea#product-description').ckeditor({
-			filebrowserImageBrowseUrl: '/filemanager?type=Images',
-		   filebrowserImageUploadUrl: '/filemanager/upload?type=Images&_token={{csrf_token()}}',
-		   filebrowserBrowseUrl: '/filemanager?type=Files',
-		   filebrowserUploadUrl: '/filemanager/upload?type=Files&_token={{csrf_token()}}'
+		filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
+		filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token={{csrf_token()}}',
+		filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
+		filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token={{csrf_token()}}'
 	});
-
+	$('#lfm-file-download').filemanager('file');
+	@for( $i = 1; $i <=3 ; $i++ )
+		$('#lfm-gallery{{$i}}').filemanager('image');
+	@endfor
+	
 	$('#lfm-thumbnail').filemanager('image');
 	
-	$('#lfm-file-download').filemanager('file');
-
-	@if (count ($gallery) > 0)
-		@for ( $i = 1; $i <= count($gallery) ; $i ++ )
-		 	$('#lfm-gallery{{$i}}').filemanager('image');
-		@endfor
-	@endif
-
-	@if ( $numMissing > 0)
-		@for ( $i = (count($gallery) + 1) ; $i <= 3 ; $i ++ )
-		 	$('#lfm-gallery{{$i}}').filemanager('image');
-		@endfor
-	@endif	
-
- 	
 </script>
+@endsection

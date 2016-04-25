@@ -173,13 +173,18 @@ return [
          * Load Helper Service Providers...
          */
         App\Providers\HelperServiceProvider::class,
+        // Shopping cart
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
+        // Breacrumbs
         DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
 
-        Unisharp\Laravelfilemanager\LaravelFilemanagerServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-        Unisharp\Ckeditor\ServiceProvider::class,
+        // Resize image
         Folklore\Image\ImageServiceProvider::class,
+
+        Unisharp\Laravelfilemanager\LaravelFilemanagerServiceProvider::class,
+
+
     ],
 
     /*
@@ -236,10 +241,14 @@ return [
         'SEOHelper' => App\Helpers\SEOHelper::class,
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
         'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
-
-        'Image' => Intervention\Image\Facades\Image::class,
+        
         'ImageResizer' => Folklore\Image\Facades\Image::class,
-        'Str' => Illuminate\Support\Str::class
+        'Image' => Intervention\Image\Facades\Image::class,
+        
+        'Str' => Illuminate\Support\Str::class,
+
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
     ],
 
 ];

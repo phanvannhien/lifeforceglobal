@@ -109,8 +109,11 @@ Route::group(
         // Categories
 
         Route::get('product/categories',array('as'=>'back.categories', 'uses' => 'AdminController@categories'));
+        Route::get('product/categories/create',array('as'=>'back.categories.create', 'uses' => 'AdminController@categoriesCreate'));
+        Route::post('product/categories/create',array('as'=>'back.categories.save', 'uses' => 'AdminController@categoriesSave'));
+        Route::get('product/categories/edit/{id}',array('as'=>'back.categories.edit', 'uses' => 'AdminController@categoriesEdit'));
+        Route::post('product/categories/edit/{id}',array('as'=>'back.categories.update', 'uses' => 'AdminController@categoriesUpdate'));
 
-        
 
         // Product
         Route::get('product/create',array('as'=>'back.product.create', 'uses' => 'AdminController@createProduct'));
