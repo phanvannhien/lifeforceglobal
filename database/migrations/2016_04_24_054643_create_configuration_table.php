@@ -16,8 +16,10 @@ class CreateConfigurationTable extends Migration
           Schema::create('configuration', function (Blueprint $table) {
              $table->string('name',50);
              $table->text('value');
-             $table->primary('name');
+             $table->string('type');
              $table->string('label');
+             $table->primary('name');
+             
           });
         
     }
