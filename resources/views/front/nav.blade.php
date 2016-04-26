@@ -116,7 +116,7 @@
                                
                                 <ul class="col-lg-3  col-sm-3 col-md-3 unstyled noMarginLeft newCollectionUl">
                                      @foreach (Site::NavData() as $category )
-                                    <li><a href="{{ route('front.category',$category->id) }}"> {{ $category->category_name }} </a></li>
+                                    <li><a href="{{ route('front.category',array($category->id, Str::slug($category->category_name)) ) }}"> {{ $category->category_name }} </a></li>
                                     @endforeach
                                 </ul>
 

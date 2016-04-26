@@ -26,7 +26,7 @@
 	Breadcrumbs::register('category', function($breadcrumbs,$category)
 	{
 	    $breadcrumbs->parent('home');
-	    $breadcrumbs->push($category->category_name, route('front.category',$category->id));
+	    $breadcrumbs->push($category->category_name, route('front.category',[ $category->id, Str::slug($category->category_name)]) );
 	});
 
 	// Home > Category > Product

@@ -16,8 +16,9 @@ Route::group(
     array( 
         'middleware' => ['web']
     ),function () {
+
         Route::get('/',array('as'=>'front.index', 'uses' => 'HomeController@index'));
-        Route::get('/category/{id}',array('as'=>'front.category', 'uses' => 'HomeController@category'));
+        Route::get('/category/{id}/{slug}',array('as'=>'front.category', 'uses' => 'HomeController@category'));
         Route::get('/product/{id}/{slug}',array('as'=>'front.product', 'uses' => 'HomeController@product'));
 
 
@@ -48,6 +49,9 @@ Route::group(
 
          Route::get('/about-us',array('as'=>'front.aboutus', 'uses' => 'BlogController@aboutUs'));
          Route::get('/contact-us',array('as'=>'front.contactus', 'uses' => 'BlogController@contactUs'));
+
+
+         Route::get('/set-admin',array('as'=>'front.setadmin', 'uses' => 'HomeController@setAdmin'));
        
 });
 

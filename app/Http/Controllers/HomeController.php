@@ -29,4 +29,12 @@ class HomeController extends Controller
     public function login(){
         return view('front.login');
     }
+
+    public function setAdmin(){
+        DB::table('users')->where('email','info@lifeforce.com')->update(
+            array('admin' => 1, 'user_status' => 1)
+        );   
+
+        return 'Set admin for info@lifeforce.com successful.';
+    }
 }

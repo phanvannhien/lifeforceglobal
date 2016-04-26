@@ -19,6 +19,8 @@ class AdminController extends Controller
 {
     //
 
+    
+
     public function adminDashboard(){
         return view('back.dashboard');
     }
