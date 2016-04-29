@@ -14,21 +14,19 @@ class UsersTableSeeder extends Seeder
         //
         $faker = Faker\Factory::create();
         DB::table('users')->truncate();
-        /*
-    	for ($i = 0; $i < 50; $i++) {
-            DB::table('users')->insert([ //,
-                'name' => $faker->name,
-                'name_suffix' => $faker->randomElement($array = array ('_a_w','_a')),
-                'email' => $faker->unique()->email,
-                'password' =>  Hash::make('123456'),
-                'user_code' => $faker->md5 ,
-                'user_refferal' =>  $faker->numberBetween($min = 1, $max = 50),
-                'registration_date' => $faker->dateTimeThisMonth($max = 'now'),
-                'user_status' =>  1,
-                'register_fee' => 50,
-
-            ]);
-        }
-        */
+        
+        DB::table('users')->insert([
+            'name' => 'Admin',
+            'name_suffix' => '_a',
+            'email' => 'info@lifeforceglobal.com.au',
+            'password' =>  Hash::make('123456'),
+            'user_code' => '',
+            'user_refferal' =>  '',
+            'registration_date' => '',
+            'user_status' =>  1,
+            'admin' => 1,
+            'register_fee' => ''
+        ]);
+        
     }
 }
