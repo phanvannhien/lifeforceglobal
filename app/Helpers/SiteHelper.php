@@ -106,6 +106,6 @@
 		public static function getConfig($name){
 			$config = DB::table('configuration')
 				->where('name',$name)->first();
-			return 	$config->value;
+			return 	isset($config->value) ? $config->value :'';
 		}
 	}
