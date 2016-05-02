@@ -10,6 +10,13 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+/*
+|--------------------------------------------------------------------------
+| Init Setting Site
+|--------------------------------------------------------------------------
+|*/
+
+Route::get('initialize-site',array('as' => 'init', 'uses' => 'HomeController@initializeSite' ));
 
 
 Route::group( 
@@ -50,8 +57,7 @@ Route::group(
          Route::get('/about-us',array('as'=>'front.aboutus', 'uses' => 'BlogController@aboutUs'));
          Route::get('/contact-us',array('as'=>'front.contactus', 'uses' => 'BlogController@contactUs'));
 
-
-         Route::get('/set-admin',array('as'=>'front.setadmin', 'uses' => 'HomeController@setAdmin'));
+    
        
 });
 
@@ -144,7 +150,8 @@ Route::group(
         Route::get('orders/edit/{id}',array('as'=>'back.orders.edit', 'uses' => 'AdminController@editOrders'));
         Route::get('orders/delete/{id}',array('as'=>'back.orders.delete', 'uses' => 'AdminController@deleteOrders'));
         Route::post('orders/changestatus',array('as'=>'back.order.changestatus', 'uses' => 'AdminController@changeStatusOrders'));
-
+        
+        // Configuration
         Route::get('configuration',array('as'=>'back.configuration', 'uses' => 'AdminController@configuration'));
         Route::post('configuration',array('as'=>'back.configuration.save', 'uses' => 'AdminController@configurationSave'));
 

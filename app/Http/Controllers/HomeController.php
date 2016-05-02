@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use DB;
+use Hash;
+use App\User;
 
 class HomeController extends Controller
 {
@@ -31,10 +33,67 @@ class HomeController extends Controller
     }
 
     public function setAdmin(){
-        DB::table('users')->where('email','info@lifeforce.com')->update(
-            array('admin' => 1, 'user_status' => 1)
-        );   
-
-        return 'Set admin for info@lifeforce.com successful.';
+       return true;
     }
+    
+    public function initializeSite(){
+        $arrReturn = array();
+        $exitsAdminUser = DB::table('users')->where('email', 'info@lifeforceglobal.com.au')->count();
+        
+        if($exitsAdminUser > 0){
+             $inserted = DB::table('users')
+                 ->where('email', 'info@lifeforceglobal.com.au')
+                 ->update([
+                    'name' => 'Admin',
+                    'password' =>  Hash::make('123456'),
+                    'user_status' =>  1,
+                    'admin' => 1
+                ]);
+        
+        }else{
+            
+             $inserted = DB::table('users')
+                 ->insert([
+                    'name' => 'Admin',
+                    'password' =>  Hash::make('123456'),
+                    'email'=> 'info@lifeforceglobal.com.au',
+                    'user_status' =>  1,
+                    'admin' => 1
+            
+                ]);
+        
+        }
+       
+        if($inserted){
+            array_push($arrReturn,'Set admin for info@lifeforce.com successful.');
+         
+        }
+        
+        DB::table('configuration')->truncate();
+        
+        $insertedConfig = DB::table('configuration')->insert(
+        	array(
+	        	array(
+	        		'name' => 'bank',
+	        		'value' => 'Bank info',
+	        		'type' => 'textarea',
+	        		'label' => 'Bank'
+	        	),
+	        	array(
+	        		'name' => 'register_fee',
+	        		'value' => '50',
+	        		'type' => 'text',
+	        		'label' => 'Register fee'
+	        	)
+	        )	
+        );
+        if($insertedConfig){
+            array_push($arrReturn, 'Set configuration for info@lifeforce.com successful.');
+        }
+        
+        dd($arrReturn);
+        return true;
+        
+    }
+   
 }

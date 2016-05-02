@@ -33,7 +33,10 @@
 	Breadcrumbs::register('product', function($breadcrumbs,$product)
 	{
 		$category = App\Models\Categories::find($product->category_id);
-	    $breadcrumbs->parent('category',$category);
+        if( !is_null($category)){
+            $breadcrumbs->parent('category',$category);
+        }
+	   
 	    $breadcrumbs->push($product->product_name, route('front.product',[$product->id,Str::slug($product->product_name) ]));
 	});
 
