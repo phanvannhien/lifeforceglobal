@@ -97,7 +97,7 @@
                         <td>{{ PriceHelper::formatPrice($itemd->price) }}</td>
                         <td>{{ PriceHelper::formatPrice($itemd->subtotal) }}</td>
                     </tr>
-                    <?php $total += $itemd->price; ?>
+                    <?php $total += $itemd->subtotal; ?>
                     @endforeach
                     </tbody>
                     <tfooter>

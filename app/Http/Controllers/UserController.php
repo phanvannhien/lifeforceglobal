@@ -137,8 +137,10 @@ class UserController extends Controller
                             ->subject(config('app.sitename').' - Wellcome new register');  
                    });
             }
-            catch{
-            }
+             
+			 catch(Exception $e){
+				// fail
+			 }
             
             return response()->json(array('success'=> true));
         }
@@ -163,8 +165,10 @@ class UserController extends Controller
                             //->cc()
                             ->subject(config('app.sitename').' - Wellcome new register');  
                    });
-            }catch{
             }
+            catch(Exception $e){
+				// fail
+			 }
             Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'Resend successful!') );
             return view('front.users.register_success');
 
