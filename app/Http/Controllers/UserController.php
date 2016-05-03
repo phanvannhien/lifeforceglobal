@@ -127,15 +127,18 @@ class UserController extends Controller
 
             session()->put('user_registered',$dataEmail);
 
-            
-            Mail::send('emails.new_register',
-                array('mail' => $dataEmail)
-               ,function($message) use ($dataEmail) {
-                        $message->from( env('MAIL_USERNAME','Lifeforce') );
-                        $message->to( $dataEmail['email'] )
-                        //->cc()
-                        ->subject(config('app.sitename').' - Wellcome new register');  
-            });
+            try{
+                Mail::send('emails.new_register',
+                    array('mail' => $dataEmail)
+                   ,function($message) use ($dataEmail) {
+                            $message->from( env('MAIL_USERNAME','Lifeforce') );
+                            $message->to( $dataEmail['email'] )
+                            ->cc(env('MAIL_USERNAME'))
+                            ->subject(config('app.sitename').' - Wellcome new register');  
+                   });
+            }
+            catch{
+            }
             
             return response()->json(array('success'=> true));
         }
@@ -151,14 +154,17 @@ class UserController extends Controller
     public function resendActivationCode(){
         if( session()->has('user_registered') ){
             $dataEmail = session()->get('user_registered');
-            Mail::send('emails.new_register',
-                array('mail' => $dataEmail)
-               ,function($message) use ($dataEmail) {
-                        $message->from( env('MAIL_USERNAME','Lifeforce') );
-                        $message->to( $dataEmail['email'] )
-                        //->cc()
-                        ->subject(config('app.sitename').' - Wellcome new register');  
-            });
+            try{
+                Mail::send('emails.new_register',
+                    array('mail' => $dataEmail)
+                   ,function($message) use ($dataEmail) {
+                            $message->from( env('MAIL_USERNAME','Lifeforce') );
+                            $message->to( $dataEmail['email'] )
+                            //->cc()
+                            ->subject(config('app.sitename').' - Wellcome new register');  
+                   });
+            }catch{
+            }
             Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'Resend successful!') );
             return view('front.users.register_success');
 

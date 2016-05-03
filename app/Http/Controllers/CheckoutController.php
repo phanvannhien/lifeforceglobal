@@ -84,8 +84,8 @@ class CheckoutController extends Controller
 					 array('order' => $ordersMail)
 					 ,function($message) use ($ordersMail) {
 						 $message->from( env('MAIL_USERNAME','Lifeforce') );
-						 $message->to( Auth::user()->email)
-							 //->cc()
+						 $message->to( Auth::user()->email )
+							 ->cc(env('MAIL_USERNAME'))
 							 ->subject(config('app.sitename').' - Thanks for order:#'.$ordersMail->id);
 					 });
 			 }
