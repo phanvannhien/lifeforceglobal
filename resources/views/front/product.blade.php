@@ -98,12 +98,14 @@
          </div>
          <div style="clear:both"></div>
          <div class="product-share clearfix">
+            <?php $product_url = route('front.product',array( $product->id,  Str::slug($product->product_name)) ) ?>
             <p> SHARE </p>
             <div class="socialIcon">
-            <a href="#"> <i class="fa fa-facebook"></i></a>
-            <a href="#"> <i class="fa fa-twitter"></i></a>
-            <a href="#"> <i class="fa fa-google-plus"></i></a> 
-            <a href="#"><i class="fa fa-pinterest"></i></a>
+            <a href="https://www.facebook.com/dialog/share?app_id={{env('APP_FACEBOOK_ID')}}&amp;display=popup&amp;href={{$product_url}}&amp;redirect_uri={{route('front.product',array( $product->id,  Str::slug($product->product_name)) )}}"> <i class="fa fa-facebook"></i></a>
+            <a href="{{$product_url}}" class="twitter-share-button large"> <i class="fa fa-twitter"></i></a>
+            
+            <a href="#"  class="g-plus" data-action="share" data-annotation="none" data-height="24"> <i class="fa fa-google-plus"></i></a> 
+            
             </div>
          </div>
       </div>
@@ -123,4 +125,25 @@
 <script type="text/javascript" src="{{ url('assets/js/helper-plugins/jquery.mousewheel.min.js') }}"></script>
 <script type="text/javascript" src="{{ url('assets/js/jquery.mCustomScrollbar.js') }}"></script>
 <script src="{{ url('assets/js/bootstrap.touchspin.js') }}"></script>
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+ 
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+ 
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+<!-- Place this tag in your head or just before your close body tag. -->
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
 @endsection

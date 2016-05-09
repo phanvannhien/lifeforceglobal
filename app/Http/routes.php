@@ -25,7 +25,9 @@ Route::group(
     ),function () {
 
         Route::get('/',array('as'=>'front.index', 'uses' => 'HomeController@index'));
+
         Route::get('/category/{id}/{slug}',array('as'=>'front.category', 'uses' => 'HomeController@category'));
+        Route::get('/products',array('as'=>'front.products', 'uses' => 'HomeController@productAll'));
         Route::get('/product/{id}/{slug}',array('as'=>'front.product', 'uses' => 'HomeController@product'));
 
 

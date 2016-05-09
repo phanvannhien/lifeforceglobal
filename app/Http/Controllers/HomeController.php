@@ -8,6 +8,7 @@ use App\Http\Requests;
 use DB;
 use Hash;
 use App\User;
+use App\Models\Products;
 
 class HomeController extends Controller
 {
@@ -26,6 +27,10 @@ class HomeController extends Controller
         
     	$product =  DB::table('product')->where('id',$id)->first();
     	return view('front.product',array('product' => $product));
+    }
+
+    public function productAll(){
+        return view('front.products',array('products' => Products::paginate(12) ));
     }
 
     public function login(){

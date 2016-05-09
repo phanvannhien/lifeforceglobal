@@ -115,6 +115,7 @@
                             <li class="megamenu-content ">
                                
                                 <ul class="col-lg-3  col-sm-3 col-md-3 unstyled noMarginLeft newCollectionUl">
+                                    <li><a href="{{ route('front.products') }}">All Products</a></li>
                                      @foreach (Site::NavData() as $category )
                                     <li><a href="{{ route('front.category',array($category->id, Str::slug($category->category_name)) ) }}"> {{ $category->category_name }} </a></li>
                                     @endforeach
@@ -173,20 +174,22 @@
                                 <a class="btn btn-sm btn-danger" href="{{route('front.cart.page') }}"> <i class="fa fa-shopping-cart"> </i> VIEW CART </a><a class="btn btn-sm btn-primary"> CHECKOUT </a></div>
                             @else
                                 <div class="w100 miniCartTable scroll-pane">
-                               <p>Your cart is empty</p>
+                               <p style="padding:10px">Your cart is empty</p>
                                </div>
     
                             @endif
                         </div>
                     </div>
                     @endif
-
+                   
                     <div class="search-box">
+                         <!--
                         <div class="input-group">
                             <button class="btn btn-nobg getFullSearch" type="button"><i class="fa fa-search"> </i></button>
                         </div>
-
+                        -->
                     </div>
+
 
                 </div>
 

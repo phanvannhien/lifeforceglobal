@@ -1,6 +1,8 @@
 <?php 
 	namespace App\Helpers;
 	use DB;
+	use App\Models\Categories;
+
 	class SiteHelper{
 		public static function NavData(){
 			return DB::table('categories')->where('category_status',1)->get();
@@ -8,6 +10,13 @@
 
 		public static function allCategories(){
 			return DB::table('categories')->where('category_status',1)->get(); 
+		}
+
+
+		public static function renderCategoriesProducts(){
+			$categories = Categories::where('category_status',1)->get(); 
+			return view( 'front.renders.categories_product',array("categories" => $categories) )
+			->render(); 
 		}
 
 		public static function renderProductCarousel($title, $category_id, $excluded_id){

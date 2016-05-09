@@ -7,9 +7,9 @@
                <ul>
                   <li class="supportLi">
                      <h4>
-                        <a class="inline" href="">
+                        <a class="inline" href="mailto:info@lifeforceglobal.com.au">
                            <i class="fa fa-envelope-o"> </i>
-                           <span> info@lifeforceglobal.com.au</span>
+                           <span>info@lifeforceglobal.com.au</span>
                            
                         </a>
                      </h4>
@@ -37,12 +37,14 @@
             <div class="col-lg-2  col-md-2 col-sm-4 col-xs-6">
                <h3> My Account </h3>
                <ul>
-                  <li><a href="#"> My Account </a></li>
+                  @if (Auth::check())
+                  <li><a href="{{ route('user.dashboard') }}"> My Account </a></li>
                   <!--
                   <li><a href="#"> My Address </a></li>
                   <li><a href="#"> Wish List </a></li>
                   <li><a href="#"> Order list </a></li>
                   <li><a href="#"> Order Status </a></li>-->
+                  @endif
                </ul>
             </div>
             <div style="clear:both" class="hide visible-xs"></div>

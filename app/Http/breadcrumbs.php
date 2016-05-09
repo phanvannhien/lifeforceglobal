@@ -20,7 +20,12 @@
 	    $breadcrumbs->push('Contact Us', route('front.contactus'));
 	});
 
-
+	// Home > Products
+	Breadcrumbs::register('products', function($breadcrumbs)
+	{
+	    $breadcrumbs->parent('home');
+	    $breadcrumbs->push('Products', route('front.products'));
+	});
 
 	// Home > Category
 	Breadcrumbs::register('category', function($breadcrumbs,$category)

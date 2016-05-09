@@ -1,14 +1,14 @@
 @include ('front.includes.header')
 @include ('front.nav')
 <div class="container main-container headerOffset">
-	 {!! Breadcrumbs::render('category',$category) !!}
+	 {!! Breadcrumbs::render('products') !!}
 	<div class="row">
             <div class="col-lg-3 col-md-3 col-sm-12">
               @include('front.sidebar')
             </div>
             <div class="col-lg-9 col-md-9 col-sm-12">
                <div class="w100 clearfix category-top">
-                  <h2>{{$category->category_name}}</h2>
+                  <h2>Products</h2>
                </div>
               
                <div class="w100 productFilter clearfix">
@@ -41,7 +41,8 @@
                               <p>{{$product->product_sort_description}}</p>
                            </div>
                            <div class="list-description">
-                              <p>{!! $product->product_description !!}</p>
+                              <p>{!! $product->product_description !!}
+                              </p>
                            </div>
                            
                         </div>
