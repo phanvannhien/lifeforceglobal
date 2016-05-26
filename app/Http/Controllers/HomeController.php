@@ -9,6 +9,8 @@ use DB;
 use Hash;
 use App\User;
 use App\Models\Products;
+use Illuminate\Database\Schema\Blueprint;
+use Schema;
 
 class HomeController extends Controller
 {
@@ -42,6 +44,17 @@ class HomeController extends Controller
     }
     
     public function initializeSite(){
+
+        Schema::drop('configuration');
+        Schema::create('configuration', function (Blueprint $table) {
+           $table->string('name',50);
+           $table->text('value');
+           $table->string('type');
+           $table->string('label');
+           $table->primary('name');
+           
+        });
+
         $arrReturn = array();
         $exitsAdminUser = DB::table('users')->where('email', 'info@lifeforceglobal.com.au')->count();
         
@@ -95,6 +108,9 @@ class HomeController extends Controller
         if($insertedConfig){
             array_push($arrReturn, 'Set configuration for info@lifeforce.com successful.');
         }
+
+
+        
         
         dd($arrReturn);
         return true;

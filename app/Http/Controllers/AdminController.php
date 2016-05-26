@@ -96,7 +96,9 @@ class AdminController extends Controller
         $category->category_name = $request->input('category_name');
         $category->category_description = $request->input('category_description');
         $category->category_status = $request->input('category_status');
-
+        $category->category_image = $request->input('category_image');
+        $category->category_color = $request->input('category_color');
+        $category->image_position = $request->input('image_position');
         $category->save();
 
 
@@ -123,6 +125,9 @@ class AdminController extends Controller
         $category->category_name = $request->input('category_name');
         $category->category_description = $request->input('category_description');
         $category->category_status = $request->input('category_status');
+        $category->category_image = $request->input('category_image');
+        $category->category_color = $request->input('category_color');
+        $category->image_position = $request->input('image_position');
         $category->save();
 
         Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'Updated successful!') );

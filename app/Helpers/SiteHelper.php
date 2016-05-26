@@ -19,6 +19,12 @@
 			->render(); 
 		}
 
+		public static function renderCategoriesSections(){
+			$categories = Categories::where('category_status',1)->get(); 
+			return view( 'front.renders.categories_section',array("categories" => $categories) )
+			->render(); 
+		}
+
 		public static function renderProductCarousel($title, $category_id, $excluded_id){
 			$products = DB::table('product')
 			->where('category_id',$category_id)

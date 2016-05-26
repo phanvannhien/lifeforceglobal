@@ -3,9 +3,8 @@
 
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<div class="container main-container">
-	
-	{!! Site::renderCategoriesProducts() !!}
 
-</div>
+{!! Site::renderCategoriesSections() !!}
+
+
 @include ('front.includes.footer')
