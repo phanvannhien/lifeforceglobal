@@ -83,6 +83,7 @@
     // instance, using default configuration.
     var editor = CKEDITOR.replace('category_description');
     editor.config.allowedContent = true;
+    editor.config.extraPlugins = 'font';
     //Colorpicker
   $(".colorpicker").colorpicker();
   $('.gallery').filemanager('image');

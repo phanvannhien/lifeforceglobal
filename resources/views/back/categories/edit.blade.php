@@ -78,8 +78,8 @@
 @endsection
 
 @section('footer')
-<!-- CK Editor 
-<script src="/AdminLTE/plugins/ckeditor/ckeditor.js"></script>-->
+<!-- CK Editor -->
+<script src="/AdminLTE/plugins/ckeditor/ckeditor.js"></script>
 <link rel="stylesheet" href="/AdminLTE/plugins/colorpicker/bootstrap-colorpicker.min.css">
 <!-- bootstrap color picker -->
 <script src="/AdminLTE/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
@@ -91,13 +91,14 @@
   $(function () {
     // Replace the <textarea id="editor1"> with a CKEditor
     // instance, using default configuration.
-    //var editor = CKEDITOR.replace('category_description');
-    //editor.config.allowedContent = true;
+  var editor = CKEDITOR.replace('category_description');
+  editor.config.allowedContent = true;
+  editor.config.extraPlugins = 'font';
     //Colorpicker
   $(".colorpicker").colorpicker();
   $('.gallery').filemanager('image');
-    //bootstrap WYSIHTML5 - text editor
-    $(".textarea").wysihtml5();
+  //bootstrap WYSIHTML5 - text editor
+  //$(".textarea").wysihtml5();
   });
 </script>
 @endsection
