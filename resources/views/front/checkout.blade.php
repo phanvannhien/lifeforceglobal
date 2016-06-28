@@ -90,14 +90,12 @@
                      <td>Total products</td>
                      <td class="price">{{ PriceHelper::formatPrice(Cart::total()) }}</td>
                   </tr>
-                 
-                  <tr>
-                     <td>Total tax</td>
-                     <td class="price" id="total-tax">{{ PriceHelper::formatPrice(Cart::total()*0.1) }}</td>
+                  <tr style="">
+                     <td class="price" colspan="2"><span class="success">Shipping 10$ in Australia</span></td>
                   </tr>
                   <tr>
                      <td> Total</td>
-                     <td class=" site-color" id="total-price">{{ PriceHelper::formatPrice(Cart::total()*1.1) }}</td>
+                     <td class=" site-color" id="total-price">{{ PriceHelper::formatPrice(Cart::total()+ 10) }}</td>
                   </tr>
                </tbody>
                <tbody>

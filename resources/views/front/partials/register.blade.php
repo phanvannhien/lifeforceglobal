@@ -29,6 +29,17 @@
                      <input name="user_refferal" class="form-control input" placeholder="User refferal" type="text">
                   </div>
                </div>
+
+               <div class="form-group reg-password">
+                  <div>
+                     <select class="form-control" name="user_city" id="">
+                        <option value="-1">Select Your UA City</option>
+                        @foreach( \App\Models\City::all() as $city )
+                           <option value="{{ $city->externalCode }}">{{ $city->cityName }}</option>
+                        @endforeach
+                     </select>
+                  </div>
+               </div>
                
                <div>
                   <div>

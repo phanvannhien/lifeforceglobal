@@ -60,7 +60,20 @@ Route::group(
          Route::get('/contact-us',array('as'=>'front.contactus', 'uses' => 'BlogController@contactUs'));
 
     
-       
+        /*
+        |--------------------------------------------------------------------------
+        | Checkout
+        |--------------------------------------------------------------------------
+        |*/
+        Route::get('/cart',array('as'=>'front.cart.page', 'uses' => 'CartController@getCart'));
+        Route::post('/cart',array('as'=>'front.cart', 'uses' => 'CartController@cart'));
+        Route::post('/cart/update',array('as'=>'front.cart.update', 'uses' => 'CartController@updateCart'));
+        Route::get('/cart/del/{pid}',array('as'=>'front.cart.delete', 'uses' => 'CartController@delCart'));
+        //checkout Guest
+        Route::get('/checkout/guest',array('as'=>'front.checkout.guest', 'uses' => 'CheckoutController@checkoutGuest'));
+        Route::post('/checkout/guest',array('as'=>'front.checkout.guest.post', 'uses' => 'CheckoutController@checkoutGuestSubmit'));
+        
+        
 });
 
 
@@ -69,18 +82,12 @@ Route::group(
         'middleware' => array('web','auth')
 
     ),function () {
-        Route::get('/cart',array('as'=>'front.cart.page', 'uses' => 'CartController@getCart'));
-        Route::post('/cart',array('as'=>'front.cart', 'uses' => 'CartController@cart'));
-        Route::post('/cart/update',array('as'=>'front.cart.update', 'uses' => 'CartController@updateCart'));
-        Route::get('/cart/del/{pid}',array('as'=>'front.cart.delete', 'uses' => 'CartController@delCart'));
+        //Checkout Users
         Route::get('/checkout',array('as'=>'front.checkout', 'uses' => 'CheckoutController@checkout'));        
         Route::post('/checkout',array('as'=>'front.checkout.final', 'uses' => 'CheckoutController@checkoutFinal'));  
 
-        
         Route::get('/user/membersof',array('as'=>'user.memberssof', 'uses' => 'UserController@getMembersOf')); 
-
         Route::get('/order/status/{id}',array('as'=>'front.order.status', 'uses' => 'UserController@orderStatus'));  
-
         Route::get('/user/my-account',array('as'=>'user.dashboard', 'uses' => 'UserController@myAccount'));
         // User address book
         Route::get('/user/address',array('as'=>'user.address', 'uses' => 'UserController@userAddress'));
@@ -88,6 +95,8 @@ Route::group(
         Route::get('/user/address/edit/{id}',array('as'=>'user.address.edit', 'uses' => 'UserController@userAddressEdit'));
         Route::get('/user/address/remove/{id}',array('as'=>'user.address.remove', 'uses' => 'UserController@userAddressRemove'));
         Route::get('/user/order-history',array('as'=>'user.order.history', 'uses' => 'UserController@orderHistory'));
+        Route::post('/user/order-history',array('as'=>'user.order.history.filter', 'uses' => 'UserController@orderHistory'));
+
         Route::get('/user/my-info',array('as'=>'user.info', 'uses' => 'UserController@userInfo'));
         Route::post('/user/my-info',array('as'=>'user.info.post', 'uses' => 'UserController@userInfoSave'));
         Route::get('/user/logout',array('as'=>'user.logout', 'uses' => 'UserController@logout'));
@@ -140,6 +149,7 @@ Route::group(
         Route::get('users',array('as'=>'back.users', 'uses' => 'AdminController@allUsers'));
         Route::post('users',array('as'=>'back.users.post', 'uses' => 'AdminController@allUsers'));
         Route::get('users/create',array('as'=>'back.users.create', 'uses' => 'AdminController@createUsers'));
+        Route::post('users/create',array('as'=>'back.users.save', 'uses' => 'AdminController@saveUsers'));
         Route::get('users/edit/{id}',array('as'=>'back.users.edit', 'uses' => 'AdminController@editUsers'));
         Route::post('users/edit/{id}',array('as'=>'back.users.edit.save', 'uses' => 'AdminController@updateUsers'));
         Route::get('users/delete/{id}',array('as'=>'back.users.delete', 'uses' => 'AdminController@deleteUsers'));

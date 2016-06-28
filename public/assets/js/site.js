@@ -103,11 +103,7 @@ $("form#frm-register").validate({
         $.ajax({
             type: "POST",
             url: "/user/register",
-            data: {
-                 "email" : $( form ).find( 'input[name=email]' ).val(),
-                 "password" : $( form ).find( 'input[name=password]' ).val(),
-                 "user_refferal" : $( form ).find( 'input[name=user_refferal]' ).val()
-            },
+            data: $(form).serialize(),
             dataType: 'json',
             success: function(data)
             {

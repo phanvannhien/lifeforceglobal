@@ -96,7 +96,8 @@
                     <div class="miniCartFooter  miniCartFooterInMobile text-right">
                         <h3 class="text-right subtotal"> Subtotal: {{ $total }} </h3>
                         <a class="btn btn-sm btn-danger" href="{{ route('front.cart.page') }}"> <i class="fa fa-shopping-cart"> </i> VIEW CART
-                        </a> <a href="{{ route('front.cart.page') }}" class="btn btn-sm btn-primary"> CHECKOUT </a></div>
+                        </a> 
+                        <a href="{{ route('front.cart.page') }}" class="btn btn-sm btn-primary"> CHECKOUT </a></div>
                     @else
                         <div class="w100 miniCartTable scroll-pane">
                         <p>Your cart is empty</p>
@@ -134,7 +135,7 @@
       
 
                 <div class="nav navbar-nav navbar-right hidden-xs">
-                    @if (Auth::check())
+                    
                     <div class="dropdown  cartMenu ">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-shopping-cart"> </i> <span class="cartRespons"> Cart (${{$total}}) </span> <b class="caret"> </b> </a>
                         <div class="dropdown-menu col-lg-4 col-xs-12 col-md-4 ">
@@ -171,7 +172,8 @@
 
                             <div class="miniCartFooter text-right">
                                 <h3 class="text-right subtotal"> Subtotal: {{$total}} </h3>
-                                <a class="btn btn-sm btn-danger" href="{{route('front.cart.page') }}"> <i class="fa fa-shopping-cart"> </i> VIEW CART </a><a class="btn btn-sm btn-primary"> CHECKOUT </a></div>
+                                <a class="btn btn-sm btn-danger" href="{{route('front.cart.page') }}"> <i class="fa fa-shopping-cart"> </i> VIEW CART </a>
+                                <a class="btn btn-sm btn-primary" href="{{route('front.cart.page') }}"> CHECKOUT </a></div>
                             @else
                                 <div class="w100 miniCartTable scroll-pane">
                                <p style="padding:10px">Your cart is empty</p>
@@ -180,16 +182,15 @@
                             @endif
                         </div>
                     </div>
-                    @endif
-                   
+                   <!--
                     <div class="search-box">
-                         <!--
+                         
                         <div class="input-group">
                             <button class="btn btn-nobg getFullSearch" type="button"><i class="fa fa-search"> </i></button>
                         </div>
-                        -->
+                        
                     </div>
-
+-->
 
                 </div>
 

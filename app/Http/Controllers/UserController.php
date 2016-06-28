@@ -14,6 +14,7 @@ use App\User;
 use Session;
 use App\Models\Orders;
 use Site;
+use Cart;
 
 class UserController extends Controller
 {
@@ -73,7 +74,7 @@ class UserController extends Controller
 
             if (Auth::attempt($authData))
             {
-                return redirect('/');
+                return back();
                 
             }
         }
@@ -93,6 +94,10 @@ class UserController extends Controller
     	
     	//Validate Email
 
+        if( $request->input('user_city') == '-1' ){
+            return response()->json(array('success'=> false, 'msg' => "Please select your city"));
+        }
+
     	if (filter_var($request->input('email'), FILTER_VALIDATE_EMAIL) === false) {
     		return response()->json(array('success'=> false, 'msg' => "Email wrong format!"));
     	}
@@ -100,18 +105,18 @@ class UserController extends Controller
     	if(DB::table('users')->where('email', $request->input('email'))->count() > 0){
     	    return response()->json(array('success'=> false, 'msg' => "Email already exist!"));
     	}
+        
 
         $userCreated =  array(
             'name_suffix' => '_a_w',
             'email' =>  $request->input('email'),
             'password' => Hash::make($request->input('password')),
-            'user_code' => str_random(32),
+            'user_code' => User::getDefaultUserRole($request->input('user_city')),
             'user_refferal' => $request->input('user_refferal'),
             'registration_date' => date('Y-m-d H:s:i'),
             'user_verify_code' => str_random(64),
             'register_fee' => \App\Helpers\SiteHelper::getConfig('register_fee')
         );
-
 
     	//Creating user
     	$createad = DB::table('users')->insert($userCreated);
@@ -197,10 +202,19 @@ class UserController extends Controller
         return view('front.customer.dashboard');
     }
 
-    public function orderHistory(){
-        
-        
-        return view('front.customer.order_history');
+    public function orderHistory(Request $request){
+        $orders = DB::table('orders');
+        $orders->where('user_id', Auth::user()->id );
+        if($request->isMethod('post')){
+            $arrDate =  explode('-', $request->input('date_range'));
+            $startDate = date('Y-m-d H:s:i',strtotime($arrDate[0]));
+            $endDate = date('Y-m-d H:s:i',strtotime($arrDate[1]));
+
+            $orders->whereBetween('created_at', array($startDate,$endDate));
+        }
+        $orders = $orders->orderBy('id','DESC')->paginate(10);
+       
+        return view('front.customer.order_history',array('orders' => $orders));
     }
 
     public function orderStatus($id){

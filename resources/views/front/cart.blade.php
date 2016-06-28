@@ -89,8 +89,17 @@
 	      <div class="contentBox">
 	         <div class="w100 costDetails">
 	            <div class="table-block" id="order-detail-content">
-	               <a class="btn btn-primary btn-lg btn-block " title="checkout" href="{{ route('front.checkout') }}" style="margin-bottom:20px"> Proceed to
+	            	@if (Auth::check())
+	               <a class="btn btn-primary btn-lg btn-block " title="checkout" 
+	               href="{{ route('front.checkout') }}" style="margin-bottom:20px"> Proceed to
 	               checkout &nbsp; <i class="fa fa-arrow-right"></i> </a>
+					@else
+					 <a class="btn btn-primary btn-lg btn-block " title="checkout" 
+	               href="{{ route('front.checkout.guest') }}" style="margin-bottom:20px"> Checkout as Guest &nbsp; 
+	               <i class="fa fa-arrow-right"></i> </a>
+
+					@endif
+
 	               <div class="w100 cartMiniTable">
 	                  <table id="cart-summary" class="std table">
 	                     <tbody>
@@ -99,16 +108,13 @@
 	                           <td class="price">{{ $total }}</td>
 	                        </tr>
 	                        <tr style="">
-	                           <td>Shipping</td>
-	                           <td class="price"><span class="success">Free shipping!</span></td>
+
+	                           <td class="price" colspan="2"><span class="success">Shipping 10$ in Australia</span></td>
 	                        </tr>
-	                        <tr>
-	                           <td>Total tax</td>
-	                           <td class="price" id="total-tax">{{ $total * 0.1 }}</td>
-	                        </tr>
+
 	                        <tr>
 	                           <td> Total</td>
-	                           <td class=" site-color" id="total-price">{{ $total * 1.1 }}</td>
+	                           <td class=" site-color" id="total-price">{{ $total + 10 }}</td>
 	                        </tr>
 	                        <!--
 	                        <tr>

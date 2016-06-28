@@ -22,8 +22,8 @@
 @if (Request::is('user/order-history'))
 <link href="{{ url('assets/css/footable-0.1.css') }}" rel="stylesheet" type="text/css"/>
 <link href="{{ url('assets/css/footable.sortable-0.1.css') }}" rel="stylesheet" type="text/css"/>
-
 @endif
+@yield('head.script')
 </head>
 
 <body>

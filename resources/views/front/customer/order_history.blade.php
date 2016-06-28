@@ -1,3 +1,9 @@
+@section('head.script')
+<!-- Include Required Prerequisites -->
+
+<!-- Include Date Range Picker -->
+<link rel="stylesheet" type="text/css" href="/assets/plugins/daterangepicker/daterangepicker.css" />
+@endsection
 @include ('front.includes.header')
 @include ('front.nav')
 <div class="container main-container headerOffset">
@@ -17,6 +23,15 @@
             <div class="row userInfo">
                 <div class="col-lg-12">
                     <h2 class="block-title-2"> Your Order List </h2>
+                    <form action="" class="form-inline pull-right" method="post">
+                        <input type="hidden" value="{{ csrf_token()  }}" name="_token">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="date_range" id="date-range" style="margin-bottom: 0">
+                            <button type="submit" name="submit" class="btn btn-primary">Filter</button>
+                        </div>
+
+                    </form>
+                    <p class="clearfix">&nbsp;</p>
                 </div>
                 <div style="clear:both"></div>
                 <div class="col-xs-12 col-sm-12">
@@ -36,7 +51,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ( CustomerHelper::getOrders() as $order )
+                            @foreach ( $orders as $order )
                             <tr>
                                 <td>{{ $order->id }}</td>
                                 <td>{{ CustomerHelper::getCountItemOrders($order->id) }}
@@ -78,4 +93,30 @@
 </div>
 
 <div class="gap"></div>
+@section('footer')
+<script type="text/javascript" src="/assets/plugins/daterangepicker/moment.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/daterangepicker/daterangepicker.js"></script>
+<script>
+    $(function() {
+
+        function cb(start, end) {
+            $('#date-range').html(start.format('YYYY, M D') + '-' + end.format('YYYY, M D'));
+        }
+        cb(moment().subtract(29, 'days'), moment());
+
+        $('#date-range').daterangepicker({
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        }, cb);
+
+    });
+
+</script>
+@endsection
 @include ('front.includes.footer')

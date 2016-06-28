@@ -24,6 +24,9 @@ class CheckoutController extends Controller
     	return view('front.checkout');
     }
 
+    public function checkoutGuest(){
+    	return view('front.checkout_guest',array('cart' =>  Cart::content()));
+    }
     public function checkoutFinal(Request $request){
     	$exitsCart = Cart::count(); 
 

@@ -246,7 +246,79 @@ class AdminController extends Controller
         return view('back.users.update')->with('user',User::find($id));
     }
     public function createUsers(){
-        return view('back.users.update');
+        return view('back.users.create');
+    }
+    public function saveUsers(Request $request ){
+        //Validate Email
+        $rule = array(
+            'email' => 'required',
+        );
+
+        $v = Validator::make($request->all(),$rule,array('required' => 'Please input this field'));
+
+        if ($v->fails())
+        {
+
+            //dd($v->errors()->all());
+            return back()->withErrors($v->errors()->all());
+        }
+
+        if( $request->input('user_city') == '-1' ){
+            return response()->json(array('success'=> false, 'msg' => "Please select your city"));
+        }
+
+        if (filter_var($request->input('email'), FILTER_VALIDATE_EMAIL) === false) {
+            return response()->json(array('success'=> false, 'msg' => "Email wrong format!"));
+        }
+
+        if(DB::table('users')->where('email', $request->input('email'))->count() > 0){
+            return response()->json(array('success'=> false, 'msg' => "Email already exist!"));
+        }
+
+
+        $userCreated =  array(
+            'name_suffix' => '_a_w',
+            'email' =>  $request->input('email'),
+            'password' => Hash::make($request->input('password')),
+            'user_code' => User::getDefaultUserRole($request->input('user_city')),
+            'user_refferal' => $request->input('user_refferal'),
+            'registration_date' => date('Y-m-d H:s:i'),
+            'user_verify_code' => str_random(64),
+            'register_fee' => \App\Helpers\SiteHelper::getConfig('register_fee')
+        );
+
+        //Creating user
+        $createad = DB::table('users')->insert($userCreated);
+
+        if($createad){
+
+            // Email to registed user
+            $dataEmail =  array(
+                'email' => $userCreated['email'],
+                'user_code' => $userCreated['user_code'],
+                'user_verify_code' => $userCreated['user_verify_code']
+            );
+
+            session()->put('user_registered',$dataEmail);
+
+            try{
+                Mail::send('emails.new_register',
+                    array('mail' => $dataEmail)
+                    ,function($message) use ($dataEmail) {
+                        $message->from( env('MAIL_USERNAME','Lifeforce') );
+                        $message->to( $dataEmail['email'] )
+                            ->cc(env('MAIL_USERNAME'))
+                            ->subject(config('app.sitename').' - Wellcome new register');
+                    });
+            }
+
+            catch(Exception $e){
+                // fail
+            }
+
+            return response()->json(array('success'=> true));
+        }
+        return response()->json(array('success'=> false, 'msg' => "Registration fails!"));
     }
 
     public function updateUsers(Request $request,$id){
