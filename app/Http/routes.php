@@ -58,6 +58,8 @@ Route::group(
 
          Route::get('/about-us',array('as'=>'front.aboutus', 'uses' => 'BlogController@aboutUs'));
          Route::get('/contact-us',array('as'=>'front.contactus', 'uses' => 'BlogController@contactUs'));
+         Route::get('/feedback-us',array('as'=>'front.feedback', 'uses' => 'BlogController@feedbackUs'));
+         Route::post('/feedback-us',array('as'=>'front.feedback.submit', 'uses' => 'BlogController@feedbackUsSubmit'));
 
     
         /*
@@ -69,10 +71,11 @@ Route::group(
         Route::post('/cart',array('as'=>'front.cart', 'uses' => 'CartController@cart'));
         Route::post('/cart/update',array('as'=>'front.cart.update', 'uses' => 'CartController@updateCart'));
         Route::get('/cart/del/{pid}',array('as'=>'front.cart.delete', 'uses' => 'CartController@delCart'));
-        //checkout Guest
-        Route::get('/checkout/guest',array('as'=>'front.checkout.guest', 'uses' => 'CheckoutController@checkoutGuest'));
-        Route::post('/checkout/guest',array('as'=>'front.checkout.guest.post', 'uses' => 'CheckoutController@checkoutGuestSubmit'));
-        
+        //Checkout Users
+        Route::get('/checkout',array('as'=>'front.checkout', 'uses' => 'CheckoutController@checkout'));        
+        Route::post('/checkout',array('as'=>'front.checkout.final', 'uses' => 'CheckoutController@checkoutFinal'));  
+
+       
         
 });
 
@@ -82,13 +85,12 @@ Route::group(
         'middleware' => array('web','auth')
 
     ),function () {
-        //Checkout Users
-        Route::get('/checkout',array('as'=>'front.checkout', 'uses' => 'CheckoutController@checkout'));        
-        Route::post('/checkout',array('as'=>'front.checkout.final', 'uses' => 'CheckoutController@checkoutFinal'));  
-
+       
         Route::get('/user/membersof',array('as'=>'user.memberssof', 'uses' => 'UserController@getMembersOf')); 
+        Route::post('/user/membersof',array('as'=>'user.memberssof.filter', 'uses' => 'UserController@getMembersOf')); 
         Route::get('/order/status/{id}',array('as'=>'front.order.status', 'uses' => 'UserController@orderStatus'));  
         Route::get('/user/my-account',array('as'=>'user.dashboard', 'uses' => 'UserController@myAccount'));
+        Route::post('/user/my-account',array('as'=>'user.dashboard.post', 'uses' => 'UserController@myAccount'));
         // User address book
         Route::get('/user/address',array('as'=>'user.address', 'uses' => 'UserController@userAddress'));
         Route::post('/user/address',array('as'=>'user.address.add', 'uses' => 'UserController@userAddressAdd'));
@@ -100,6 +102,9 @@ Route::group(
         Route::get('/user/my-info',array('as'=>'user.info', 'uses' => 'UserController@userInfo'));
         Route::post('/user/my-info',array('as'=>'user.info.post', 'uses' => 'UserController@userInfoSave'));
         Route::get('/user/logout',array('as'=>'user.logout', 'uses' => 'UserController@logout'));
+        Route::get('/user/commision',array('as'=>'user.commision', 'uses' => 'UserController@commission'));
+
+
     });
 
 /*
@@ -166,6 +171,10 @@ Route::group(
         // Configuration
         Route::get('configuration',array('as'=>'back.configuration', 'uses' => 'AdminController@configuration'));
         Route::post('configuration',array('as'=>'back.configuration.save', 'uses' => 'AdminController@configurationSave'));
+        
+        // Report
+        Route::get('reportation/wm',array('as'=>'back.report', 'uses' => 'ReportController@reportboard'));
+        //Route::get('reportation',array('as'=>'back.report.post', 'uses' => 'ReportController@getReport'));
 
     });
 

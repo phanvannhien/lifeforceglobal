@@ -41,6 +41,13 @@
         </div><!-- /.row -->
 
         <div class="row">
+        <div class="col-md-6 col-sm-12">
+            {!! CustomerHelper::checkWMUserRevanue3Month() !!}
+        </div>
+         <div class="col-md-6 col-sm-12">
+            {!! CustomerHelper::checkUserNotPurchase2Month() !!}
+        </div>
+
 	  <div class="col-md-12">
 	    <div class="box">
 	      <div class="box-header with-border">

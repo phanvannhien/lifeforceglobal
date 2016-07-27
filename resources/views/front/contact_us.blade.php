@@ -1,53 +1,60 @@
 @include ('front.includes.header')
 @include ('front.nav')
 
-
-<div class="parallaxOffset no-padding fixedContent contact-intro">
-<div class="w100 map">
-<iframe width="100%" height="450" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=+&amp;q=london&amp;ie=UTF8&amp;hq=&amp;hnear=London,+United+Kingdom&amp;ll=51.511214,-0.119824&amp;spn=0.007264,0.021136&amp;t=m&amp;z=14&amp;output=embed">
-</iframe>
-</div>
-</div>
-
-<div class="wrapper whitebg contact-us">
-   <div class="container main-container ">
-
-      <div class="row innerPage">
-         {!! Breadcrumbs::render('contact') !!}
-         <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="row userInfo">
-               <div class="col-xs-12 col-sm-12">
-                  <h1 class="title-big text-center section-title-style2">
-                     <span> Contact us </span>
-                  </h1>
-                  <p class="lead text-center">
-                     Please contact us if you have any question!
-                  </p>
-                  <hr>
-                  <div class="row">
-                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <h3 class="block-title-5">
-                           Customer care
-                        </h3>
-                        <p>
-                           <strong>
-                           Email us
-                           </strong>
-                           : <a href="mailto:info@lifeforceglobal.com.au">info@lifeforceglobal.com.au</a> 
-                        </p>
-                     </div>
-                     
-                     <div style="clear:both"></div>
-                     <hr>
-                
-                  </div>
-               </div>
+<div class="container main-container contact-us">
+   <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+         <h3 class="title"><span class="d-inline">MAKE AN APPOINTMENT</span></h3>
+         @include ('front.partials.message')
+         <form id="feedback-form" action="{{ route('front.feedback.submit') }}" method="post"
+               class="form form-horizontal">
+            <input type="hidden" value="{{csrf_token()}}" name="_token">
+            <div class="form-group required">
+                  <input required type="text" class="form-control" name="fullname" placeholder="Name">
             </div>
-
-         </div>
-
+            <div class="form-group">
+               <input required type="email" class="form-control" name="email" placeholder="Email">
+            </div>
+            <div class="form-group">
+               <input required type="text" class="form-control" name="subject" placeholder="Subject">
+            </div>
+            <div class="form-group">
+               <textarea style="height: 120px" required name="message" id="" cols="30" rows="10" class="form-control" placeholder="Mesage"></textarea>
+            </div>
+            <div class="form-group">
+               <div class="g-recaptcha" data-sitekey="6LdY6yMTAAAAAGCtPNCbafSyjvqYe7HF8fNAc5T8"></div>
+            </div>
+            <div class="form-group">
+               <button type="submit" name="submit" class="btn btn-primary pull-right">Send</button>
+            </div>
+         </form>
       </div>
-
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+         <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+               <h5>COME TO VISIT</h5>
+               <p class="s-text">
+                  500 Terry Francois Street <br>
+                  San Francisco, CA 94158 <br>
+                  <a href="mailto:info@mysite.com">info@mysite.com</a> <br>
+                  Tel: 123-456-7890 <br>
+                  Fax: 123-456-7890 <br>
+               </p>
+               <h5>OPENING HOURS</h5>
+               <p class="s-text">
+                  Mon - Fri: 7am - 10pm <br>
+                  ​​Saturday: 8am - 10pm <br>
+                  ​Sunday: 8am - 11pm
+               </p>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+               <p class="large-text text-muted">
+                  WE MIGHT BE ABLE TO ANSWER YOUR QUESTIONS RIGHT NOW, CHECK OUT
+                  OUR <a href="#">FAQ's</a>
+               </p>
+            </div>
+         </div>
+      </div>
    </div>
 </div>
 

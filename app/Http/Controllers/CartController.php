@@ -8,6 +8,7 @@ use App\Http\Requests;
 use DB;
 use Cart;
 use Auth;
+use Products;
 
 class CartController extends Controller
 {
@@ -31,6 +32,8 @@ class CartController extends Controller
 
        return redirect()->back();
    }
+
+   
 
 
    public function getCart(){

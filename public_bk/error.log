@@ -1,0 +1,11 @@
+[Wed Apr 13 18:05:52 2016] [error] [client 223.140.145.207] user  not found: /
+[Wed Apr 13 18:06:04 2016] [error] [client 223.140.145.207] user  not found: /
+[Thu Apr 14 14:36:23 2016] [error] [client 14.200.70.44] Handler for (null) returned invalid result code 70014, referer: http://lifeforceglobal.com.au/laravel-filemanager?type=Images
+[Thu Apr 14 14:46:05 2016] [error] [client 14.200.70.44] Handler for (null) returned invalid result code 70014, referer: http://lifeforceglobal.com.au/laravel-filemanager?type=Images
+[Thu Apr 14 15:23:01 2016] [error] [client 14.200.70.44] Handler for (null) returned invalid result code 70014, referer: http://lifeforceglobal.com.au/laravel-filemanager?type=Images
+[Thu Apr 14 15:23:02 2016] [error] [client 14.200.70.44] Handler for (null) returned invalid result code 70014, referer: http://lifeforceglobal.com.au/laravel-filemanager?type=Images
+[Thu Apr 14 15:23:02 2016] [error] [client 14.200.70.44] Handler for (null) returned invalid result code 70014, referer: http://lifeforceglobal.com.au/laravel-filemanager?type=Images
+[Thu Apr 14 15:23:02 2016] [error] [client 14.200.70.44] Handler for (null) returned invalid result code 70014, referer: http://lifeforceglobal.com.au/laravel-filemanager?type=Images
+[Thu Apr 14 15:23:02 2016] [error] [client 14.200.70.44] Handler for (null) returned invalid result code 70014, referer: http://lifeforceglobal.com.au/laravel-filemanager?type=Images
+[Thu Apr 14 15:23:04 2016] [error] [client 14.200.70.44] Handler for (null) returned invalid result code 70014, referer: http://lifeforceglobal.com.au/laravel-filemanager?type=Images
+[Mon Apr 18 16:16:35 2016] [error] [client 14.161.5.153] PHP Fatal error:  Class 'DaveJamesMiller\\Breadcrumbs\\ServiceProvider' not found in /home/chammut/public_html/lifeforceglobal/vendor/laravel/framework/src/Illuminate/Foundation/ProviderRepository.php on line 146

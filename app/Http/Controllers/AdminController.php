@@ -11,15 +11,17 @@ use Auth;
 use App\User;
 use Mail;
 use App\Models\Orders;
+use App\Models\Products;
 use App\Models\Categories;
 use App\Models\Configurations;
 use Validator;
+use Hash;
 
 class AdminController extends Controller
 {
     //
 
-    
+    const DEFAULT_PASSSWORD = '123456';
 
     public function adminDashboard(){
         return view('back.dashboard');
@@ -137,7 +139,7 @@ class AdminController extends Controller
 
     // Product
 	public function allProduct(){
-		return view('back.products.product', array('products'=> DB::table('product')->get() ));
+		return view('back.products.product', array('products'=> Products::all() ));
 	}
 
     public function createProduct(){
@@ -217,9 +219,10 @@ class AdminController extends Controller
     // Users
 
     public function allUsers(Request $request){
-        $users = DB::table('users');
+        $users = new User();
         if ($request->isMethod('post')){
             $arrFilter = $request->input('filter');
+           
             foreach ($arrFilter as $key => $value) {
                 if( $value != '' ){
                     if( $key == 'registration_date' ){
@@ -228,13 +231,13 @@ class AdminController extends Controller
                         $endDate = date('Y-m-d H:s:i',strtotime($arrDate[1]));
                         $users->whereBetween( $key,array($startDate,$endDate) );
                     }else{
-                        $users->where($key,'like',$value.'%');
+                        $users = $users->where($key,$value);
                     }
                     
                 }
             }
-
-            return view('back.users.dashboard')->with('users', $users->paginate(50));
+            $users = $users->paginate(50);
+            return view('back.users.dashboard')->with('users', $users);
            
         }
 
@@ -249,57 +252,57 @@ class AdminController extends Controller
         return view('back.users.create');
     }
     public function saveUsers(Request $request ){
+        $userReferalID = '';
         //Validate Email
         $rule = array(
             'email' => 'required',
         );
 
-        $v = Validator::make($request->all(),$rule,array('required' => 'Please input this field'));
-
+        $v = Validator::make($request->all(),$rule);
         if ($v->fails())
         {
-
-            //dd($v->errors()->all());
-            return back()->withErrors($v->errors()->all());
+            return view('back.users.create')->withErrors($v->errors());
         }
 
-        if( $request->input('user_city') == '-1' ){
-            return response()->json(array('success'=> false, 'msg' => "Please select your city"));
+        if(User::where('email', $request->input('email'))->count() > 0){
+            Session::flash( 'message', array('class' => 'alert-danger', 'detail' => 'Email already exitst !') );
+            return view('back.users.create');
         }
 
-        if (filter_var($request->input('email'), FILTER_VALIDATE_EMAIL) === false) {
-            return response()->json(array('success'=> false, 'msg' => "Email wrong format!"));
+        if( $request->input('user_refferal') != '' ){
+            $userFind = DB::table('users')->where('user_code',$request->input('user_refferal'))->first();
+            if ( count($userFind) <= 0 ){
+                Session::flash( 'message', array('class' => 'alert-danger', 'detail' => 'User refferal not found !') );
+                return view('back.users.create');
+            }else{
+                $userReferalID = $userFind->id;
+            }
+
         }
 
-        if(DB::table('users')->where('email', $request->input('email'))->count() > 0){
-            return response()->json(array('success'=> false, 'msg' => "Email already exist!"));
-        }
+        $userCreated = new User();
+        $userCreated->name_suffix = '_a_w';
+        $userCreated->email =  $request->input('email');
+        $userCreated->password = Hash::make(self::DEFAULT_PASSSWORD);
+        $userCreated->user_code = str_random(32);
+        $userCreated->membership_number = User::getUserCode($userReferalID,$request->input('user_city'));
+        $userCreated->user_role = 'OM';
+        $userCreated->user_refferal = $request->input('user_refferal');
+        $userCreated->registration_date = date('Y-m-d H:s:i');
+        $userCreated->user_verify_code = str_random(64);
+        $userCreated->register_fee = \App\Helpers\SiteHelper::getConfig('register_fee');
+        $userCreated->save();
 
 
-        $userCreated =  array(
-            'name_suffix' => '_a_w',
-            'email' =>  $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-            'user_code' => User::getDefaultUserRole($request->input('user_city')),
-            'user_refferal' => $request->input('user_refferal'),
-            'registration_date' => date('Y-m-d H:s:i'),
-            'user_verify_code' => str_random(64),
-            'register_fee' => \App\Helpers\SiteHelper::getConfig('register_fee')
-        );
-
-        //Creating user
-        $createad = DB::table('users')->insert($userCreated);
-
-        if($createad){
+        if($userCreated){
 
             // Email to registed user
             $dataEmail =  array(
-                'email' => $userCreated['email'],
-                'user_code' => $userCreated['user_code'],
-                'user_verify_code' => $userCreated['user_verify_code']
+                'email' => $userCreated->email,
+                'user_code' => $userCreated->user_code,
+                'user_verify_code' => $userCreated->user_verify_code
             );
 
-            session()->put('user_registered',$dataEmail);
 
             try{
                 Mail::send('emails.new_register',
@@ -315,17 +318,25 @@ class AdminController extends Controller
             catch(Exception $e){
                 // fail
             }
-
-            return response()->json(array('success'=> true));
+            Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'User created successful !') );
+            return view('back.users.update')->with('user',$userCreated);
         }
-        return response()->json(array('success'=> false, 'msg' => "Registration fails!"));
+        Session::flash( 'message', array('class' => 'alert-danger', 'detail' => 'User created failed !') );
+        return view('back.users.create');
     }
 
     public function updateUsers(Request $request,$id){
+
+
         if ($request->isMethod('post')){
             $user = User::find($request->input('id'));
+
             if($user){
                 $user->name = $request->input('name');
+                $user->user_role = $request->input('user_role');
+                $user->user_refferal = $request->input('user_refferal');
+                //reduce user member code
+                $user->membership_number = $request->input('user_role').substr($user->membership_number,2);
                 $user->user_status = $request->input('user_status');
                 $user->save();
                 Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'Update successful!') );
@@ -393,14 +404,10 @@ class AdminController extends Controller
                     }
                 }
                 $orders =  $orders->paginate(50);
-            }else{
-
             }
-
-        }else{
-            $orders =  Orders::paginate(50);
+            return view('back.orders.dashboard')->with('orders',$orders);
         }
-
+        $orders =  Orders::paginate(50);
         return view('back.orders.dashboard')->with('orders',$orders);
     }
 
@@ -432,7 +439,7 @@ class AdminController extends Controller
                          array('order' => $orders)
                          ,function($message) use ($orders) {
                              $message->from( env('MAIL_USERNAME','Lifeforce') );
-                             $message->to( $orders->user->email )
+                             $message->to( $orders->orderable->email )
                                  //->cc()
                                  ->subject(config('app.sitename').' - Your orders :#'.$orders->id.' are processing');
                          });
@@ -451,7 +458,7 @@ class AdminController extends Controller
                          array('order' => $orders)
                          ,function($message) use ($orders) {
                              $message->from( env('MAIL_USERNAME','Lifeforce') );
-                             $message->to( $orders->user->email )
+                             $message->to( $orders->orderable->email )
                                  //->cc()
                                  ->subject(config('app.sitename').' - Thanks for your orders :#'.$orders->id.' are done');
                          });
@@ -470,7 +477,7 @@ class AdminController extends Controller
                          array('order' => $orders)
                          ,function($message) use ($orders) {
                              $message->from( env('MAIL_USERNAME','Lifeforce') );
-                             $message->to( $orders->user->email )
+                             $message->to( $orders->orderable->email )
                                  //->cc()
                                  ->subject(config('app.sitename').' - Thanks for your orders :#'.$orders->id.' are done');
                          });

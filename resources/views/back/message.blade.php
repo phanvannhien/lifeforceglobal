@@ -9,7 +9,6 @@
 		{{ $message['detail'] }}
 	</div>
 @endif
-<?php var_dump($errors)?>
 
 @if (count($errors) > 0)
 

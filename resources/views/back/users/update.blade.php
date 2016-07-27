@@ -17,9 +17,6 @@
       <li><a class="" href="#">Edit Users</a></li>
     </ol>
   </section>
-
-
-
   <!-- Main content -->
   <section class="content">
     @include('back.message')
@@ -37,22 +34,28 @@
 					<input type="text" name="name" class="form-control" value="{{ $user->name }}">
 				</div>
 				<div class="form-group">
-					<label for="">Name Suffix</label>
-					<input type="text" name="name_suffix" class="form-control" readonly="" value="{{ $user->name_suffix }}">
-				</div>
-				<div class="form-group">
 					<label for="">Email</label>
 					<input type="text" readonly="" name="email" class="form-control" value="{{ $user->email }}">
 				</div>
-
 				<div class="form-group">
 					<label for="">User Code</label>
 					<input type="text" name="user_code" readonly="" class="form-control" value="{{ $user->user_code }}">
 				</div>
-
+				<div class="form-group">
+					<label for="">Member Code</label>
+					<input type="text" name="user_code" readonly="" class="form-control" value="{{ $user->membership_number }}">
+				</div>
 				<div class="form-group">
 					<label for="">User Refferal</label>
-					<input type="text" name="user_refferal" readonly="" class="form-control" value="{{ $user->user_refferal }}">
+					<input type="text" name="user_refferal" class="form-control" value="{{ $user->user_refferal }}">
+				</div>
+				<div class="form-group">
+					<label for="">User Role</label>
+					<select name="user_role" id="" class="form-control">
+						@foreach( App\Models\UsersRole::all() as $item )
+							<option {{ ($user->user_role == $item->roleid) ? 'selected' :''  }} value="{{ $item->roleid }}">{{ $item->roleTitle }}</option>
+						@endforeach	
+					</select>
 				</div>
 
 				<div class="form-group">

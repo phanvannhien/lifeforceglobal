@@ -1,22 +1,22 @@
 @foreach( $categories as $category)
 @if( count($category->product) > 0 )
 
-<div class="morePost row featuredPostContainer style2 globalPaddingTop ">
-    <h3 class="section-title style2 text-center"><span>
+<div class="row featuredPostContainer style2 globalPaddingTop ">
+    <h3 class="title"><span class="d-inline">
        {{ $category->category_name }}
     </span></h3>
+
     <div class="container">
-        <div class="row xsResponse">
+        <div class="row">
             @foreach ($category->product as $product)
-            <div class="item col-lg-3 col-md-3 col-sm-4 col-xs-6">
+            <div class="pitem col-lg-3 col-md-3 col-sm-4 col-xs-6">
                 <div class="product">
                     <div class="image">
                         <a href="{{route('front.product',array( $product->id,  Str::slug($product->product_name)) )}}">
-                        <img src="{{ Image::url($product->product_thumbnail,285,380,array('crop')) }}" alt="img" class="img-responsive"></a>
+                        <img src="{{ Image::url($product->product_thumbnail,285,380,array('crop')) }}" alt="img" class="img-fluid"></a>
                     </div>
                     <div class="description">
-                        <h4><a href="{{route('front.product',array( $product->id,  Str::slug($product->product_name)) )}}">{{$product->product_name}}</a></h4>
-                        <p>{{$product->product_sort_description}}</p>
+                        <h4 class="pname"><a href="{{route('front.product',array( $product->id,  Str::slug($product->product_name)) )}}">{{$product->product_name}}</a></h4>
                     </div>
                     <div class="price">
                     @if (!Auth::check())

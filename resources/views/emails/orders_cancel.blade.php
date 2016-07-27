@@ -26,9 +26,14 @@
       @endforeach
    </tbody>
    <tfoot>
+          <tr>
+            <td colspan="4" align="right">
+               <strong>Shipping Fee: {{ PriceHelper::formatPrice($order->shipping_fee) }}</strong>
+            </td>
+         </tr>
    		<tr>
    			<td colspan="4" align="right">
-   				<strong>Total: {{ PriceHelper::formatPrice($order->total) }}</strong>
+   				<strong>Total: {{ PriceHelper::formatPrice($order->total + $order->shipping_fee) }}</strong>
    			</td>
    		</tr>
    </tfoot>

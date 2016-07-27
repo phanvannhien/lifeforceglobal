@@ -15,16 +15,15 @@ use Session;
 use App\Models\Orders;
 use Site;
 use Cart;
+use CustomerHelper;
 
 class UserController extends Controller
 {
-    //
+    // View forgot password
     public function forgot(){
         return view('front.users.forgot');
     }
-
     public function forgotSubmit(Request $request){
-
         
     }
 
@@ -50,10 +49,10 @@ class UserController extends Controller
 
                 if (Auth::attempt($authData))
                 {
+                    CustomerHelper::reduceCart();
                     return response()->json(array('msg' => 'success'));
                 }
             }
-
             return response()->json(array('msg' => 'Email or password wrong!'));
         }
 
@@ -61,7 +60,6 @@ class UserController extends Controller
         if ( strpos($authData['email'],'@') == false ) {
             Session::flash('message', 'Wrong email format!');
             return back()->withInput();
-            
         }else{
             $userLogin = DB::table('users')->where( 'email', $request->input('email') )->first();
         }
@@ -74,60 +72,68 @@ class UserController extends Controller
 
             if (Auth::attempt($authData))
             {
+                CustomerHelper::reduceCart();
                 return back();
-                
             }
         }
 
         Session::flash('message', 'Email or password wrong!');
         return back()->withInput();
-               
     }
 
+    // User logout
     public function logout(){
     	Auth::logout();
+        CustomerHelper::reduceCart();
     	return redirect('/');
     }
 
-
+    // User register
     public function register(Request $request){
-    	
+    	$userReferalID = '';
     	//Validate Email
-
-        if( $request->input('user_city') == '-1' ){
-            return response()->json(array('success'=> false, 'msg' => "Please select your city"));
-        }
-
     	if (filter_var($request->input('email'), FILTER_VALIDATE_EMAIL) === false) {
     		return response()->json(array('success'=> false, 'msg' => "Email wrong format!"));
     	}
-
     	if(DB::table('users')->where('email', $request->input('email'))->count() > 0){
     	    return response()->json(array('success'=> false, 'msg' => "Email already exist!"));
     	}
         
+        if( $request->input('user_city') == '-1' ){
+            return response()->json(array('success'=> false, 'msg' => "Please select your city"));
+        }
 
-        $userCreated =  array(
-            'name_suffix' => '_a_w',
-            'email' =>  $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-            'user_code' => User::getDefaultUserRole($request->input('user_city')),
-            'user_refferal' => $request->input('user_refferal'),
-            'registration_date' => date('Y-m-d H:s:i'),
-            'user_verify_code' => str_random(64),
-            'register_fee' => \App\Helpers\SiteHelper::getConfig('register_fee')
-        );
+        if( $request->input('user_refferal') != '' ){
+            $userFind = DB::table('users')->where('user_code',$request->input('user_refferal'))->first();
+            if ( count($userFind) <= 0 ){
+                return response()->json(array('success'=> false, 'msg' => "User Referal Code not found"));
+            }else{
+                $userReferalID = $userFind->id;
+            }
 
-    	//Creating user
-    	$createad = DB::table('users')->insert($userCreated);
+        }
 
-        if($createad){
+        $userCreated = new User();
+        $userCreated->name_suffix = '_a_w';
+        $userCreated->email =  $request->input('email');
+        $userCreated->password = Hash::make($request->input('password'));
+        $userCreated->user_code = str_random(32);
+        $userCreated->membership_number = User::getUserCode($userReferalID,$request->input('user_city'));
+        $userCreated->user_role = 'OM';
+        $userCreated->user_refferal = $request->input('user_refferal');
+        $userCreated->registration_date = date('Y-m-d H:s:i');
+        $userCreated->user_verify_code = str_random(64);
+        $userCreated->register_fee = \App\Helpers\SiteHelper::getConfig('register_fee');
+        $userCreated->save();
+
+      
+        if($userCreated){
             
             // Email to registed user
             $dataEmail =  array(
-                'email' => $userCreated['email'], 
-                'user_code' => $userCreated['user_code'],
-                'user_verify_code' => $userCreated['user_verify_code']
+                'email' => $userCreated->email, 
+                'user_code' => $userCreated->user_code,
+                'user_verify_code' => $userCreated->user_verify_code
             );
 
             session()->put('user_registered',$dataEmail);
@@ -176,7 +182,6 @@ class UserController extends Controller
 			 }
             Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'Resend successful!') );
             return view('front.users.register_success');
-
         }
 
         Session::flash( 'message', array('class' => 'alert-danger', 'detail' => 'Resend fail!') );
@@ -198,8 +203,20 @@ class UserController extends Controller
         return view('front.users.verify')->with('isSuccessVerify',$isSuccessVerify ) ;   
     }
 
-    public function myAccount(){
+    public function myAccount(Request $request){
+        
+
+        if ($request->isMethod('post') && $request->has('submit') ){
+            $arrDate =  explode('-', $request->input('date_range'));
+            $startDate = date('Y-m-d H:s:i',strtotime($arrDate[0]));
+            $endDate = date('Y-m-d H:s:i',strtotime($arrDate[1]));
+            $commission = CustomerHelper::getCommissionWMUserByDate(Auth::user()->id,$startDate,$endDate);
+            return view('front.customer.dashboard',['commission' => $commission]);
+        }
+
         return view('front.customer.dashboard');
+
+
     }
 
     public function orderHistory(Request $request){
@@ -330,12 +347,32 @@ class UserController extends Controller
         return back();
     }
 
-    public function getMembersOf(){
-        $members = DB::table('users')
-            ->where('user_refferal', Auth::user()->user_code )
-            ->orderBy('id','DESC')->paginate(20);
-        return view('front.customer.membersof', array('members' => $members));
+    public function getMembersOf(Request $request){
+
+
+        $user = DB::table('users')->get();
+        $members = User::getUplineMembers($user, Auth::user()->user_code);
+        $members = array_values(array_sort($members, function ($value) {
+            return $value->user_level;
+        }));
+        
+        $date['startDate'] = date('Y-m-01');
+        $date['endDate'] = date('Y-m-d');
+
+        if( $request->isMethod('post') && $request->has('date_range')){
+            $arrDate =  explode('-', $request->input('date_range'));
+            $date['startDate'] = date('Y-m-d',strtotime($arrDate[0]));
+            $date['endDate'] = date('Y-m-d',strtotime($arrDate[1]));
+        }
+
+        // Get purchase from start date of month to now
+        $membersPurchase = User::getTotalPurchaseMembers($members,$date['startDate'],$date['endDate']);
+        return view('front.customer.membersof', array(
+            'members' => $membersPurchase,
+            'date' => $date
+        ));
     }
+
 
 
     //public function 

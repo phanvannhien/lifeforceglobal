@@ -40,14 +40,16 @@
        			<tr>
        				<td>Product Name</td>
        				<td>Product Category</td>
+              <td>Price RPP</td>
        				<td>Price </td>
        				<td>Function</td>
        			</tr>
        			@foreach( $products as $product)
 				<tr>
        				<td>{{ $product->product_name }}</td>
-       				<td>{{ $product->category_id }}</td>
-       				<td>{{ $product->price_RPP }}</td>
+       				<td>{{ $product->category->category_name }}</td>
+              <td>{{ PriceHelper::formatPrice($product->price_RPP) }}</td>
+       				<td>{{ PriceHelper::formatPrice($product->price_discount) }}</td>
        				<td>
               <a href="{{ route('back.product.edit',$product->id) }}"><i class="fa fa-edit"></i> Edit</a>   
               <a onclick="return confirm('Are you sure?')" href="{{ route('back.product.delete',$product->id) }}"><i class="fa fa-remove"></i> Delete</a>   

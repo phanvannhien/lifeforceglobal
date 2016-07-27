@@ -1,7 +1,7 @@
  <!-- =============================================== -->
 
       <!-- Left side column. contains the sidebar -->
-      <aside class="main-sidebar">
+      <aside class="main-sidebar ">
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
           <!-- Sidebar user panel -->
@@ -28,7 +28,10 @@
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
             <li>
-              <a href="{{ route('back.admin.dashboard') }}">Dashboard</a>
+              <a href="{{ route('back.admin.dashboard') }}">
+              <i class="fa fa-home"></i>
+              <span>Dashboard</span>
+              </a>
             </li>
             <li class="treeview">
               <a href="#">
@@ -65,15 +68,24 @@
 
             <li class="treeview">
               <a href="#">
-                <i class="fa fa-cube"></i> <span>Orders</span> <i class="fa fa-angle-left pull-right"></i>
+                <i class="fa fa-cube"></i> <span>Orders</span> 
+                <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
                 <li><a href="{{ route('back.orders') }}"><i class="fa fa-fa-cube-o"></i> All Orders</a></li>
               </ul>
             </li>   
-            
-            <li>
-              <a href="{{ route('back.configuration') }}"><i class="fa fa-cogs"></i> Configuration</a>
+            <li class="treeview">
+              <a href="#">
+              <i class="fa fa-cogs"></i> <span>Report</span><i class="fa fa-angle-left pull-right"></i></a>
+              <ul class="treeview-menu">
+                <li><a href="{{ route('back.report') }}"><i class="fa fa-fa-cube-o"></i> WM report</a></li>
+              </ul>
+            </li>
+            <li class="treeview">
+
+              <a href="{{ route('back.configuration') }}">
+              <i class="fa fa-cogs"></i> <span>Configuration</span></a>
             </li>
 
             <li class="header">LABELS</li>

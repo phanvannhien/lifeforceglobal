@@ -26,8 +26,14 @@
                         <h3 class="box-title">Customer infomation</h3>
                     </div>
                     <div class="box-body">
-                        <p>Customer Name: {{$order->user->name }}</p>
-                        <p>Email: {{$order->user->email }}</p>
+                        @if ($order->checkout_type == 'guest')
+                            <p>Customer Name: {{$order->orderable->fullname }}</p>
+                            <p>Customer Phone: {{$order->orderable->phone }}</p>
+                        @else
+                            <p>Customer Name: {{$order->orderable->name }}</p>
+                           
+                        @endif
+                            <p>Email: {{$order->orderable->email }}</p>
                     </div>
                 </div><!-- /.box -->
             </div>
@@ -40,6 +46,7 @@
                     <div class="box-body">
                         <p>Order Date: {{$order->created_at }}</p>
                         <p>Shipping Address: {{$order->address }}</p>
+                      
                         <p>Status: <label for="" class="label label-info">{{ $order->status }}</label></p>
                         <form action="{{ route('back.order.changestatus') }}" method="post">
                             <input type="hidden" value="{{ csrf_token() }}" name="_token">
@@ -103,7 +110,12 @@
                     <tfooter>
                         <tr>
                             <td colspan="5" align="right">
-                                Total: <strong>{{ PriceHelper::formatPrice($total) }}</strong>
+                                Shipping Fee: <strong>{{ PriceHelper::formatPrice($order->shipping_fee) }}</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" align="right">
+                                Total: <strong>{{ PriceHelper::formatPrice($total + $order->shipping_fee) }}</strong>
                             </td>
                         </tr>
                     </tfooter>

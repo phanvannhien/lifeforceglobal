@@ -10,14 +10,15 @@
 <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ url('assets/ico/apple-touch-icon-72-precomposed.png') }}">
 <link rel="apple-touch-icon-precomposed" href="{{ url('ico/apple-touch-icon-57-precomposed.png') }}">
 <link rel="shortcut icon" href="{{ url('assets/ico/favicon.png') }}">
+<link href="{{ url('assets/fonts/font-awesome-4.6.3/css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,700italic&subset=latin,vietnamese,greek,cyrillic' rel='stylesheet' type='text/css'>
+<link href="{{ url('assets/style.css') }}" rel="stylesheet">
+<link href="{{ url('assets/common.css') }}" rel="stylesheet">
 
-<link href="{{ url('assets/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
-<link id="pagestyle" rel="stylesheet" type="text/css" href="{{ url('assets/css/skin-1.css') }}">
-<link href="{{ url('assets/css/style.css') }}" rel="stylesheet">
 <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
  
 @if (Request::is('user/order-history'))
 <link href="{{ url('assets/css/footable-0.1.css') }}" rel="stylesheet" type="text/css"/>

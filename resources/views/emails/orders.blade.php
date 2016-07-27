@@ -5,7 +5,7 @@
 <p><b>Shipping address:</b> {{ $order->address }}</p>
 <hr>
 
-<table class="">
+<table class="" width="100%">
    <tbody>
    	@foreach ($order->details as $item )
       <tr class="">
@@ -26,9 +26,14 @@
       @endforeach
    </tbody>
    <tfoot>
+         <tr>
+            <td colspan="4" align="right">
+               <strong>Shipping Fee: {{ PriceHelper::formatPrice($order->shipping_fee) }}</strong>
+            </td>
+         </tr>
    		<tr>
    			<td colspan="4" align="right">
-   				<strong>Total: {{ PriceHelper::formatPrice(Cart::total()) }}</strong>
+   				<strong>Total: {{ PriceHelper::formatPrice(Cart::total() + $order->shipping_fee ) }}</strong>
    			</td>
    		</tr>
    </tfoot>

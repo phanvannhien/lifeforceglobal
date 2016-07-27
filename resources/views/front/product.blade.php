@@ -16,39 +16,29 @@
 @endsection
 @section('content')
 <div class="container main-container headerOffset">
-   {!! Breadcrumbs::render('product',$product) !!}
    <div class="row transitionfx">
-      <div class="col-lg-6 col-md-6 col-sm-6">
+      <div class="col-lg-7 col-md-6 col-sm-6">
          <div class="main-image sp-wrap col-lg-12 no-padding">
             <?php $gallery = explode(',', $product->product_images); ?>
             @if (count ($gallery) > 0)
-               @for ( $i = 0; $i < count($gallery) ; $i ++ )
-                 <a href="{{ Image::url($gallery[$i],800,800,array('crop')) }}">
-                 <img src="{{ Image::url($gallery[$i],500,500,array('crop')) }}" class="img-responsive" alt="img"></a>
-               @endfor
-            @endif   
-            
+                 <img src="{{ Image::url($gallery[0],500,500,array('crop')) }}" class="img-responsive" alt="img">
+            @endif
          </div>
       </div>
-      <div class="col-lg-6 col-md-6 col-sm-5">
-         <h1 class="product-title">{{$product->product_name}}</h1>
-         <h3 class="product-code"></h3>
-        
+      <div class="col-lg-5 col-md-6 col-sm-5">
+         <h2 class="product-title">{{$product->product_name}}</h2>
          <div class="product-price">
-        
-         <div class="price">
-           @if (!Auth::check())
-               <span>{{ PriceHelper::formatPrice($product->price_RPP) }} </span>
-           @else
-               <span>{{  PriceHelper::formatPrice($product->price_discount) }}</span>
-           @endif
-         </div>
-      
+            <div class="price">
+              @if (!Auth::check())
+                  <span>{{ PriceHelper::formatPrice($product->price_RPP) }} </span>
+              @else
+                  <span>{{  PriceHelper::formatPrice($product->price_discount) }}</span>
+              @endif
+            </div>
          </div>
          <div class="details-description">
             <p>{{$product->product_sort_description}}</p>
          </div>
-         
          <form action="{{ route('front.cart') }}" method="post" >
             <input type="hidden" name="product_id" value="{{ $product->id }}">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -65,19 +55,9 @@
                   </div>
                </div>
             </div>
-            <div class="cart-actions">
-               <div class="addto row">
-                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                     <button onclick="" class="button btn-block btn-cart cart first" title="Add to Cart" type="submit">Add
-                     to Cart
-                     </button>
-                  </div>
-               </div>
-               <div style="clear:both"></div>
-               <h3 class="incaps"><i class="fa fa fa-check-circle-o color-in"></i> In stock</h3>
-               <h3 style="display:none" class="incaps"><i class="fa fa-minus-circle color-out"></i> Out of stock</h3>
-               <h3 class="incaps"><i class="glyphicon glyphicon-lock"></i> Secure online ordering</h3>
-            </div>
+            <button onclick="" class="btn btn-block btn-cart cart first" title="Add to Cart" type="submit">Add
+               to Cart
+            </button>
          </form>
         
 
@@ -88,8 +68,7 @@
                <li class=""><a href="#download-file" data-toggle="tab">Download File</a></li>
             </ul>
             <div class="tab-content">
-               <div class="tab-pane active" id="details">{!! $product->product_description !!}
-               </div>
+
                <div class="tab-pane" id="download-file">
                      <a href="{{ url($product->download_file) }}">Click here to download File ( PDF )</a>
 
@@ -99,7 +78,7 @@
          <div style="clear:both"></div>
          <div class="product-share clearfix">
             <?php $product_url = route('front.product',array( $product->id,  Str::slug($product->product_name)) ) ?>
-            <p> SHARE </p>
+
             <div class="socialIcon">
             <a href="https://www.facebook.com/dialog/share?app_id={{env('APP_FACEBOOK_ID')}}&amp;display=popup&amp;href={{$product_url}}&amp;redirect_uri={{route('front.product',array( $product->id,  Str::slug($product->product_name)) )}}"> <i class="fa fa-facebook"></i></a>
             <a href="{{$product_url}}" class="twitter-share-button large"> <i class="fa fa-twitter"></i></a>
@@ -110,10 +89,7 @@
          </div>
       </div>
    </div>
-   <div class="row recommended">
-      {!! Site::renderProductCarousel('You may also like',$product->category_id,$product->id) !!}
-   </div>
-   <div style="clear:both"></div>
+
 </div>
 <div class="gap"></div>
 @endsection

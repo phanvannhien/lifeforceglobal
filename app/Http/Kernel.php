@@ -6,6 +6,13 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
 {
+     public function render($request, Exception $e) {
+        if ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException)
+            return response(view('error.404'), 404);
+
+        return parent::render($request, $e);
+    }
+    
     /**
      * The application's global HTTP middleware stack.
      *
