@@ -88,62 +88,15 @@
 
 	            <div class="form-group">
 		            <label for="">Thumnail</label>
-		            <div class="input-group">
-	                  <span class="input-group-btn">
-	                    <a id="lfm-thumbnail" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
-	                      <i class="fa fa-picture-o"></i> Choose Image
-	                    </a>
-	                  </span>
-	                  <input id="thumbnail" class="form-control" type="text" name="product_thumbnail">
-	                </div>
-	                <img id="holder" style="margin-top:15px;max-height:100px;">
+					<p class="fileinput fileinput-new" data-provides="fileinput">
+						<span class="btn green btn-file">
+						<span class="fileinput-new"> Change Logo </span>
+						<span class="fileinput-exists"> Change Logo</span>
+						<input data-companyid="" class="uploadfile" type="file" name="file_logo"> </span>
+					</p>
+	                <img id="thumbnail-holder" style="margin-top:15px;max-height:100px;">
 	            </div>
-				<div class="panel panel-primary">
-					<div class="panel-body">
-			            <div class="form-group">
-				            <label for="">Images 1</label>
-				            <div class="input-group">
-			                  <span class="input-group-btn">
-			                    <a id="lfm-gallery1" data-input="gallery1" data-preview="gallery-holder1" class="btn btn-primary gallery">
-			                      <i class="fa fa-picture-o"></i> Choose Image
-			                    </a>
-			                  </span>
-			                  <input id="gallery1" class="form-control" type="text" name="product_images[]" multiple>
 
-			                </div>
-							<img id="gallery-holder1" style="margin-top:15px;max-height:100px;">
-			            </div>
-
-			            <div class="form-group">
-				            <label for="">Images 2</label>
-				            <div class="input-group">
-			                  <span class="input-group-btn">
-			                    <a id="lfm-gallery2" data-input="gallery2" data-preview="gallery-holder2" class="btn btn-primary gallery">
-			                      <i class="fa fa-picture-o"></i> Choose Image
-			                    </a>
-			                  </span>
-			                  <input id="gallery2" class="form-control" type="text" name="product_images[]" multiple>
-
-			                </div>
-							<img id="gallery-holder2" style="margin-top:15px;max-height:100px;">
-			            </div>
-
-			            <div class="form-group">
-			   
-				            <label for="">Images 3</label>
-				            <div class="input-group">
-			                  <span class="input-group-btn">
-			                    <a id="lfm-gallery3" data-input="gallery3" data-preview="gallery-holder3" class="btn btn-primary gallery">
-			                      <i class="fa fa-picture-o"></i> Choose Image
-			                    </a>
-			                  </span>
-			                  <input id="gallery3" class="form-control" type="text" name="product_images[]">
-
-			                </div>
-							<img id="gallery-holder3" style="margin-top:15px;max-height:100px;">
-			            </div>
-					</div>            
-				</div>
 	         </div>
 	         <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Save</button>
@@ -159,18 +112,39 @@
 @endsection
 
 @section('footer')
-<script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
-<script src="/vendor/unisharp/laravel-ckeditor/adapters/jquery.js"></script>
-<script src="/vendor/laravel-filemanager/js/lfm.js"></script>
-<script>
-  $('textarea').ckeditor({
-    filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
-    filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token={{csrf_token()}}',
-    filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
-    filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token={{csrf_token()}}'
-  });
-  $('#lfm-file-download').filemanager('file');
-  $('.gallery').filemanager('image');
-</script>
+	<script>
+		$("input.uploadfile").change(function(){
+			var file = this.files[0];
+			var formData = new FormData();
+			formData.append('formData', file);
+
+			if($('#companyname').length > 0){
+				formData.append('companyname', $('#companyname').val());
+			}
+
+			$.ajax({
+				url: '/ajax/changeLogoCompany',  //Server script to process data
+				type: 'POST',
+				headers: {
+					'X-CSRF-TOKEN': '{{ csrf_token() }}'
+				},
+				data: formData,
+				contentType: false,
+				processData: false,
+				//Ajax events
+				success: function(data){
+					if(data.success){
+						$('.profile-userpic > img').attr('src',data.file);
+						$('.page-logo > img').attr('src',data.file);
+					}else{
+						App.alert({'message': data.msg});
+					}
+
+				}
+			});
+		})
+
+
+	</script>
 
 @endsection

@@ -319,7 +319,7 @@ html {
 }
 
 html {
-  font-size: 16px;
+  font-size: 14px;
 
   -webkit-tap-highlight-color: transparent;
 }
@@ -386,12 +386,12 @@ blockquote {
 }
 
 a {
-  color: #0275d8;
+  color: #125889;
   text-decoration: none;
 }
 
 a:focus, a:hover {
-  color: #014c8c;
+  color: #176aa5;
   text-decoration: underline;
 }
 
@@ -510,51 +510,51 @@ h1, h2, h3, h4, h5, h6,
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: 1.5rem;
 }
 
 h2 {
-  font-size: 2rem;
+  font-size: 1.3rem;
 }
 
 h3 {
-  font-size: 1.75rem;
+  font-size: 1.2rem;
 }
 
 h4 {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
 }
 
 h5 {
-  font-size: 1.25rem;
+  font-size: 1rem;
 }
 
 h6 {
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 .h1 {
-  font-size: 2.5rem;
-}
-
-.h2 {
-  font-size: 2rem;
-}
-
-.h3 {
-  font-size: 1.75rem;
-}
-
-.h4 {
   font-size: 1.5rem;
 }
 
+.h2 {
+  font-size: 1.3rem;
+}
+
+.h3 {
+  font-size: 1.2rem;
+}
+
+.h4 {
+  font-size: 1.1rem;
+}
+
 .h5 {
-  font-size: 1.25rem;
+  font-size: 1rem;
 }
 
 .h6 {
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 .lead {
@@ -2280,28 +2280,28 @@ fieldset[disabled] a.btn {
 
 .btn-primary {
   color: #fff;
-  background-color: #0275d8;
-  border-color: #0275d8;
+  background-color: #125889;
+  border-color: #125889;
 }
 
 .btn-primary:hover {
   color: #fff;
-  background-color: #025aa5;
-  border-color: #01549b;
+  background-color: #1a79bb;
+  border-color: #125889;
 }
 
 .btn-primary:focus, .btn-primary.focus {
   color: #fff;
-  background-color: #025aa5;
-  border-color: #01549b;
+  background-color: #1a79bb;
+  border-color: #125889;
 }
 
 .btn-primary:active, .btn-primary.active,
 .open > .btn-primary.dropdown-toggle {
   color: #fff;
-  background-color: #025aa5;
+  background-color: #125889;
   background-image: none;
-  border-color: #01549b;
+  border-color: #125889;
 }
 
 .btn-primary:active:hover, .btn-primary:active:focus, .btn-primary:active.focus, .btn-primary.active:hover, .btn-primary.active:focus, .btn-primary.active.focus,

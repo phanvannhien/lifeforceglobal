@@ -1,9 +1,17 @@
+a:hover{
+    text-decoration: none;
+}
+
 #main-content{
     margin-top: 10px;
 }
 
+
 .user-menu-top{
     font: normal normal normal 15px/1.4em 'Courier New',courier-ps-w01,courier-ps-w02,courier-ps-w10,monospace;
+}
+.user-menu-top a{
+    color: #333;
 }
 .navbar-nav{
     float:right;
@@ -13,6 +21,7 @@
 }
 .navbar-nav li:last-child a{
     border-right: none;
+    padding-right: 0;
 }
 .navbar-nav li a{
     font-family: 'Courier New',courier-ps-w01,courier-ps-w02,courier-ps-w10,monospace;
@@ -22,8 +31,9 @@
     border-right: 1px solid #2B6CA3;
     color: #2B6CA3;
     transition: color 0.4s ease 0s;
-    padding: 0 20px;
+    padding: 0 17px;
     display: block;
+    font-size: 16px;
 }
 
 .service-item{
@@ -75,7 +85,7 @@
 }
 
 h3.title{
-
+    font-size: 1.7rem;
 }
 span.d-block{
     display: block;
@@ -122,6 +132,49 @@ footer{
 
 .top-banner{
     margin-bottom: 20px;
+   
+}
+
+.parallax-container {
+  position: relative;
+  overflow: hidden;
+  /* height: auto; */
+  margin-bottom: 20px;
+  height: 300px;
+
+}
+.parallax-container .parallax {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+}
+.text-white{
+  color:#FFF;
+}
+.parallax-container .parallax img {
+  max-width: 100%;
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.valign-wrapper {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    /* display: flex; */
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
 }
 
 .pitem{
@@ -151,4 +204,167 @@ footer{
     background: rgba(44, 44, 43, 1);
     color: #FFF;
     border-radius: 0;
+}
+#main-banner{
+    min-height: 450px;
+}
+
+.side-cart{
+    background: #FFF;
+}
+
+.side-cart .heading-cart{
+    text-align: center;
+    background: #2C2C2B;
+    display: block;
+    color: #FFF;
+    padding: 20px 0;
+    font-size: 23px;
+    font-weight: lighter;
+    text-align: center;
+}
+#render-cart{
+    padding: 10px;
+
+}
+.miniCartProduct .miniCartProductThumb{
+    padding-right: 7px;
+}
+.miniCartProduct .miniCartProductThumb img{
+    border: 1px solid #d1d1d1;
+
+}
+
+.miniCartDescription{
+   font-size:14px;
+}
+
+.miniCartFooter{
+    border-top: 1px solid #d1d1d1;
+    padding-top:10px;
+    margin-top: 10px;
+}
+.miniCartFooter h3{
+    font-size: 14px;
+    font-weight:600;
+    text-align: right;
+}
+.abside-cart{
+    border-left: 1px solid #2c2c2b;
+}
+
+.cartTable {
+    border-top: solid 1px #EBEDEF;
+}
+tr.CartProduct {
+    border-bottom: 1px solid #E7E9EC;
+}
+.cartTableHeader {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 14px;
+}
+.cartTableHeader {
+    background: #EBEDEF;
+}
+tr.CartProduct {
+    border-bottom: 1px solid #E7E9EC;
+}
+tr.CartProduct td, tr.CartProduct th {
+    padding: 10px 0;
+    vertical-align: top;
+}
+tr.CartProduct td, tr.CartProduct th {
+    text-align: center;
+}
+.cartFooter {
+    padding: 20px;
+    border-top: solid 1px #eee;
+    background: #EBEDEF;
+    display: inline-block;
+    width: 100%;
+}
+.CartProductThumb a img, .CartProductThumb a img {
+    width: 86px;
+    max-width: 100%;
+}
+.CartDescription h4{
+    font-size: 14px;
+}
+.CartDescription{
+    text-align: left;
+}
+.quanitySniper{
+    text-align:center;
+    border:1px solid #d1d1d1;
+    
+}
+.thumbnail {
+    display: block;
+    padding: 4px;
+    margin-bottom: 20px;
+    line-height: 1.42857143;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    -webkit-transition: border .2s ease-in-out;
+    -o-transition: border .2s ease-in-out;
+    transition: border .2s ease-in-out;
+}
+.myAccountList{
+    list-style:none;
+    margin:0;
+    padding:0;
+    
+}
+.myAccountList .thumbnail {
+    padding: 10px 0 0;
+}
+.myAccountList li a {
+    font-size: 14px;
+    display: block;
+}
+.myAccountList li {
+    text-align: center;
+}
+.myAccountList li a i {
+    display: block;
+    clear: both;
+    font-size: 44px;
+    margin-bottom: 10px;
+}
+
+
+.radio{
+    margin-left: 20px;
+}
+.nav-mobile-container{
+    background: #333 !important;
+}
+
+.nav-mobile{
+    padding: 20px;
+
+}
+.nav-mobile li{
+    border-bottom: 1px solid #666;
+    padding: 10px 0;
+}
+.nav-mobile li a{
+    color: #FFF;
+}
+#loading {
+    background: rgba(255, 255, 255, 0.5);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+}
+#loading img {
+    position: absolute;
+    top: 49%;
+    left: 50%;
+    margin-left: -20px;
 }

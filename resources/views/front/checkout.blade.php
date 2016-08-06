@@ -2,17 +2,11 @@
 @include ('front.nav')
 
 <div class="container main-container headerOffset">
-   <div class="row">
-      <div class="breadcrumbDiv col-lg-12">
-         <ul class="breadcrumb">
-            <li><a href="{{ url('/') }}">Home</a></li>
-            <li class="active"> Checkout</li>
-         </ul>
-      </div>
-   </div>
+   
    <div class="row">
       <div class="col-lg-9 col-md-9 col-sm-7 col-xs-6 col-xxs-12 text-center-xs">
          <h1 class="section-title-inner"><span><i class="glyphicon glyphicon-shopping-cart"></i> Checkout</span></h1>
+         <p>&nbsp;</p>
       </div>
    </div>
    <div class="row">
@@ -26,13 +20,7 @@
                         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                            
                            <div class="panel panel-default">
-                              <div class="panel-heading" role="tab" id="headingOne">
-                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#BillingInformation" aria-expanded="true" aria-controls="BillingInformation">
-                                    Shipping information
-                                    </a>
-                                 </h4>
-                              </div>
+                              
                               <div id="BillingInformation" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="BillingInformation">
                                  <div class="panel-body">
                                    
@@ -40,8 +28,8 @@
                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                        @if (Auth::check())
                                        <input type="hidden" name="checkout_type" value="member_checkout">
-                                       <label class="radio inline">
-                                       <input id="exisitingAddress" type="radio" value="current_address" checked="" name="add"> Use my existing address
+                                       <label class="radio inline form-check-label">
+                                       <input id="exisitingAddress" type="radio" value="current_address" checked="" name="add" class=""> Use my existing address
                                        </label>&nbsp;&nbsp;
                                        <label class="radio inline">
                                        <input id="newAddress" type="radio" value="new_address" name="add"> I want to assign new address
@@ -95,6 +83,7 @@
                                        </div>
                                        @else
                                           <input type="hidden" name="checkout_type" value="guest_checkout">
+                                          <div class="row">
                                           <div class="col-xs-12 col-sm-6">
                                               <div class="form-group required">
                                                   <label for="">Your Name <sup>*</sup> </label>
@@ -152,7 +141,7 @@
                                               </div>
 
                                           </div>
-                                          
+                                          </div>
                                        @endif
                                        <div class="form-group">
                                           <button type="submit" class="btn btn-primary">Submit Checkout</button>
@@ -203,14 +192,14 @@
 
     $(document).ready(function () {
 
-        $('input#newAddress').on('ifChanged', function (event) {
+        $('input#newAddress').on('change', function (event) {
             //alert(event.type + ' callback');
             $('#newBillingAddressBox').collapse("show");
             $('#exisitingAddressBox').collapse("hide");
 
         });
 
-        $('input#exisitingAddress').on('ifChanged', function (event) {
+        $('input#exisitingAddress').on('change', function (event) {
             //alert(event.type + ' callback');
             $('#newBillingAddressBox').collapse("hide");
             $('#exisitingAddressBox').collapse("show");

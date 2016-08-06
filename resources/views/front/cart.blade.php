@@ -1,24 +1,10 @@
 @include ('front.includes.header')
 @include ('front.nav')
 <?php $total = 0 ?>
-<div class="container main-container headerOffset">
-	<div class="row">
-		<div class="breadcrumbDiv col-lg-12">
-			<ul class="breadcrumb">
-			<li><a href="/">Home</a></li>
-			<li class="active">Cart</li>
-			</ul>
-		</div>
-	</div>
+<div class="container main-container">
+	
+	<h1 class="section-title-inner"><span><i class="glyphicon glyphicon-shopping-cart"></i> My Cart </span></h1>
 
-	<div class="row">
-	   <div class="col-lg-9 col-md-9 col-sm-7 col-xs-6 col-xxs-12 text-center-xs">
-	      <h1 class="section-title-inner"><span><i class="glyphicon glyphicon-shopping-cart"></i> Cart </span></h1>
-	   </div>
-	   <div class="col-lg-3 col-md-3 col-sm-5 rightSidebar col-xs-6 col-xxs-12 text-center-xs">
-	      <h4 class="caps"><a href="javascript:void(0)" onclick="window.history.back()"><i class="fa fa-chevron-left"></i> Back to shopping </a></h4>
-	   </div>
-	</div>
 	<div class="row">
 	   <div class="col-lg-9 col-md-9 col-sm-7">
 	      <div class="row userInfo">
@@ -32,15 +18,14 @@
 		                  <tbody>
 		                     <tr class="CartProduct cartTableHeader">
 		                        <td style="width:15%">Product</td>
-		                        <td style="width:40%">Details</td>
-		                        <td style="width:10%" class="delete">&nbsp;</td>
+		                        <td style="width:50%">Details</td>
 		                        <td style="width:10%">QNT</td>
 		                        <td style="width:10%">Discount</td>
 		                        <td style="width:15%">Total</td>
 		                     </tr>
 		                     
 		                     @foreach($cart as $item)
-
+								
 		                     <tr class="CartProduct">
 		                        <td class="CartProductThumb">
 		                           <div><a href="{{ route('front.product',[ $item->id, Str::slug($item->name)] ) }}">
@@ -49,19 +34,18 @@
 		                        <td>
 		                           <div class="CartDescription">
 		                              <h4><a href="{{ route('front.product',[ $item->id, Str::slug($item->name)] ) }}">{{ $item->name }} </a></h4>
-		                              <div class="price"><span>{{ $item->price }}</span></div>
+		                              <div class="price"><span>{{ PriceHelper::formatPrice($item->price) }}</span></div>
+		                              <a href="{{ route('front.cart.delete',$item->rowid) }}" title="Delete"> <i class="fa fa-remove"></i></a>
 		                           </div>
 		                        </td>
-		                        <td class="delete">
-		                        	<a href="{{ route('front.cart.delete',$item->rowid) }}" title="Delete"> <i class="glyphicon glyphicon-trash fa-2x"></i></a>
-		                        </td>
+		                       
 		                        <td>
-		                        	<input class="quanitySniper" type="text" value="{{ $item->qty }}" name="qty[{{$item->rowid}}]">
+		                        	<input class="quanitySniper" min="1" max="100" type="number" value="{{ $item->qty }}" name="qty[{{$item->rowid}}]">
 		                        </td>
 		                        <td>0</td>
-		                        <td class="price">{{ $item->price * $item->qty }}</td>
+		                        <td class="price">{{ PriceHelper::formatPrice($item->price * $item->qty) }}</td>
 		                     </tr>
-		                      <?php $total += $item->price * $item->qty ?>
+		                      <?php PriceHelper::formatPrice($total += $item->price * $item->qty) ?>
 		               		@endforeach
 		                     
 		                  </tbody>
@@ -93,9 +77,9 @@
 	               	<a class="btn btn-primary btn-lg btn-block " title="checkout" 
 	               		href="{{ route('front.checkout') }}" style="margin-bottom:20px"> 
 	               	@if (Auth::check())	
-	               		Proceed to checkout &nbsp; 
+	               		Checkout &nbsp; 
 					@else
-						Checkout as Guest &nbsp; 
+						Guest checkout &nbsp; 
 					@endif
 	                <i class="fa fa-arrow-right"></i> </a>
 					
@@ -105,7 +89,7 @@
 	                     <tbody>
 	                        <tr>
 	                           <td>Total products</td>
-	                           <td class="price">{{ $total }}</td>
+	                           <td class="price">{{ PriceHelper::formatPrice($total) }}</td>
 	                        </tr>
 	                        <tr style="">
 
@@ -114,7 +98,7 @@
 
 	                        <tr>
 	                           <td> Total</td>
-	                           <td class=" site-color" id="total-price">{{ $total + 10 }}</td>
+	                           <td class=" site-color" id="total-price">{{ PriceHelper::formatPrice($total + 10) }}</td>
 	                        </tr>
 	                        <!--
 	                        <tr>

@@ -2,20 +2,14 @@
 @include ('front.includes.header')
 @include ('front.nav')
 <div class="container main-container headerOffset">
-	<div class="row">
-	<div class="breadcrumbDiv col-lg-12">
-	<ul class="breadcrumb">
-	<li><a href="/"> Home </a></li>
-	<li class="active"> Forgot your password</li>
-	</ul>
-	</div>
-	</div>
+	
 
 	@include('front.partials.message')
 
 	<div class="row">
-		<div class="col-lg-9 col-md-9 col-sm-7">
+		<div class="col-lg-12 col-md-12 col-sm-12">
 			<h1 class="section-title-inner"><span> <i class="fa fa-unlock-alt"> </i> Forgot your password? </span></h1>
+			<p>&nbsp;</p>
 			<div class="row userInfo">
 				<div class="col-xs-12 col-sm-12">
 				<p> To reset your password, enter the email address you use to sign in to site. We will then send

@@ -1,21 +1,14 @@
 @include ('front.includes.header')
 @include ('front.nav')
 <div class="container main-container headerOffset">
-   <div class="row">
-      <div class="breadcrumbDiv col-lg-12">
-         <ul class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li class="active"> My Address</li>
-         </ul>
-      </div>
-   </div>
+  
    <div class="row">
       <div class="col-sm-12">
-         <h1 class="section-title-inner"><span><i class="fa fa-map-marker"></i> My addresses </span></h1>
+         <h2 class="section-title-inner"><span><i class="fa fa-map-marker"></i> My addresses </span></h2>
          @include ('front.partials.message')
+         <p>&nbsp;</p>
          <div class="row userInfo">
             <div class="col-lg-12">
-               <h2 class="block-title-2"> Your addresses are listed below. </h2>
                <p> Be sure to update your personal information if it has changed.</p>
             </div>
              <div class="col-lg-12">

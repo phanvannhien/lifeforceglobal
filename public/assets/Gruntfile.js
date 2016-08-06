@@ -25,6 +25,20 @@ module.exports = function(grunt) {
 
 module.exports = function(grunt) {
  grunt.initConfig({
+   sass: {
+      dist: {
+        files: {
+          'style.css' : 'scss/bootstrap.scss'
+        }
+      }
+    },
+    watch: {
+      css: {
+        files: '*.scss',
+        tasks: ['sass']
+      }
+    }
+    /*
      concat: {
         gopcss: {
            src: [
@@ -38,6 +52,7 @@ module.exports = function(grunt) {
            src: [
               'js/jquery/jquery-1.10.1.min.js',
               'js/bootstrap.min.js',
+              'main.js'
               
            ],
            dest: 'app.js'
@@ -55,12 +70,16 @@ module.exports = function(grunt) {
            src: 'app.js',
            dest: 'app.min.js',
         }
-     }
+     }*/
  });
+  
+ grunt.loadNpmTasks('grunt-contrib-sass');
+ grunt.loadNpmTasks('grunt-contrib-watch');
+ grunt.registerTask('default',['sass','watch']);
 
- grunt.loadNpmTasks('grunt-contrib-concat');
- grunt.loadNpmTasks('grunt-contrib-cssmin');
- grunt.loadNpmTasks('grunt-contrib-uglify');
-
- grunt.registerTask('default', ['concat', 'cssmin', 'uglify']);
+  
+ //grunt.loadNpmTasks('grunt-contrib-concat');
+ //grunt.loadNpmTasks('grunt-contrib-cssmin');
+ //grunt.loadNpmTasks('grunt-contrib-uglify');
+ //grunt.registerTask('default', ['concat', 'cssmin', 'uglify']);
 };

@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon-precomposed" href="{{ url('ico/apple-touch-icon-57-precomposed.png') }}">
 <link rel="shortcut icon" href="{{ url('assets/ico/favicon.png') }}">
 <link href="{{ url('assets/fonts/font-awesome-4.6.3/css/font-awesome.min.css') }}" rel="stylesheet">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,700italic&subset=latin,vietnamese,greek,cyrillic' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,700italic&subset=latin,vietnamese,greek,cyrillic' rel='stylesheet' type='text/css'>
 <link href="{{ url('assets/style.css') }}" rel="stylesheet">
 <link href="{{ url('assets/common.css') }}" rel="stylesheet">
 
@@ -26,7 +26,8 @@
 @endif
 @yield('head.script')
 </head>
-
 <body>
 @include('front.partials.login')
 @include('front.partials.register')
+<div canvas="container" id="page-site">
+

@@ -14,6 +14,7 @@ class CartController extends Controller
 {
     //
    public function cart(Request $request) {
+
        if ($request->isMethod('post')) {
            $product_id = $request->input('product_id');
            $product = DB::table('product')->where('id',$product_id)->first();
@@ -27,8 +28,11 @@ class CartController extends Controller
                 'price' => $price ));
            }
            
-       }
-
+      }
+      if( $request->ajax() ){
+        return response()->json( array('status' => true) ) ;
+        
+      }
 
        return redirect()->back();
    }
@@ -36,7 +40,11 @@ class CartController extends Controller
    
 
 
-   public function getCart(){
+   public function getCart(Request $request){
+      if( $request->ajax() ){
+        $cart = Cart::content();
+        return view('front.renders.cart', array('cart' => $cart)); 
+      }
    		$cart = Cart::content();
    		return view('front.cart', array('cart' => $cart)); 
    }

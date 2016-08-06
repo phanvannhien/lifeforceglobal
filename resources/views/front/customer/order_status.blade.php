@@ -2,58 +2,38 @@
 @include ('front.nav')
 
 <div class="container main-container headerOffset">
+
    <div class="row">
-      <div class="breadcrumbDiv col-lg-12">
-         <ul class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li class="active"> Order List</li>
-         </ul>
-      </div>
-   </div>
-   <div class="row">
-      <div class="col-lg-9 col-md-9 col-sm-7">
-         <h1 class="section-title-inner"><span><i class="fa fa-list-alt"></i> Order Status </span></h1>
+      <div class="col-lg-12 col-md-12 col-sm-12">
+         <h2 class="section-title-inner"><span><i class="fa fa-list-alt"></i> Order Status </span></h2>
          <div class="row userInfo">
-            <div class="col-lg-12">
-               <h2 class="block-title-2"> Your Order Status </h2>
-            </div>
+
             <div class="statusContent">
                <div class="col-sm-12">
                   <div class=" statusTop">
                      <p><strong>Status:</strong> {{ $order->status }}</p>
                      <p><strong>Order Date:</strong> {{ $order->created_at }}</p>
                      <p><strong>Order Number:</strong> {{ $order->id }} </p>
-                  </div>
-               </div>
-             
-               <div class="col-sm-12">
-                  <div class="order-box">
-                     <div class="order-box-header">
-                        Shipping Address
-                     </div>
-                     <div class="order-box-content">
-                        <div class="address">
-                           <div class="adr">
-                              {{ $order->address }}
-                           </div>
-                        </div>
-                     </div>
+                     <p><strong>Shipping Address:</strong> {{ $order->address }} </p>
                   </div>
                </div>
  
                <div class="col-sm-12 clearfix">
                   <div class="order-box">
                      <div class="order-box-header">
-                        Order Items
+                        <p>&nbsp;</p>
+                        <h3>Order Items</h3>
                      </div>
                      <div class="order-box-content">
                         <div class="table-responsive">
-                           <table class="order-details-cart">
+                           <table class="table table-tripped order-details-cart">
                               <tbody>
                               	@foreach ($order->details as $item )
+                                   
                                  <tr class="cartProduct">
                                     <td class="cartProductThumb" style="width:20%">
-                                       <div><a href=""> <img alt="img" src="{{ Image::url(ProductHelper::getThumbnail($item->product_id),285,380,array('crop')) }}">
+                                       <div><a href="">
+                                             <img alt="img" src="{{ Image::url(ProductHelper::getThumbnail($item->id),80,100,array('crop')) }}">
                                           </a>
                                        </div>
                                     </td>

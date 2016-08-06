@@ -73,7 +73,7 @@ class UserController extends Controller
             if (Auth::attempt($authData))
             {
                 CustomerHelper::reduceCart();
-                return back();
+                return redirect('/');
             }
         }
 
@@ -92,6 +92,7 @@ class UserController extends Controller
     public function register(Request $request){
     	$userReferalID = '';
     	//Validate Email
+        $userCode = '';
     	if (filter_var($request->input('email'), FILTER_VALIDATE_EMAIL) === false) {
     		return response()->json(array('success'=> false, 'msg' => "Email wrong format!"));
     	}
@@ -108,7 +109,7 @@ class UserController extends Controller
             if ( count($userFind) <= 0 ){
                 return response()->json(array('success'=> false, 'msg' => "User Referal Code not found"));
             }else{
-                $userReferalID = $userFind->id;
+                $userCode = $userFind->membership_number;
             }
 
         }
@@ -118,7 +119,7 @@ class UserController extends Controller
         $userCreated->email =  $request->input('email');
         $userCreated->password = Hash::make($request->input('password'));
         $userCreated->user_code = str_random(32);
-        $userCreated->membership_number = User::getUserCode($userReferalID,$request->input('user_city'));
+        $userCreated->membership_number = User::getUserCode($userCode,$request->input('user_city'));
         $userCreated->user_role = 'OM';
         $userCreated->user_refferal = $request->input('user_refferal');
         $userCreated->registration_date = date('Y-m-d H:s:i');
@@ -352,9 +353,15 @@ class UserController extends Controller
 
         $user = DB::table('users')->get();
         $members = User::getUplineMembers($user, Auth::user()->user_code);
-        $members = array_values(array_sort($members, function ($value) {
-            return $value->user_level;
-        }));
+        if( count($members) > 0){
+            $members = array_values(array_sort($members, function ($value) {
+                return $value->user_level;
+            }));
+        }else{
+            $members = DB::table('users')->where('id',Auth::user()->id)->get();
+
+        }
+
         
         $date['startDate'] = date('Y-m-01');
         $date['endDate'] = date('Y-m-d');

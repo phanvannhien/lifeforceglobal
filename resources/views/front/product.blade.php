@@ -19,10 +19,15 @@
    <div class="row transitionfx">
       <div class="col-lg-7 col-md-6 col-sm-6">
          <div class="main-image sp-wrap col-lg-12 no-padding">
-            <?php $gallery = explode(',', $product->product_images); ?>
-            @if (count ($gallery) > 0)
-                 <img src="{{ Image::url($gallery[0],500,500,array('crop')) }}" class="img-responsive" alt="img">
-            @endif
+             <?php
+             $thumb = url('images/no-image.png');
+             if( $product->product_thumbnail != ''){
+                 $media = \App\Models\Medias::find($product->product_thumbnail);
+                 $thumb = $media->file_url;
+             }
+             ?>
+
+             <img src="{{ Image::url($thumb,500,500,array('crop')) }}" class="img-fluid" alt="img">
          </div>
       </div>
       <div class="col-lg-5 col-md-6 col-sm-5">
@@ -39,42 +44,26 @@
          <div class="details-description">
             <p>{{$product->product_sort_description}}</p>
          </div>
-         <form action="{{ route('front.cart') }}" method="post" >
+         <a href="{{ url($product->download_file) }}">Click here to download File ( PDF )</a>
+        <p>&nbsp;</p>
+
+         <form action="{{ route('front.cart') }}" method="post" class="form-inline">
             <input type="hidden" name="product_id" value="{{ $product->id }}">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <div class="productFilter productFilterLook2">
-               <div class="row">
-                  <div class="col-lg-6 col-sm-6 col-xs-6">
-                     <div class="filterBox">
-                        <select name="qty" class="form-control">
-                           @for ($i = 1; $i <= 10 ;$i++)
-                           <option value="{{ $i }}">{{$i}}</option>
-                           @endfor
-                        </select>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <button onclick="" class="btn btn-block btn-cart cart first" title="Add to Cart" type="submit">Add
+            <select id="qty" name="qty" class="form-control">
+               @for ($i = 1; $i <= 10 ;$i++)
+               <option value="{{ $i }}">{{$i}}</option>
+               @endfor
+            </select>
+             @if ( Site::getConfig('ajax_cart') == 'True')
+               <a href="#" onclick="addcart(this)" class="addcart-ajax btn btn-primary"><span class="add2cart"><i class="fa fa-cart"> </i> Add to cart </span></a>
+             @else
+            <button onclick="" class="btn btn-primary btn-cart cart first" title="Add to Cart" type="submit">Add
                to Cart
             </button>
+             @endif
          </form>
-        
-
-         <div class="clear"></div>
-         <div class="product-tab w100 clearfix">
-            <ul class="nav nav-tabs">
-               <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
-               <li class=""><a href="#download-file" data-toggle="tab">Download File</a></li>
-            </ul>
-            <div class="tab-content">
-
-               <div class="tab-pane" id="download-file">
-                     <a href="{{ url($product->download_file) }}">Click here to download File ( PDF )</a>
-
-               </div>
-            </div>
-         </div>
+          <p>&nbsp;</p>
          <div style="clear:both"></div>
          <div class="product-share clearfix">
             <?php $product_url = route('front.product',array( $product->id,  Str::slug($product->product_name)) ) ?>

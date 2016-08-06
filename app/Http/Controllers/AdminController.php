@@ -143,7 +143,10 @@ class AdminController extends Controller
 	}
 
     public function createProduct(){
-    	return view('back.products.create');
+        $product = new Products();
+        $product->status = 0;
+        $product->save();
+    	return redirect()->route('back.product.edit',$product->id);
     }
 
     public function saveProduct(Request $request){
@@ -174,13 +177,13 @@ class AdminController extends Controller
     }
 
     public function editProduct($id){
-        return view('back.products.edit',array('product' => DB::table('product')->where('id',$id)->first()) );
+        //$product = Products::find($id);
+        //dd($product->media()->get());
+        return view('back.products.edit',array('product' => Products::find($id) ));
     }
 
     public function updateProduct(Request $request, $id){
-        $gallery = implode( array_filter($request->input('product_images')), ',');
-
-
+  
         $id = $request->input('id');
 
         $updated = DB::table('product')
@@ -196,7 +199,6 @@ class AdminController extends Controller
                     'price_discount' => $request->input('price_discount'),
                     'download_file' => $request->input('download_file'),
                     'product_thumbnail' => $request->input('product_thumbnail'),
-                    'product_images' => $gallery,
                     'category_id' => $request->input('category_id'),
                     'created_at' => date('Y-m-d H:s:i')
                 )

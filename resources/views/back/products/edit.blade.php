@@ -1,16 +1,12 @@
 @extends('back.master')
 @section('content')
-
-
 <!-- =============================================== -->
-
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
       Edit product : {{ $product->product_name }}
-      <small>it all starts here</small>
       <a class="btn btn-success" href="{{ route('back.product.create') }}">Create new</a>
     </h1>
     <ol class="breadcrumb">
@@ -32,10 +28,6 @@
     <div class="box">
       <div class="box-header with-border">
         <h3 class="box-title">Product</h3>
-        <div class="box-tools pull-right">
-          <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
-          <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
-        </div>
       </div>
       <div class="box-body">
        	<form action="{{ route('back.product.update',$product->id) }}" method="post">
@@ -75,65 +67,50 @@
 		            <label for="">Product Discount (Member Only) </label>
 		            <input type="text" class="form-control" id="" name="price_discount" placeholder="" value="{{ $product->price_discount }}">
 	            </div>
+				<?php
+				$fileDownload = '';
+				if($product->download_file != ''){
+					$media = \App\Models\Medias::find($product->download_file);
+					$fileDownload = $media->file_url;
+				}
 
+				?>
 	            <div class="form-group">
 		            <label for="">Download File </label>
-					<div class="input-group">
-	                  <span class="input-group-btn">
-	                    <a id="lfm-file-download" data-input="download-file"class="btn btn-primary">
-	                      <i class="fa fa-picture-o"></i> Choose File
-	                    </a>
-	                  </span>
-	                  <input id="download-file" class="form-control" type="text" name="download_file" value="{{ $product->download_file }}">
-	                </div>
-
+                    (<span class="text-muted">PDF file and 5Mb available</span>)
+					<p class="fileinput fileinput-new" data-provides="fileinput">
+						<input type="hidden" value="{{ $product->download_file  }}" name="download_file">
+                        <input type="text" disabled value="{{ $fileDownload  }}" name="download_file_url" class="form-control">
+                        <br>
+						<span class="btn green btn-primary">
+						<span class="fileinput-new"> Select File</span>
+						<input data-type="pdf" data-pid="{{ $product->id }}" class="uploadfile" type="file" name="fileupload">
+						</span>
+					</p>
 	            </div>
+                <?php
+					$thumbUrl = '';
+					if($product->product_thumbnail != ''){
+						$media = \App\Models\Medias::find($product->product_thumbnail);
+						$thumbUrl = $media->file_url;
+					}
 
+                ?>
 	            <div class="form-group">
-		            <label for="">Thumnail</label>
-		            <div class="input-group">
-	                  <span class="input-group-btn">
-	                    <a id="lfm-thumbnail" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
-	                      <i class="fa fa-picture-o"></i> Choose Image
-	                    </a>
-	                  </span>
-	                  <input id="thumbnail" class="form-control" type="text" name="product_thumbnail" value="{{ $product->product_thumbnail }}">
-	                </div>
-	                <img id="holder" src="{{ url( $product->product_thumbnail ) }}" style="margin-top:15px;max-height:100px;">
+		            <label for="">Thumbnail</label>
+                    (<span for="" class="text-muted">Image file and 2Mb available</span>)
+					<p class="fileinput fileinput-new" data-provides="fileinput">
+                        <input type="hidden" value="{{ $product->product_thumbnail  }}" name="product_thumbnail">
+						<span class="btn green btn-primary">
+						<span class="fileinput-new"> Select File </span>
+						<input data-type="thumbnail" data-pid="{{ $product->id }}" class="uploadfile" type="file" name="fileupload">
+                        <div class="holder">
+                            <img src="{{ $thumbUrl }}" style="margin-top:15px;max-height:100px;">
+                        </div>
 
-	            </div>
+						</span>
+					</p>
 
-	            <div class="panel panel-primary">
-	            	<div class="panel-body">
-					<?php
-						
-						$gallery = explode(',', $product->product_images);
-
-					?>
-					
-					@if (count ($gallery) > 0)
-						@for ($i = 1; $i <= 3 ; $i++)
-							<?php $img = ''; ?>
-							@if ( isset($gallery[$i-1]) )
-								<?php $img = $gallery[$i-1] ?>
-							@endif
-			            <div class="form-group">
-				            <label for="">Images {{$i}}</label>
-				            <div class="input-group">
-			                  <span class="input-group-btn">
-			                    <a id="lfm-gallery{{$i}}" data-input="gallery{{$i}}" data-preview="gallery-holder{{$i}}" class="btn btn-primary gallery">
-			                      <i class="fa fa-picture-o"></i> Choose Image
-			                    </a>
-			                  </span>
-			                  <input id="gallery{{$i}}" class="form-control" type="text" value="{{ $img }}" name="product_images[]">
-
-			                </div>
-							<img id="gallery-holder{{$i}}" src="{{ $img }}" style="margin-top:15px;max-height:100px;">
-			            </div>
-			           
-						@endfor
-					@endif
-					</div>
 	            </div>
 
 	         </div>
@@ -150,23 +127,45 @@
 @endsection
 
 @section('footer')
-<script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
-<script src="/vendor/unisharp/laravel-ckeditor/adapters/jquery.js"></script>
-<script src="/vendor/laravel-filemanager/js/lfm.js"></script>
+	<script>
+		$("input.uploadfile").change(function(){
+            var that = this;
+			var file = that.files[0];
+			var formData = new FormData();
+			formData.append('formData', file);
+            formData.append('type', $(that).data('type'));
+            formData.append('pid', $(that).data('pid'));
+			$.ajax({
+				url: '/admin/ajax/uploadfile',  //Server script to process data
+				type: 'POST',
+				headers: {
+					'X-CSRF-TOKEN': '{{ csrf_token() }}'
+				},
+				data: formData,
+				contentType: false,
+				processData: false,
+				//Ajax events
+				success: function(data){
+                    console.log(data);
+					if(data.success ){
+                        if(data.ext =='thumbnail'){
+                            var img = $('<img/>').attr('src',data.file).attr('width','100');
+                            $('.holder').html(img);
+                            $('input[name=product_thumbnail]').val(data.mid);
+                        }else{
+                            $('input[name=download_file]').val(data.mid);
+							$('input[name=download_file_url]').val(data.file);
+                        }
 
-<script>
-	$('textarea#product-description').ckeditor({
-		filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
-		filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token={{csrf_token()}}',
-		filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
-		filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token={{csrf_token()}}'
-	});
-	$('#lfm-file-download').filemanager('file');
-	@for( $i = 1; $i <=3 ; $i++ )
-		$('#lfm-gallery{{$i}}').filemanager('image');
-	@endfor
-	
-	$('#lfm-thumbnail').filemanager('image');
-	
-</script>
+					}else{
+                        alert(data.msg);
+					}
+
+				}
+			});
+		})
+
+
+	</script>
+
 @endsection

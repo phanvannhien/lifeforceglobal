@@ -130,8 +130,9 @@ Route::group(
         'prefix' => 'admin'
     ),function () {
 
-        Route::get('/',array('as'=>'back.admin.dashboard', 'uses' => 'AdminController@adminDashboard'));
 
+        Route::get('/',array('as'=>'back.admin.dashboard', 'uses' => 'AdminController@adminDashboard'));
+        Route::post('ajax/uploadfile',array('as'=>'back.admin.upload', 'uses' => 'MediaController@uploadFile'));
         // Categories
 
         Route::get('product/categories',array('as'=>'back.categories', 'uses' => 'AdminController@categories'));

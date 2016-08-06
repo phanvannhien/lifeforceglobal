@@ -23,7 +23,7 @@
 
 		</div>
 		<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
-			<img src="{{url('images/aboutus.png')}}" alt="">
+			<img class="img-fluid" src="{{url('images/aboutus.png')}}" alt="">
 		</div>
 	</div>
  

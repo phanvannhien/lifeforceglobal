@@ -56,6 +56,9 @@
          </div>
       </div>
    </div>
+   <div class="text-xs-center">
+      <img src="{{ url('images/contact-us.gif') }}" alt="">
+   </div>
 </div>
 
 

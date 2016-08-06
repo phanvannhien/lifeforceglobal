@@ -82,7 +82,14 @@
               @endforeach
             @else
               <tr>
-                <td colspan="7"> No data </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
               </tr>
             @endif  
             </tbody>

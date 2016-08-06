@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Products;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Models\Medias;
+use Validator;
+use Image;
 
 class MediaController extends Controller
 {
@@ -13,6 +17,64 @@ class MediaController extends Controller
     public function remmove(){
     	
     }
+
+	public function uploadFile(Request $request){
+
+		$file = $request->file('formData');
+		$fileValid = array('file' => $file);
+		// setting up rules
+		if ($request->input('type') == 'pdf'){
+			$rules = array('file' => 'required|max:50000|mimes:pdf'); //mimes:jpeg,bmp,png and for max size max:10000
+		}else{
+			$rules = array('file' => 'required|max:20000|mimes:jpeg,jpg,png'); //mimes:jpeg,bmp,png and for max size max:10000
+		}
+
+		// doing the validation, passing post data, rules and the messages
+		$validator = Validator::make($fileValid, $rules);
+		if ($validator->fails()) {
+			// send back to the page with the input data and errors
+			return response()->json(array('success' => false,'msg' => 'Wrong format image file or filesize'));
+		}
+		else {
+			// checking file is valid.
+			$fileExtension = $file->getClientMimeType();
+			$destinationPath = 'uploads/'; // upload path
+			$fileName = time().$file->getClientOriginalName(); // getting image extension
+			$file->move($destinationPath, $fileName); // uploading file to given path
+			// sending back with message
+
+			if( $fileExtension != 'pdf'){
+				//$image_resize = Image::make($destinationPath.$fileName);
+				//$image_resize->resize(150, 150)->save();
+			}
+
+			// Store database
+			$media = new Medias();
+			$media->file_name = $fileName;
+			$media->file_type = $request->input('type');
+			$media->file_url = url($destinationPath.$fileName);
+			$media->file_size = $file->getClientSize();
+			$media->save();
+
+			// Save to product
+
+			$product = Products::find($request->input('pid'));
+			if( $request->input('type') == 'pdf' ){
+				$product->download_file = $media->id;
+			}else{
+				$product->product_thumbnail = $media->id;
+			}
+			$product->save();
+
+			return response()->json(array(
+				'success' => true,
+				'file' => $media->file_url,
+				'mid' => $media->id,
+				'ext' => $media->file_type
+			));
+		}
+
+	}
 
     public function upload(){
 		if( Input::hasFile('file') ) {
@@ -88,9 +150,11 @@ class MediaController extends Controller
 			// Save ads images
 			$current_ads->save();
 			return response()->json(
-				['success' => true, 
-				'msg' => array('alert'=>$msg),
-				'file' => $arr_fileupload_msg
+				[
+					'success' => true,
+					'msg' => array('alert'=>$msg),
+					'file' => $arr_fileupload_msg,
+
 				]);
 		   
 		} else {

@@ -7,22 +7,13 @@
 @include ('front.includes.header')
 @include ('front.nav')
 <div class="container main-container headerOffset">
+    
     <div class="row">
-        <div class="breadcrumbDiv col-lg-12">
-            <ul class="breadcrumb">
-                <li><a href="/">Home</a>
-                </li>
-                </li>
-                <li class="active"> Order List</li>
-            </ul>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-9 col-md-9 col-sm-7">
-            <h1 class="section-title-inner"><span><i class="fa fa-list-alt"></i> Order List </span></h1>
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <h2 class="section-title-inner"><span><i class="fa fa-list-alt"></i> Order List </span></h2>
             <div class="row userInfo">
                 <div class="col-lg-12">
-                    <h2 class="block-title-2"> Your Order List </h2>
+                   
                     <form action="" class="form-inline pull-right" method="post">
                         <input type="hidden" value="{{ csrf_token()  }}" name="_token">
                         <div class="form-group">
@@ -66,8 +57,6 @@
                                 </td>
                                 <td><a href="{{ route('front.order.status',$order->id) }}" class="btn btn-primary btn-sm">view</a>
                                 </td>
-                                
-                                
                             </tr>
                             @endforeach
                         </tbody>

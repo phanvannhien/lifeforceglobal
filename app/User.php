@@ -61,28 +61,17 @@ class User extends Authenticatable
         return $currentNumberUser;
     }
 
-    public static function getUserCode( $userReferalID, $userCity ){
-      
-        $uplineCode = '';
-        if($userReferalID != ''){
-            if( $userReferalID < 10 ){
-                $uplineCode = '0000'.$userReferalID;
-            }elseif ( $userReferalID < 100 ){
-                $uplineCode = '000'.$userReferalID;
-            }elseif ( $userReferalID < 1000 ){
-                $uplineCode = '00'.$userReferalID;
-            }elseif( $userReferalID < 10000 ){
-                $uplineCode = '0'.$userReferalID;
-            }
-        } else{
-            $uplineCode = '00000';
+    public static function getUserCode( $userCode, $userCity ){
+        $uplineCode = '00000';
+        if ($userCode != ''){
+            $uplineCode = substr($userCode,3,5);
         }
-        
         return self::USER_DEFAULT_ROLE.'-'.self::getMembersNumber().'-'.$uplineCode.'-'.$userCity;
     }
 
 
     public static function getUplineMembers( $rows, $userCode , &$result = array() ){
+        if($rows)
         foreach ($rows as $row) {
             # code...
             if( $row->user_refferal == $userCode ){
