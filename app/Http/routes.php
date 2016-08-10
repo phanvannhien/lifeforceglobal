@@ -129,29 +129,26 @@ Route::group(
         'middleware' => ['web','auth','admin'],
         'prefix' => 'admin'
     ),function () {
-
-
+            
+      
         Route::get('/',array('as'=>'back.admin.dashboard', 'uses' => 'AdminController@adminDashboard'));
         Route::post('ajax/uploadfile',array('as'=>'back.admin.upload', 'uses' => 'MediaController@uploadFile'));
+        Route::post('ajax/category/uploadfile',array('as'=>'back.categories.upload', 'uses' => 'MediaController@categoriesUpload'));
         // Categories
-
         Route::get('product/categories',array('as'=>'back.categories', 'uses' => 'AdminController@categories'));
         Route::get('product/categories/create',array('as'=>'back.categories.create', 'uses' => 'AdminController@categoriesCreate'));
-        Route::post('product/categories/create',array('as'=>'back.categories.save', 'uses' => 'AdminController@categoriesSave'));
         Route::get('product/categories/edit/{id}',array('as'=>'back.categories.edit', 'uses' => 'AdminController@categoriesEdit'));
         Route::post('product/categories/edit/{id}',array('as'=>'back.categories.update', 'uses' => 'AdminController@categoriesUpdate'));
-
+        Route::post('product/categories/delete/{id}',array('as'=>'back.categories.delete', 'uses' => 'AdminController@categoriesDelete'));
 
         // Product
         Route::get('product/create',array('as'=>'back.product.create', 'uses' => 'AdminController@createProduct'));
-        Route::post('product/create',array('as'=>'back.product.save', 'uses' => 'AdminController@saveProduct'));
         Route::get('product',array('as'=>'back.product', 'uses' => 'AdminController@allProduct'));
         Route::get('product/{id}',array('as'=>'back.product.edit', 'uses' => 'AdminController@editProduct'));
         Route::post('product/{id}',array('as'=>'back.product.update', 'uses' => 'AdminController@updateProduct'));
         Route::get('product/delete/{id}',array('as'=>'back.product.delete', 'uses' => 'AdminController@deleteProduct'));
         
         // Users
-
         Route::get('users',array('as'=>'back.users', 'uses' => 'AdminController@allUsers'));
         Route::post('users',array('as'=>'back.users.post', 'uses' => 'AdminController@allUsers'));
         Route::get('users/create',array('as'=>'back.users.create', 'uses' => 'AdminController@createUsers'));
@@ -159,7 +156,6 @@ Route::group(
         Route::get('users/edit/{id}',array('as'=>'back.users.edit', 'uses' => 'AdminController@editUsers'));
         Route::post('users/edit/{id}',array('as'=>'back.users.edit.save', 'uses' => 'AdminController@updateUsers'));
         Route::get('users/delete/{id}',array('as'=>'back.users.delete', 'uses' => 'AdminController@deleteUsers'));
-
         Route::get('users/active/{id}',array('as'=>'back.users.active', 'uses' => 'AdminController@activeUsers'));
 
         // Orders
@@ -175,8 +171,8 @@ Route::group(
         
         // Report
         Route::get('reportation/wm',array('as'=>'back.report', 'uses' => 'ReportController@reportboard'));
-        //Route::get('reportation',array('as'=>'back.report.post', 'uses' => 'ReportController@getReport'));
-
+        Route::get('user/commission/{id}',array('as'=>'back.users.commission', 'uses' => 'AdminController@userCommission'));
+        Route::post('user/commission/{id}',array('as'=>'back.users.commission.post', 'uses' => 'AdminController@userCommission'));
     });
 
 

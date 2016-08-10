@@ -47,7 +47,13 @@
        			@foreach( $products as $product)
 				<tr>
        				<td>{{ $product->product_name }}</td>
-       				<td></td>
+       				<td>
+                        @if( $product->category_id != 0 )
+                            <?php echo $product->category->category_name ?>
+                        @else
+                            No category
+                        @endif
+                    </td>
               <td>{{ PriceHelper::formatPrice($product->price_RPP) }}</td>
        				<td>{{ PriceHelper::formatPrice($product->price_discount) }}</td>
        				<td>

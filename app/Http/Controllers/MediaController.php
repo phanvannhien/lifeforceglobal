@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Models\Medias;
+use App\Models\Categories;
 use Validator;
 use Image;
+
 
 class MediaController extends Controller
 {
@@ -16,6 +18,48 @@ class MediaController extends Controller
 
     public function remmove(){
     	
+    }
+
+
+    public function categoriesUpload(Request $request){
+    	$file = $request->file('formData');
+		$fileValid = array('file' => $file);
+		$rules = array('file' => 'required|max:20000|mimes:jpeg,jpg,png'); 
+		// doing the validation, passing post data, rules and the messages
+		$validator = Validator::make($fileValid, $rules);
+		if ($validator->fails()) {
+			// send back to the page with the input data and errors
+			return response()->json(array('success' => false,'msg' => 'Wrong format image file or filesize'));
+		}
+		else {
+			// checking file is valid.
+			$fileExtension = $file->getClientMimeType();
+			$destinationPath = 'uploads/'; // upload path
+			$fileName = time().$file->getClientOriginalName(); // getting image extension
+			$file->move($destinationPath, $fileName); // uploading file to given path
+			// sending back with message
+
+			// Store database
+			$media = new Medias();
+			$media->file_name = $fileName;
+			$media->file_type = 'category';
+			$media->file_url = url($destinationPath.$fileName);
+			$media->file_size = $file->getClientSize();
+			$media->save();
+
+			// Save to category
+
+			$category = Categories::find($request->input('cid'));
+			$category->category_image = $media->id;
+			$category->save();
+
+			return response()->json(array(
+				'success' => true,
+				'file' => $media->file_url,
+				'mid' => $media->id,
+			));
+		}
+
     }
 
 	public function uploadFile(Request $request){

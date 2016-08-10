@@ -10,7 +10,6 @@
             <div class="row userInfo">
                 <div class="col-lg-12">
                    <p class="pull-right"> Total <strong>{{ count($members) }}</strong> members </p>
-                  
                 </div>
                 <div class="col-lg-12">
                 <div style="clear:both"></div>
@@ -27,57 +26,59 @@
                 <div class="col-xs-12 col-sm-12">
                     <table class="table treegrid">
                         <thead>
-                            <tr>
-                                <th> Member Email</th>
-                                <th> Member Name</th>
-                                <th> Member Status</th>
-                                <th> Upline level</th>
-                                <th> Total Purchase</th>
-                                <td> Commission Upline</td>
-                            </tr>
+                        <tr>
+                            <th> Member Email</th>
+                            <th> Member Name</th>
+                            <th> Member Status</th>
+                            <th> Upline level</th>
+                            <th> Total Purchase</th>
+                            <td> Commission Upline</td>
+                        </tr>
                         </thead>
                         <tbody>
-                        <?php 
-                            $list = CustomerHelper::treeGridMembersList($members,Auth::user()->user_code);
+                        <?php
+                        //$list = CustomerHelper::treeGridMembersList($members,Auth::user()->user_code);
                         ?>
-                    	<?php 
+                        <?php
 
-                        $totalPurchase = 0; 
+                        $totalPurchase = 0;
                         $totalCommission = 0;
-                        ?>
-                    	@if ( count($list) > 0 )
-                        <tr class="treegrid-{{Auth::user()->id}}">
-                            <td class="" colspan="6">{{Auth::user()->email}}</td>
-                        </tr>
-                        @foreach (  $list as $member )
-                            <tr class="{{ $member->class.' '.$member->parent_class }}">
-                                <td>{{ $member->email }}</td>
-                                <td>{{ $member->name }}</td>
-                                <td><span class="label label-info">{{ ($member->user_status == 1) ? 'active' :'disactive'  }}</span></td>
-                                <td>{{ $member->user_level }}</td>
-                                <td><strong>{{ PriceHelper::formatPrice($member->totals) }}</strong></td>
-                                <td><span class="label label-danger">{{ PriceHelper::formatPrice(App\User::getCommissionMembers($members,$member)) }}</span></td>
-                            </tr>
-                        
-                            <?php
-                                $total += $member->totals ;
 
-                            ?>
-                        @endforeach
+                        ?>
+                        @if ( count($members) > 0 )
+
+                            @foreach (  $members as $member )
+                                <tr class="{{ $member->class.' '.$member->parent_class }}">
+                                    <td>{{ $member->email }}</td>
+                                    <td>{{ $member->name }}</td>
+                                    <td><span class="label label-info">{{ ($member->user_status == 1) ? 'active' :'disactive'  }}</span></td>
+                                    <td>{{ $member->user_level }}</td>
+                                    <td><strong>{{ PriceHelper::formatPrice($member->totals) }}</strong></td>
+                                    <td><span class="label label-danger">{{ PriceHelper::formatPrice( $member->commission) }}</span></td>
+                                </tr>
+
+                                <?php
+                                $totalPurchase += $member->totals ;
+                                $totalCommission += $member->commission;
+                                ?>
+                            @endforeach
                         @else
-						<tr>
-							<td colspan="6">
-								<p>You don't have any members</p>
-							</td>
-						</tr>
+                            <tr>
+                                <td colspan="6">
+                                    <p>You don't have any members</p>
+                                </td>
+                            </tr>
                         @endif
                         </tbody>
                         <tfoot>
-                        	<tr>
-                        		<td colspan="6" align="right">
-                        			<span>Total: <strong>{{ PriceHelper::formatPrice($total) }}</strong></span>
-                        		</td>
-                        	</tr>
+                        <tr>
+                            <td colspan="4" align="right">
+                                Total
+                            </td>
+                            <td><strong>{{ PriceHelper::formatPrice($totalPurchase) }}</strong></td>
+                            <td><strong>{{ PriceHelper::formatPrice($totalCommission) }}</strong></td>
+
+                        </tr>
                         </tfoot>
                     </table>
 
@@ -146,8 +147,8 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('.treegrid').treegrid({
-            expanderExpandedClass: 'glyphicon glyphicon-minus',
-            expanderCollapsedClass: 'glyphicon glyphicon-plus'
+            expanderExpandedClass: 'fa fa-minus',
+            expanderCollapsedClass: 'fa fa-plus'
         });
     });
 </script>

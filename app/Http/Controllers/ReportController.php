@@ -82,7 +82,6 @@ class ReportController extends Controller
 
 		$results = DB::select($sql);
 		
-
 		//$currentPage = LengthAwarePaginator::resolveCurrentPage();
 		$currentPage = $request->input('page', 1) - 1;
 		$collection = new Collection($results);
@@ -98,8 +97,5 @@ class ReportController extends Controller
         return view('back.reportboard',[ 'users' => $paginatedSearchResults ]);
 
 	}
-	public function reportation($userRole,$startDate,$endDate){
-
-		return $data;
-	}
+	
 }

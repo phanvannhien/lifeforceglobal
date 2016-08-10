@@ -16,6 +16,9 @@ use App\Models\Categories;
 use App\Models\Configurations;
 use Validator;
 use Hash;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
+
 
 class AdminController extends Controller
 {
@@ -55,59 +58,21 @@ class AdminController extends Controller
         return view('back.login');
     }
 
-    public function showPage($page = 'dashboard', $action = 'get',$id = null , $orderby = null, $search = null ){
-
-        switch ($page) {
-            case 'users':
-                # code...
-                if( $action == 'get' ){
-
-                }
-                break;
-            
-            default:
-                # code...
-                return view('back.dashboard');
-                break;
-        }
-
-    }
-
-    // Categories
-
+    /*
+    * Categories
+    */
     public function categories(){
         return view('back.categories.view',array('categories' => Categories::paginate(50)) );
     }
-
     public function categoriesCreate(){
-        return view('back.categories.create');
+        $category = Categories::create(array(
+            'category_name' => 'Untitle',
+            'parent_id' => 0,
+            'category_status' => 0
+        ));
+        return redirect()->route('back.categories.edit',$category->id);
     }
-
-    public function categoriesSave(Request $request){
-        $rule = array(
-            'category_name' => 'required',
-        );
-
-        $v = Validator::make($request->all(),$rule);
-        if ($v->fails())
-        {
-            return view('back.categories.create')->withErrors($v);
-        }
-
-        $category = new Categories;
-        $category->category_name = $request->input('category_name');
-        $category->category_description = $request->input('category_description');
-        $category->category_status = $request->input('category_status');
-        $category->category_image = $request->input('category_image');
-        $category->category_color = $request->input('category_color');
-        $category->image_position = $request->input('image_position');
-        $category->save();
-
-
-        return redirect()->route('back.categories.edit', $category->id);
-
-    }
-
+    
     public function categoriesEdit($id){
         return view('back.categories.edit',array( 'category' => Categories::find($id)) );
     }
@@ -137,7 +102,15 @@ class AdminController extends Controller
 
     }
 
-    // Product
+    public function categoriesDelete($id){
+         DB::table('categories')->where('id', $id)->delete();
+        return $this->allProduct();
+    }
+
+
+    /*
+     * Products
+     */
 	public function allProduct(){
 		return view('back.products.product', array('products'=> Products::all() ));
 	}
@@ -149,43 +122,13 @@ class AdminController extends Controller
     	return redirect()->route('back.product.edit',$product->id);
     }
 
-    public function saveProduct(Request $request){
-
-        $gallery = implode(array_filter($request->input('product_images')), ',');
-
-    	$id = DB::table('product')->insertGetId(
-    		array(
-    			'category_id' => $request->input('category_id'),
-    			'product_name' => $request->input('product_name'),
-    			'product_sort_description' => $request->input('product_sort_description'),
-    			'product_description' => $request->input('product_description'),
-    			'price_RPP' => $request->input('price_RPP'),
-    			'price_discount' => $request->input('price_discount'),
-    			'download_file' => $request->input('download_file'),
-    			'product_thumbnail' => $request->input('product_thumbnail'),
-    			'product_images' => $gallery ,
-    			'category_id' => $request->input('category_id'),
-    			'created_at' => date('Y-m-d H:s:i')
-    		)
-    	);
-
-    	if($id){
-    		Session::flash('message','Created successful!');
-    		return redirect()->route('back.product.edit',$id);
-    	}
-
-    }
-
     public function editProduct($id){
-        //$product = Products::find($id);
-        //dd($product->media()->get());
         return view('back.products.edit',array('product' => Products::find($id) ));
     }
 
     public function updateProduct(Request $request, $id){
   
         $id = $request->input('id');
-
         $updated = DB::table('product')
             ->where('id', $id )
             ->update(
@@ -203,9 +146,6 @@ class AdminController extends Controller
                     'created_at' => date('Y-m-d H:s:i')
                 )
             );
-
-
-
         if($updated){
             Session::flash('message','Update successful!');
             return view('back.products.edit',array('product' => DB::table('product')->where('id',$id)->first()) );
@@ -218,10 +158,48 @@ class AdminController extends Controller
         return $this->allProduct();
     }
 
-    // Users
+    /*
+     * Users
+     */
+    public function userCommission(Request $request,$id){
 
+        // Filter by purchase date
+        $date['startDate'] = date('Y-m-01');
+        $date['endDate'] = date('Y-m-d');
+        $whereOrder = " AND DATE(orders.created_at) >= '{$date['startDate']}' AND DATE(orders.created_at) <= '{$date['endDate']}'";
+
+        if( $request->isMethod('post') && $request->has('date_range')){
+            $arrDate =  explode('-', $request->input('date_range'));
+            $date['startDate'] = date('Y-m-d',strtotime($arrDate[0]));
+            $date['endDate'] = date('Y-m-d',strtotime($arrDate[1]));
+            $whereOrder = " AND DATE(orders.created_at) >= '{$date['startDate']}' AND DATE(orders.created_at) <= '{$date['endDate']}'";
+        }
+
+        // Get purchase from start date of month to now
+        $membersPurchase = User::getTotalPurchaseMembers(User::all(),$whereOrder);
+        // Get upline members by current user
+        $currentUser = DB::table('users')->where('id',$id)->first();
+        $currentUser->commission = 0;
+        $currentUser->class = 'treegrid-'.$currentUser->user_code;
+        $currentUser->parent_class = '';
+        $currentUser->totals = 0;
+        $tempArr = array();
+        array_push($tempArr,$currentUser);
+        $members = User::getUplineMembers($membersPurchase,$currentUser->user_code,$tempArr);
+
+        return view('back.users.commission', array(
+            'members' => $members,
+            'date' => $date,
+            'id' => $id
+        ));
+
+    }
     public function allUsers(Request $request){
-        $users = new User();
+
+        $whereOrder = ' ';
+        $whereUser = ' ';
+        $perPage = 20;
+        // Has filter
         if ($request->isMethod('post')){
             $arrFilter = $request->input('filter');
            
@@ -231,30 +209,54 @@ class AdminController extends Controller
                         $arrDate =  explode('-', $value);
                         $startDate = date('Y-m-d H:s:i',strtotime($arrDate[0]));
                         $endDate = date('Y-m-d H:s:i',strtotime($arrDate[1]));
-                        $users->whereBetween( $key,array($startDate,$endDate) );
-                    }else{
-                        $users = $users->where($key,$value);
+                        $whereUser .= "AND DATE(u.registration_date) >= '{$startDate}' AND DATE(u.registration_date) <= '{$endDate}' ";
+
+                    }
+                    elseif( $key == 'perpage' ){
+                        $perPage = (int)$value;
+                    }
+                    elseif($key == 'purchase_date'){
+                        $arrDatePurchase =  explode('-', $value);
+                        $startDatePurchase = date('Y-m-d H:s:i',strtotime($arrDatePurchase[0]));
+                        $endDatePurchase = date('Y-m-d H:s:i',strtotime($arrDatePurchase[1]));
+                        $whereOrder .= "AND DATE(orders.created_at) >= '{$startDatePurchase}' AND DATE(orders.created_at) <= '{$endDatePurchase}'";
+                    }
+                    else{
+                        $whereUser .= "AND u.{$key} = '{$value}'";
                     }
                     
                 }
             }
-            $users = $users->paginate(50);
-            return view('back.users.dashboard')->with('users', $users);
-           
+
+            $results = User::getTotalPurchaseMembers(User::all(),$whereOrder,$whereUser);
+        }else{
+            $date['startDatePurchase'] = date('Y-m-01');
+            $date['endDatePurchase'] = date('Y-m-d');
+            $whereOrder .= "AND DATE(orders.created_at) >= '{$date['startDatePurchase']}' AND DATE(orders.created_at) <= '{$date['endDatePurchase']}'";
+            $results = User::getTotalPurchaseMembers(User::all(),$whereOrder);
         }
 
-        return view('back.users.dashboard',array('users' => $users->paginate(50)) );
+        //$currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentPage = $request->input('page', 1) - 1;
+        $collection = new Collection($results);
+        //Slice the collection to get the items to display in current page
+        $currentPageSearchResults = $collection->slice($currentPage * $perPage, $perPage)->all();
+        //Create our paginator and pass it to the view
+        $paginatedSearchResults= new LengthAwarePaginator($currentPageSearchResults, count($collection), $perPage);
+        $paginatedSearchResults->setPath($request->url());
+        $paginatedSearchResults->appends($request->except(['page']));
+
+        return view('back.users.dashboard',array('users' => $paginatedSearchResults) );
     }
     
     public function editUsers($id){
-
         return view('back.users.update')->with('user',User::find($id));
     }
     public function createUsers(){
         return view('back.users.create');
     }
     public function saveUsers(Request $request ){
-        $userReferalID = '';
+        $userCode = '';
         //Validate Email
         $rule = array(
             'email' => 'required',
@@ -270,14 +272,17 @@ class AdminController extends Controller
             Session::flash( 'message', array('class' => 'alert-danger', 'detail' => 'Email already exitst !') );
             return view('back.users.create');
         }
-
+        $user_level = 0;
+        $user_uplinepath = '';
         if( $request->input('user_refferal') != '' ){
             $userFind = DB::table('users')->where('user_code',$request->input('user_refferal'))->first();
             if ( count($userFind) <= 0 ){
                 Session::flash( 'message', array('class' => 'alert-danger', 'detail' => 'User refferal not found !') );
                 return view('back.users.create');
             }else{
-                $userReferalID = $userFind->id;
+                $userCode = $userFind->membership_number;
+                $user_level = (int)$userFind->user_level + 1;
+                $user_uplinepath = $userFind->uplinepath.$userFind->id;
             }
 
         }
@@ -287,24 +292,23 @@ class AdminController extends Controller
         $userCreated->email =  $request->input('email');
         $userCreated->password = Hash::make(self::DEFAULT_PASSSWORD);
         $userCreated->user_code = str_random(32);
-        $userCreated->membership_number = User::getUserCode($userReferalID,$request->input('user_city'));
+        $userCreated->membership_number = User::getUserCode($userCode,$request->input('user_city'));
         $userCreated->user_role = 'OM';
+        $userCreated->user_level = $user_level;
+        $userCreated->uplinepath = $user_uplinepath;
         $userCreated->user_refferal = $request->input('user_refferal');
         $userCreated->registration_date = date('Y-m-d H:s:i');
         $userCreated->user_verify_code = str_random(64);
         $userCreated->register_fee = \App\Helpers\SiteHelper::getConfig('register_fee');
         $userCreated->save();
 
-
         if($userCreated){
-
             // Email to registed user
             $dataEmail =  array(
                 'email' => $userCreated->email,
                 'user_code' => $userCreated->user_code,
                 'user_verify_code' => $userCreated->user_verify_code
             );
-
 
             try{
                 Mail::send('emails.new_register',
@@ -328,15 +332,13 @@ class AdminController extends Controller
     }
 
     public function updateUsers(Request $request,$id){
-
-
         if ($request->isMethod('post')){
             $user = User::find($request->input('id'));
 
             if($user){
                 $user->name = $request->input('name');
                 $user->user_role = $request->input('user_role');
-                $user->user_refferal = $request->input('user_refferal');
+                //$user->user_refferal = $request->input('user_refferal');
                 //reduce user member code
                 $user->membership_number = $request->input('user_role').substr($user->membership_number,2);
                 $user->user_status = $request->input('user_status');
@@ -375,7 +377,9 @@ class AdminController extends Controller
     public function deleteUsers(Request $request,$id){
         return;
     }
-
+    /*
+    * Orders
+    */
     /**
      * @return mixed
      */
@@ -500,6 +504,9 @@ class AdminController extends Controller
 
     }
 
+    /*
+     * Configurations
+     */
     public function configuration(){
         return view('back.configuration',array('configuration' => DB::table('configuration')->get()) );
     }
@@ -518,6 +525,4 @@ class AdminController extends Controller
         return view('back.configuration',array('configuration' => DB::table('configuration')->get()) ); 
         
     }
-
-
 }

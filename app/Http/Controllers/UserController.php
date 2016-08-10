@@ -104,12 +104,17 @@ class UserController extends Controller
             return response()->json(array('success'=> false, 'msg' => "Please select your city"));
         }
 
+
+        $user_level = 0;
+        $user_uplinepath = '';
         if( $request->input('user_refferal') != '' ){
             $userFind = DB::table('users')->where('user_code',$request->input('user_refferal'))->first();
             if ( count($userFind) <= 0 ){
                 return response()->json(array('success'=> false, 'msg' => "User Referal Code not found"));
             }else{
                 $userCode = $userFind->membership_number;
+                $user_level = (int)$userFind->user_level + 1;
+                $user_uplinepath = $userFind->uplinepath.$userFind->id;
             }
 
         }
@@ -121,6 +126,8 @@ class UserController extends Controller
         $userCreated->user_code = str_random(32);
         $userCreated->membership_number = User::getUserCode($userCode,$request->input('user_city'));
         $userCreated->user_role = 'OM';
+        $userCreated->user_level = $user_level;
+        $userCreated->uplinepath = $user_uplinepath;
         $userCreated->user_refferal = $request->input('user_refferal');
         $userCreated->registration_date = date('Y-m-d H:s:i');
         $userCreated->user_verify_code = str_random(64);
@@ -350,32 +357,32 @@ class UserController extends Controller
 
     public function getMembersOf(Request $request){
 
-
-        $user = DB::table('users')->get();
-        $members = User::getUplineMembers($user, Auth::user()->user_code);
-        if( count($members) > 0){
-            $members = array_values(array_sort($members, function ($value) {
-                return $value->user_level;
-            }));
-        }else{
-            $members = DB::table('users')->where('id',Auth::user()->id)->get();
-
-        }
-
-        
+        // Filter by purchase date
         $date['startDate'] = date('Y-m-01');
         $date['endDate'] = date('Y-m-d');
+        $whereOrder = " AND DATE(orders.created_at) >= '{$date['startDate']}' AND DATE(orders.created_at) <= '{$date['endDate']}'";
 
         if( $request->isMethod('post') && $request->has('date_range')){
             $arrDate =  explode('-', $request->input('date_range'));
             $date['startDate'] = date('Y-m-d',strtotime($arrDate[0]));
             $date['endDate'] = date('Y-m-d',strtotime($arrDate[1]));
+            $whereOrder = " AND DATE(orders.created_at) >= '{$date['startDate']}' AND DATE(orders.created_at) <= '{$date['endDate']}'";
         }
 
         // Get purchase from start date of month to now
-        $membersPurchase = User::getTotalPurchaseMembers($members,$date['startDate'],$date['endDate']);
+        $membersPurchase = User::getTotalPurchaseMembers(User::all(),$whereOrder);
+        // Get upline members by current user
+        $currentUser = DB::table('users')->where('id',Auth::user()->id)->first();
+        $currentUser->commission = 0;
+        $currentUser->class = 'treegrid-'.$currentUser->user_code;
+        $currentUser->parent_class = '';
+        $currentUser->totals = 0;
+        $tempArr = array();
+        array_push($tempArr,$currentUser);
+        $members = User::getUplineMembers($membersPurchase,$currentUser->user_code,$tempArr);
+
         return view('front.customer.membersof', array(
-            'members' => $membersPurchase,
+            'members' => $members,
             'date' => $date
         ));
     }

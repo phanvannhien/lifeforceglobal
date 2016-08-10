@@ -47,7 +47,7 @@
 				</div>
 				<div class="form-group">
 					<label for="">User Refferal</label>
-					<input type="text" name="user_refferal" class="form-control" value="{{ $user->user_refferal }}">
+					<input type="text" name="user_refferal" readonly class="form-control" value="{{ $user->user_refferal }}">
 				</div>
 				<div class="form-group">
 					<label for="">User Role</label>

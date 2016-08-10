@@ -135,25 +135,8 @@
 			
 			return view('back.renders.member_perchase', [ 'data' => $data ]);
 		}
-
-		public static function treeGridMembersList( $members, $userCode , &$result = array() ){
-			$targetUser = User::where('user_code',$userCode)->first();
-			foreach ($members as $row) {
-			    # code...
-			    if( $row->user_refferal == $userCode ){
-			    	//$data['member'] = $row;
-			    	$row->parent_class = 'treegrid-parent-'.$targetUser->id;
-			    	$row->class = 'treegrid-'.$row->id;
-			        array_push($result, $row);
-			        self::treeGridMembersList($members, $row->user_code, $result );
-			    }
-			}
-			return $result;
-		}
-
+		
 		public static function getCommissionOneMonthofHeadMembers($members,$totalPurchase,$date){
-			
-			
 			if( count($members) >= 39 &&  $date['startDate'] ){
 
 			}
