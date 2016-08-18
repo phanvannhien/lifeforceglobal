@@ -51,7 +51,7 @@
 				IF (o.totals > 3000,o.totals * 10 / 100, 0 ) as commission
 			from 
 				(
-					select orders.user_id, sum(orders.total) as totals
+					select orders.user_id, sum(orders.total_include_tax) as totals
 					from orders
 					where 
 						orders.status = 'done' AND 
@@ -83,7 +83,7 @@
 				o.totals
 			from 
 				(
-					select orders.user_id, sum(orders.total) as totals
+					select orders.user_id, sum(orders.total_include_tax) as totals
 					from orders
 					where 
 						orders.status = 'done' AND
@@ -129,6 +129,7 @@
 				) AND
 
 				u.user_status = '1' AND
+				u.registration_date <= DATE(NOW() - INTERVAL 2 MONTH) AND 
 				u.user_role = 'BM' ";
 
 			$data = DB::select($sql);	

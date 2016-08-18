@@ -32,7 +32,7 @@
                             <th> Member Status</th>
                             <th> Upline level</th>
                             <th> Total Purchase</th>
-                            <td> Commission Upline</td>
+                            <th> Commission Upline</th>
                         </tr>
                         </thead>
                         <tbody>

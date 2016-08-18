@@ -41,21 +41,25 @@
        				<td>Product Name</td>
        				<td>Product Category</td>
               <td>Price RPP</td>
-       				<td>Price </td>
+              <td>Price </td>
+       				<td>Status </td>
        				<td>Function</td>
        			</tr>
        			@foreach( $products as $product)
 				<tr>
-       				<td>{{ $product->product_name }}</td>
+       				<td><a href="{{ route('back.product.edit',$product->id) }}">{{ $product->product_name }}</a></td>
        				<td>
                         @if( $product->category_id != 0 )
+                            <a href="{{ route('back.categories.edit',$product->category_id) }}">
                             <?php echo $product->category->category_name ?>
+                            </a>
                         @else
                             No category
                         @endif
                     </td>
               <td>{{ PriceHelper::formatPrice($product->price_RPP) }}</td>
        				<td>{{ PriceHelper::formatPrice($product->price_discount) }}</td>
+              <td><span class="label label-info">{{ ($product->status == 1) ? 'actived' : 'deactivated' }}</span> </td>
        				<td>
               <a href="{{ route('back.product.edit',$product->id) }}"><i class="fa fa-edit"></i> Edit</a>   
               <a onclick="return confirm('Are you sure?')" href="{{ route('back.product.delete',$product->id) }}"><i class="fa fa-remove"></i> Delete</a>   

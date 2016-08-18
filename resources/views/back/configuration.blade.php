@@ -43,12 +43,14 @@
 @endsection
 
 @section('footer')
+<link rel="stylesheet" href="{{ url('AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}">
+<script src="{{ url('AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js')}}"></script>
 	<script>
       $(function () {
         // Replace the <textarea id="editor1"> with a CKEditor
         // instance, using default configuration.
         //bootstrap WYSIHTML5 - text editor
-       // $(".textarea").wysihtml5();
+        $("textarea").wysihtml5();
       });
     </script>
 @endsection

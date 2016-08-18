@@ -8,7 +8,9 @@
 
     <div class="container">
         <div class="row">
+
             @foreach ($category->product as $product)
+            @if($product->status == 1)
             <div class="pitem col-lg-3 col-md-3 col-sm-4 col-xs-6">
                 <div class="product">
                     <div class="image">
@@ -53,6 +55,7 @@
                     </div>
                 </div>
             </div>
+            @endif
            @endforeach 
         </div>
 

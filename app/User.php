@@ -9,7 +9,9 @@ class User extends Authenticatable
 
 
     protected $table = 'users';
-    protected $guarded = array();
+    protected $guarded = array(
+        'password','remember_token'
+    );
 
     const USER_DEFAULT_ROLE = "OM";
     /**
@@ -18,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email'
     ];
 
     /**
@@ -47,62 +49,28 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\UsersRole','user_role','role_id');
     }
 
-    public static function getMembersNumber(){
-        $currentNumberUser = self::count() + 1;
-        if( $currentNumberUser < 10 ){
-            return '0000'.$currentNumberUser;
-        }elseif ( $currentNumberUser < 100 ){
-            return '000'.$currentNumberUser;
-        }elseif ( $currentNumberUser < 1000 ){
-            return '00'.$currentNumberUser;
-        }elseif( $currentNumberUser < 10000 ){
-            return '0'.$currentNumberUser;
+    public static function getMembersNumber( $user_id ){
+      
+        if( $user_id < 10 ){
+            return '0000'.$user_id;
+        }elseif ( $user_id < 100 ){
+            return '000'.$user_id;
+        }elseif ( $user_id < 1000 ){
+            return '00'.$user_id;
+        }elseif( $user_id < 10000 ){
+            return '0'.$user_id;
         }
-        return $currentNumberUser;
+        return $user_id;
     }
 
-    public static function getUserCode( $userCode, $userCity ){
+    public static function getUserCode( $userCode,$referalCode, $userCity ){
         $uplineCode = '00000';
-        if ($userCode != ''){
-            $uplineCode = substr($userCode,3,5);
+        if ($referalCode != ''){
+            $uplineCode = $referalCode;
         }
-        return self::USER_DEFAULT_ROLE.'-'.self::getMembersNumber().'-'.$uplineCode.'-'.$userCity;
+        return self::USER_DEFAULT_ROLE.'-'.$userCode.'-'.$uplineCode.'-'.$userCity;
     }
 
-
-
-
-
-    public static function getCommissionMembers($members, $membersFind){
-    
-        $commission = 0;
-        foreach ($members as $member) {
-            if( $membersFind->user_code == $member->user_refferal ){
-                switch ($member->user_level) {
-                    case 1:
-                        # code...
-                        $commission += $member->totals * 0.05;
-                        break;
-                    case 2:
-                        # code...
-                        $commission += $member->totals * 0.05;
-                        break;    
-                    case 3:
-                        # code...
-                        $commission += $member->totals * 0.1;
-                        break;
-
-                    default:
-                        # code...
-                        $commission = 0;
-                        break;
-                }
-            }
-            # code...
-        }
-        return $commission;
-
-    }
 
     public static function getUplineMembers( $rows, $userCode , &$result = array() ){
         if($rows)
@@ -121,6 +89,7 @@ class User extends Authenticatable
                                     $perMembers->commission +=  (float)$row->totals * 0.05;
                                 }
                             }
+
 
                         }
                     }
@@ -144,7 +113,7 @@ class User extends Authenticatable
         }
 
         $userID = substr($userID,0,-1);
-        $initWhereUser = "u.user_status = 1 AND u.id IN ({$userID})";
+        $initWhereUser = "u.id IN ({$userID})";
         $initWhereOrder = "orders.status = 'done' AND orders.checkout_type = 'member' ";
         if ($whereUser != ''){
             $initWhereUser = $initWhereUser.$whereUser ;
@@ -172,7 +141,7 @@ class User extends Authenticatable
                 users as u
             left join 
                 (
-                    select orders.user_id, sum(orders.total) as totals
+                    select orders.user_id, sum(orders.total_include_tax) as totals
                     from orders
                     where 
                         {$initWhereOrder}
@@ -186,6 +155,34 @@ class User extends Authenticatable
                 ";
 
         return DB::select($sql);   
+    }
+
+
+    public static function calCommissionForUserRootLevel(){
+        // Filter by purchase date
+        $date['startDate'] = date('Y-m-01');
+        $date['endDate'] = date('Y-m-d');
+        $whereOrder = " AND DATE(orders.created_at) >= '{$date['startDate']}' AND DATE(orders.created_at) <= '{$date['endDate']}'";
+
+        $users = self::all();
+        $usersRootLevel = self::where('user_level',0)->get();
+        $totalComission = 0;
+        foreach ($usersRootLevel as $perUser){
+            $tempArr = array();
+            array_push($tempArr,$perUser);
+            $membersPurchase = User::getTotalPurchaseMembers($users,$whereOrder);
+            $members = self::getUplineMembers($membersPurchase,$perUser->user_code,$tempArr);
+
+            foreach ($members as $inTreeMembers){
+                $totalComission += $inTreeMembers->commission;
+            }
+        }
+        return $totalComission;
+    }
+
+    public static function getTotalSale(){
+        $total = \App\Models\Orders::where('status','done')->sum('total_include_tax');
+        return $total;
     }
 
 

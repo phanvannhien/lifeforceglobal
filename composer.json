@@ -12,7 +12,9 @@
         "folklore/image": "*",
         "davejamesmiller/laravel-breadcrumbs": "^3.0",
         "unisharp/laravel-filemanager": "^1.5",
-        "laravelcollective/html": "5.2.*"
+        "laravelcollective/html": "5.2.*",
+        "laravelcollective/bus": "^5.2",
+        "maatwebsite/excel": "~2.1.0"
         
     },
     "require-dev": {

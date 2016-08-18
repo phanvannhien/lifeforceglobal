@@ -7,6 +7,8 @@
       <div class="col-lg-9 col-md-9 col-sm-7 col-xs-6 col-xxs-12 text-center-xs">
          <h1 class="section-title-inner"><span><i class="glyphicon glyphicon-shopping-cart"></i> Checkout</span></h1>
          <p>&nbsp;</p>
+          @include('front.partials.message')
+
       </div>
    </div>
    <div class="row">
@@ -161,23 +163,37 @@
       </div>
       <div class="col-lg-3 col-md-3 col-sm-12 rightSidebar">
          <div class="w100 cartMiniTable">
-            <table id="cart-summary" class="std table">
-               <tbody>
-                  <tr>
+             <?php $total = Cart::total() ?>
+             <table id="cart-summary" class="std table">
+                 <tbody>
+                 <tr>
                      <td>Total products</td>
-                     <td class="price">{{ PriceHelper::formatPrice(Cart::total()) }}</td>
-                  </tr>
-                  <tr style="">
-                     <td class="price" colspan="2"><span class="success">Shipping 10$ in Australia</span></td>
-                  </tr>
-                  <tr>
+                     <td class="price" align="right">{{ PriceHelper::formatPrice($total) }}</td>
+                 </tr>
+                 <tr style="">
+                     <td class="price"><span class="success">Shipping </span></td>
+                     <td align="right">{{ PriceHelper::formatPrice(10) }}</td>
+                 </tr>
+                 <tr style="">
+                     <td class="price"><span class="success">GST Tax</span></td>
+                     <td align="right">{{ \App\Helpers\PriceHelper::formatPrice(Site::getConfig('gst_tax')/100*$total)  }}</td>
+                 </tr>
+                 <tr>
                      <td> Total</td>
-                     <td class=" site-color" id="total-price">{{ PriceHelper::formatPrice(Cart::total()+ 10) }}</td>
-                  </tr>
-               </tbody>
-               <tbody>
-               </tbody>
-            </table>
+                     <td class=" site-color" id="total-price" align="right">{{ PriceHelper::formatPrice(Site::getConfig('gst_tax')/100*$total + 10 + $total) }}</td>
+                 </tr>
+                 <!--
+                 <tr>
+                    <td colspan="2">
+                       <div class="input-append couponForm">
+                          <input class="col-lg-8" id="appendedInputButton" type="text" placeholder="Coupon code">
+                          <button class="col-lg-4 btn btn-success" type="button">Apply!</button>
+                       </div>
+                    </td>
+                 </tr>
+                 -->
+                 </tbody>
+             </table>
          </div>
       </div>
    </div>

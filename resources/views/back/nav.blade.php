@@ -1,4 +1,4 @@
- <header class="main-header">
+   <header class="main-header">
         <!-- Logo -->
         <a href="/admin" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -22,7 +22,11 @@
                 $numberSalesPending = Site::getSalesPendingToday();
               ?>
               <!-- Notifications: style can be found in dropdown.less -->
+              <li>
+                <a href="/">View Site</a>
+              </li>
               <li class="dropdown notifications-menu">
+                
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-bell-o"></i>
                   <span class="label label-warning">{{ $numberUser+$numberSalesPending }}</span>

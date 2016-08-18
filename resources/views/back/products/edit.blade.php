@@ -7,8 +7,9 @@
   <section class="content-header">
     <h1>
       Edit product : {{ $product->product_name }}
-      <a class="btn btn-success" href="{{ route('back.product.create') }}">Create new</a>
+      <a class="btn btn-success" href="{{ route('back.product') }}">Back</a>
     </h1>
+
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
       <li><a href="#">Edit product</a></li>
@@ -67,6 +68,13 @@
 		            <label for="">Product Discount (Member Only) </label>
 		            <input type="text" class="form-control" id="" name="price_discount" placeholder="" value="{{ $product->price_discount }}">
 	            </div>
+	            <div class="form-group">
+                  <label for="">Product Status</label>
+                  <select name="status" class="form-control" id="">
+                    <option {{ ($product->status == 1) ? 'selected' :'' }} value="1">Activated</option>
+                    <option {{ ($product->status == 0) ? 'selected' :'' }} value="0">Deactivated</option>
+                  </select>
+                </div>  
 				<?php
 				$fileDownload = '';
 				if($product->download_file != ''){
@@ -114,6 +122,7 @@
 	            </div>
 
 	         </div>
+
 	         <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Save</button>
               </div>

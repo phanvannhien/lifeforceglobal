@@ -42,10 +42,11 @@
                     @foreach( $categories as $item )
                     <tr>
                       <td>{{ $item->id }}</td>
-                      <td>{{ $item->category_name }}</td>
+                      <td><a href="{{ route('back.categories.edit',$item->id) }}">{{ $item->category_name }}</a></td>
                       <td><span class="label label-info">{{ ($item->category_status == 1) ? 'actived' : 'deactivated' }}</span> </td>
                       <td>
-                        {{ $item->product()->count() }}
+                        
+                      <a href="{{ route('back.product',['category_id'=>$item->id]) }}">View Products ({{ $item->product()->count() }})</a>
                       </td>
                       <td>
                         <a href="{{ route('back.categories.edit',$item->id) }}"><i class="fa fa-edit"></i> Edit</a>

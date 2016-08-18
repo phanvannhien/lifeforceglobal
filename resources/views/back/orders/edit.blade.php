@@ -110,12 +110,15 @@
                     <tfooter>
                         <tr>
                             <td colspan="5" align="right">
-                                Shipping Fee: <strong>{{ PriceHelper::formatPrice($order->shipping_fee) }}</strong>
+                                <p>Total: <strong>{{ PriceHelper::formatPrice($total) }}</strong></p>
+                                <p>Shipping Fee: <strong>{{ PriceHelper::formatPrice($order->shipping_fee) }}</strong></p>
+                                <p>GST Tax: <strong>{{ PriceHelper::formatPrice($order->gst_tax/100) }}</strong></p>
+
                             </td>
                         </tr>
                         <tr>
                             <td colspan="5" align="right">
-                                Total: <strong>{{ PriceHelper::formatPrice($total + $order->shipping_fee) }}</strong>
+                                Total included Tax: <strong>{{ PriceHelper::formatPrice($order->total_include_tax) }}</strong>
                             </td>
                         </tr>
                     </tfooter>

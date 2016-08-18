@@ -20,19 +20,28 @@ class HomeController extends Controller
     }
     
     public function category($id){
-    	$category = DB::table('categories')->where('id',$id)->first();
-    	$products =  DB::table('product')->where('category_id',$category->id)->paginate(9);
+    	$category = DB::table('categories')
+        ->where('id',$id)
+        ->where('category_status',1)
+        ->first();
+    	$products =  DB::table('product')
+        ->where('category_id',$category->id)
+        ->where('status',1)
+        ->paginate(9);
     	return view('front.category',array('category' => $category, 'products' => $products));
     }
 
     public function product($id,$slug){
         
-    	$product =  DB::table('product')->where('id',$id)->first();
+    	$product =  DB::table('product')
+        ->where('status',1)
+        ->where('id',$id)
+        ->first();
     	return view('front.product',array('product' => $product));
     }
 
     public function productAll(){
-        return view('front.products',array('products' => Products::paginate(12) ));
+        return view('front.products');
     }
 
     public function login(){

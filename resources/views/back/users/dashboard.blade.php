@@ -8,7 +8,7 @@
         <h1>
             All Users
             <small>it all starts here</small>
-            <a class="btn btn-success" href="{{ route('back.product.create') }}">Create new</a>
+            <a class="btn btn-success" href="{{ route('back.users.create') }}">Create new</a>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -24,7 +24,7 @@
                 <h3 class="box-title">User</h3>
             </div>
             <div class="box-body">
-                <form action="{{route('back.users.post')}}" class="form-horizontal" method="post">
+                <form action="{{route('back.users.post')}}" class="form-horizontal" method="get">
                     <input type="hidden" value="{{ csrf_token() }}" name="_token">
                     <table id="" class="table table-bordered table-hover">
                         <tbody>
@@ -99,8 +99,8 @@
                         <tfoot>
                         <tr>
                             <td colspan="5">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Filter
-                                </button>
+                                <input type="submit" value="Filter" name="_user_filter" class="btn btn-primary">
+                                <input type="submit" value="Export Excel" name="_user_export_excel" class="btn btn-info">
                             </td>
                         </tr>
                         </tfoot>
@@ -156,11 +156,22 @@
                                 <br>
                                 @if ($item->user_status == 0)
                                     <a href="{{ route('back.users.active',$item->id) }}" class="label label-success">Active
-                                        User</a>
+                                        User</a><br>
                                 @endif
                                 <a href="{{ route('back.users.commission',['id' => $item->id ]) }}">
-                                    <i class="fa fa-dolla"></i>
-                                    View Commission</a>
+                                    <i class="fa fa-dollar"></i>
+                                    View Commission</a><br>
+                                <a href="{{ route('back.orders',[
+                                    'filter[email]' => $item->email, 
+                                    'filter[checkout_type]' => '',
+                                    'filter[id]' => '',
+                                    'filter[status]' => '',
+                                    'filter[created_at]' => ''
+                                    
+                                ]) }}">
+                                    <i class="fa fa-cube"></i>
+                                    Orders History</a>
+
                             </td>
                         </tr>
 
@@ -169,7 +180,7 @@
                     </tbody>
                     <tfoot>
                     <tr>
-                        <td colspan="2" align="right">Total</td>
+                        <td colspan="1" align="right">Total</td>
                         <td><strong>{{ PriceHelper::formatPrice($total) }}</strong></td>
                         <td><strong>{{ PriceHelper::formatPrice($totalPurchase) }}</strong></td>
                     </tr>

@@ -18,6 +18,7 @@ use Validator;
 use Hash;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Excel;
 
 
 class AdminController extends Controller
@@ -65,11 +66,12 @@ class AdminController extends Controller
         return view('back.categories.view',array('categories' => Categories::paginate(50)) );
     }
     public function categoriesCreate(){
-        $category = Categories::create(array(
-            'category_name' => 'Untitle',
-            'parent_id' => 0,
-            'category_status' => 0
-        ));
+        $category = new Categories();
+        $category->category_name = 'Untitle';
+        $category->parent_id = 0;
+        $category->category_status = 0;
+        $category->save();
+        
         return redirect()->route('back.categories.edit',$category->id);
     }
     
@@ -104,20 +106,27 @@ class AdminController extends Controller
 
     public function categoriesDelete($id){
          DB::table('categories')->where('id', $id)->delete();
-        return $this->allProduct();
+        return $this->categories();
     }
 
 
     /*
      * Products
      */
-	public function allProduct(){
-		return view('back.products.product', array('products'=> Products::all() ));
+	public function allProduct(Request $request){
+        $products = new Products();
+
+        if( $request->has('category_id') ){
+            $products = $products->where('category_id',$request->input('category_id'));
+        }
+        $products = $products->paginate(20);
+		return view('back.products.product', array('products'=> $products));
 	}
 
     public function createProduct(){
         $product = new Products();
         $product->status = 0;
+        $product->product_name = 'Untitle';
         $product->save();
     	return redirect()->route('back.product.edit',$product->id);
     }
@@ -143,6 +152,7 @@ class AdminController extends Controller
                     'download_file' => $request->input('download_file'),
                     'product_thumbnail' => $request->input('product_thumbnail'),
                     'category_id' => $request->input('category_id'),
+                    'status' => $request->input('status'),
                     'created_at' => date('Y-m-d H:s:i')
                 )
             );
@@ -155,7 +165,7 @@ class AdminController extends Controller
 
     public function deleteProduct($id){
         DB::table('product')->where('id', $id)->delete();
-        return $this->allProduct();
+        return redirect()->route('back.product');
     }
 
     /*
@@ -187,6 +197,43 @@ class AdminController extends Controller
         array_push($tempArr,$currentUser);
         $members = User::getUplineMembers($membersPurchase,$currentUser->user_code,$tempArr);
 
+        if($request->has('_commission_export_excel')){
+            $newArr = array();
+            foreach ( $members as $item ){
+                $temp = array(
+                    'id' => $item->id,
+                    'name' => $item->name,
+                    'email' => $item->email,
+                    'user_code' => (string)$item->user_code,
+                    'membership_number' => $item->membership_number,
+                    'user_level' => $item->user_level,
+                    'user_role' => $item->user_role,
+                    'registration_date' => $item->registration_date,
+                    'totals' => $item->totals,
+                    'commission' => $item->commission,
+                );
+                array_push($newArr,$temp);
+            }
+
+            Excel::create('order_list_'.date('Y-m-d H:s:i'), function($excel) use ($newArr){
+                // Set the title
+                $excel->setTitle('Commission Lists');
+                // Call writer methods here
+                // Our first sheet
+
+                $excel->sheet('Data', function($sheet) use ($newArr) {
+
+                    $sheet->setColumnFormat(array(
+                        'D' => '@00000',
+                        'I' => '"$"#,##0.00_-',
+                        'J' => '"$"#,##0.00_-',
+                    ));
+                    $sheet->with($newArr);
+                });
+
+            })->download('csv');
+        }
+
         return view('back.users.commission', array(
             'members' => $members,
             'date' => $date,
@@ -200,34 +247,35 @@ class AdminController extends Controller
         $whereUser = ' ';
         $perPage = 20;
         // Has filter
-        if ($request->isMethod('post')){
+       
+        if( $request->has('filter') ){
             $arrFilter = $request->input('filter');
-           
-            foreach ($arrFilter as $key => $value) {
-                if( $value != '' ){
-                    if( $key == 'registration_date' ){
-                        $arrDate =  explode('-', $value);
-                        $startDate = date('Y-m-d H:s:i',strtotime($arrDate[0]));
-                        $endDate = date('Y-m-d H:s:i',strtotime($arrDate[1]));
-                        $whereUser .= "AND DATE(u.registration_date) >= '{$startDate}' AND DATE(u.registration_date) <= '{$endDate}' ";
+            if( is_array($arrFilter) && count($arrFilter) > 0 ){
+                foreach ($arrFilter as $key => $value) {
+                    if( $value != '' ){
+                        if( $key == 'registration_date' ){
+                            $arrDate =  explode('-', $value);
+                            $startDate = date('Y-m-d H:s:i',strtotime($arrDate[0]));
+                            $endDate = date('Y-m-d H:s:i',strtotime($arrDate[1]));
+                            $whereUser .= "AND DATE(u.registration_date) >= '{$startDate}' AND DATE(u.registration_date) <= '{$endDate}' ";
 
+                        }
+                        elseif( $key == 'perpage' ){
+                            $perPage = (int)$value;
+                        }
+                        elseif($key == 'purchase_date'){
+                            $arrDatePurchase =  explode('-', $value);
+                            $startDatePurchase = date('Y-m-d H:s:i',strtotime($arrDatePurchase[0]));
+                            $endDatePurchase = date('Y-m-d H:s:i',strtotime($arrDatePurchase[1]));
+                            $whereOrder .= "AND DATE(orders.created_at) >= '{$startDatePurchase}' AND DATE(orders.created_at) <= '{$endDatePurchase}'";
+                        }
+                        else{
+                            $whereUser .= "AND u.{$key} = '{$value}'";
+                        }
+                        
                     }
-                    elseif( $key == 'perpage' ){
-                        $perPage = (int)$value;
-                    }
-                    elseif($key == 'purchase_date'){
-                        $arrDatePurchase =  explode('-', $value);
-                        $startDatePurchase = date('Y-m-d H:s:i',strtotime($arrDatePurchase[0]));
-                        $endDatePurchase = date('Y-m-d H:s:i',strtotime($arrDatePurchase[1]));
-                        $whereOrder .= "AND DATE(orders.created_at) >= '{$startDatePurchase}' AND DATE(orders.created_at) <= '{$endDatePurchase}'";
-                    }
-                    else{
-                        $whereUser .= "AND u.{$key} = '{$value}'";
-                    }
-                    
                 }
             }
-
             $results = User::getTotalPurchaseMembers(User::all(),$whereOrder,$whereUser);
         }else{
             $date['startDatePurchase'] = date('Y-m-01');
@@ -235,6 +283,8 @@ class AdminController extends Controller
             $whereOrder .= "AND DATE(orders.created_at) >= '{$date['startDatePurchase']}' AND DATE(orders.created_at) <= '{$date['endDatePurchase']}'";
             $results = User::getTotalPurchaseMembers(User::all(),$whereOrder);
         }
+            
+     
 
         //$currentPage = LengthAwarePaginator::resolveCurrentPage();
         $currentPage = $request->input('page', 1) - 1;
@@ -245,6 +295,24 @@ class AdminController extends Controller
         $paginatedSearchResults= new LengthAwarePaginator($currentPageSearchResults, count($collection), $perPage);
         $paginatedSearchResults->setPath($request->url());
         $paginatedSearchResults->appends($request->except(['page']));
+
+        if($request->has('_user_export_excel')){
+
+            Excel::create('users_list_'.date('Y-m-d H:s:i'), function($excel) use ($results){
+                // Set the title
+                $excel->setTitle('Report Users list');
+                // Call writer methods here
+                // Our first sheet
+                $excel->sheet('Data', function($sheet) use ($results) {
+                    $sheet->with(
+                        json_decode(json_encode($results), true)
+                    );
+                });
+
+            })->download('csv');
+
+        }
+
 
         return view('back.users.dashboard',array('users' => $paginatedSearchResults) );
     }
@@ -280,9 +348,9 @@ class AdminController extends Controller
                 Session::flash( 'message', array('class' => 'alert-danger', 'detail' => 'User refferal not found !') );
                 return view('back.users.create');
             }else{
-                $userCode = $userFind->membership_number;
+          
                 $user_level = (int)$userFind->user_level + 1;
-                $user_uplinepath = $userFind->uplinepath.$userFind->id;
+                $user_uplinepath = $userFind->uplinepath.','.$userFind->id;
             }
 
         }
@@ -291,8 +359,8 @@ class AdminController extends Controller
         $userCreated->name_suffix = '_a_w';
         $userCreated->email =  $request->input('email');
         $userCreated->password = Hash::make(self::DEFAULT_PASSSWORD);
-        $userCreated->user_code = str_random(32);
-        $userCreated->membership_number = User::getUserCode($userCode,$request->input('user_city'));
+        //$userCreated->user_code = str_random(32);
+        //$userCreated->membership_number = User::getUserCode($userCode,$request->input('user_city'));
         $userCreated->user_role = 'OM';
         $userCreated->user_level = $user_level;
         $userCreated->uplinepath = $user_uplinepath;
@@ -300,6 +368,11 @@ class AdminController extends Controller
         $userCreated->registration_date = date('Y-m-d H:s:i');
         $userCreated->user_verify_code = str_random(64);
         $userCreated->register_fee = \App\Helpers\SiteHelper::getConfig('register_fee');
+        $userCreated->save();
+
+        $newCode =  User::getMembersNumber($userCreated->id);
+        $userCreated->user_code = $newCode;
+        $userCreated->membership_number = User::getUserCode($newCode,$request->input('user_refferal'),$request->input('user_city'));
         $userCreated->save();
 
         if($userCreated){
@@ -375,7 +448,10 @@ class AdminController extends Controller
     }
 
     public function deleteUsers(Request $request,$id){
-        return;
+        User::destroy($id);
+     
+         Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'Delete successful !') );
+        return redirect()->route('back.users');
     }
     /*
     * Orders
@@ -386,8 +462,9 @@ class AdminController extends Controller
 
     public function allOrders(Request $request){
 
-        if ($request->isMethod('post')){
-            $orders = Orders::where('id','<>','');
+        
+        $orders = Orders::where('id','<>','');
+        if( $request->has('filter') ){
             $arrFilter = $request->input('filter');
             if (count($arrFilter) > 0){
                 foreach ($arrFilter as $key => $value) {
@@ -409,11 +486,56 @@ class AdminController extends Controller
 
                     }
                 }
+                if($request->has('_order_export_excel')){
+                    $orders =  $orders->get();
+                }else{
+                    $orders =  $orders->paginate(50);
+                }
+
+            }
+        }else{
+            if($request->has('_order_export_excel')){
+                $orders =  $orders->get();
+            }else{
                 $orders =  $orders->paginate(50);
             }
-            return view('back.orders.dashboard')->with('orders',$orders);
         }
-        $orders =  Orders::paginate(50);
+        //dd($orders);
+
+        if($request->has('_order_export_excel')){
+
+            $newArr = array();
+            foreach ( $orders as $item ){
+                $temp = array(
+                    'id' => $item->id,
+                    'checkout_type' => $item->checkout_type,
+                    'email' => $item->orderable->email,
+                    'shipping_fee' => $item->shipping_fee,
+                    'gst_tax' => $item->gst_tax,
+                    'total' => $item->total,
+                    'total_include_tax' => $item->total_include_tax,
+                    'status' => $item->status,
+                    'address' => $item->address,
+                    'created_at' => date('Y-m-d H:s:i',strtotime($item->created_at)),
+                    'updated_at' => date('Y-m-d H:s:i', strtotime($item->updated_at)),
+                );
+                array_push($newArr,$temp);
+            }
+
+            Excel::create('order_list_'.date('Y-m-d H:s:i'), function($excel) use ($newArr){
+                // Set the title
+                $excel->setTitle('Report Order Lists');
+                // Call writer methods here
+                // Our first sheet
+                $excel->sheet('Data', function($sheet) use ($newArr) {
+                    $sheet->with(
+                        json_decode(json_encode($newArr), true)
+                    );
+                });
+
+            })->download('csv');
+
+        }
         return view('back.orders.dashboard')->with('orders',$orders);
     }
 

@@ -40,9 +40,10 @@
                                 <li>
                                     <a href="{{ route('front.contactus') }}">Contact Us</a>
                                 </li>
+                                <!--
                                 <li>
                                     <a href="#">Blog</a>
-                                </li>
+                                </li>-->
                                 <li class="mini-cart-button">
                                     <a href="#" class="js-toggle-right-slidebar">
                                        

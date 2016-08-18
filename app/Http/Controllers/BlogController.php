@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Models\Feedback;
+use Validator;
+use Mail;
 
 class BlogController extends Controller
 {
@@ -18,16 +20,18 @@ class BlogController extends Controller
     	return view('front.contact_us');
     }
 
+
+
     public function feedbackUs(){
     	return view('front.feedback');
     }
 
     public function feedbackUsSubmit(Request $request){
+        /*
     	$api_url     = 'https://www.google.com/recaptcha/api/siteverify';
     	$site_key    = '6LdY6yMTAAAAAGCtPNCbafSyjvqYe7HF8fNAc5T8';
     	$secret_key  = '6LdY6yMTAAAAAIu68eEHZiBLhp49h8IuAKGlo4K7';
     	$site_key_post    = $request->input('g-recaptcha-response');
-
 
  
 	    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -52,52 +56,61 @@ class BlogController extends Controller
         }
         if($response->success == true)
         {
-            $dataFeedback = $request->all();
+        */
 
-            Feedback::create(array(
-            	'fullname' => $dataFeedback['fullname'],
-            	'email' => $dataFeedback['email'],
-            	'subject' => $dataFeedback['subject'],
-            	'message' => $dataFeedback['message'],
-            ));
+        $rules = array(
+            'fullname' => 'required',
+            'email' => 'email|required',
+            'subject' => 'required',
+            'message' => 'required'
+        );    
 
-            try{
-            	// try mail to customer
-            	 Mail::send('emails.feedback',
-            		 array('data' => $dataFeedback)
-            		 ,function($message) use ($dataFeedback) {
-            			 $message->from( env('MAIL_USERNAME','Lifeforce') );
-            			 $message->to( $dataFeedback['email'] )
-            				 ->cc(env('MAIL_USERNAME'))
-            				 ->subject(config('app.sitename').' - Thanks for feedback');
-            		 });
-            	// try mail to customer
-            	 Mail::send('emails.feedbackAdmin',
-            		 array('data' => $dataFeedback)
-            		 ,function($message) use ($dataFeedback) {
-            			 $message->from( $dataFeedback['email'] );
-            			 $message->to(  env('MAIL_USERNAME','Lifeforce') )
-            				 ->cc(env('MAIL_USERNAME'))
-            				 ->subject(config('app.sitename').' - Feedback from customer'.$dataFeedback['fullname']);
-            		 }); 
-
-             }
-             catch(Exception $e){
-            	// fail
-             }
-             $msg = array(
-        		'class' => 'alert-success',
-        		'detail' => 'Thanks for your feedback'
-        	);
-            return view('front.feedback',array('message' => $msg));
-        }else{
-            $msg = array(
-        		'class' => 'alert-danger',
-        		'detail' => 'Captcha is valid'
-        	);
-            return view('front.feedback',array('message' => $msg));
+        $v = Validator::make($request->all(),$rules);
+        if ($v->fails())
+        {
+            return back()->withErrors($v);
         }
-	    
+
+
+        $dataFeedback = $request->all();
+
+        Feedback::create(array(
+        	'fullname' => $dataFeedback['fullname'],
+        	'email' => $dataFeedback['email'],
+        	'subject' => $dataFeedback['subject'],
+        	'message' => $dataFeedback['message'],
+        ));
+
+        try{
+        	// try mail to customer
+        	 Mail::send('emails.feedback',
+        		 array('data' => $dataFeedback)
+        		 ,function($message) use ($dataFeedback) {
+        			 $message->from( env('MAIL_USERNAME','Lifeforce') );
+        			 $message->to( $dataFeedback['email'] )
+        				 ->cc(env('MAIL_USERNAME'))
+        				 ->subject(config('app.sitename').' - Thanks for feedback');
+        		 });
+        	// try mail to customer
+        	 Mail::send('emails.feedbackAdmin',
+        		 array('data' => $dataFeedback)
+        		 ,function($message) use ($dataFeedback) {
+        			 $message->from( $dataFeedback['email'] );
+        			 $message->to(  env('MAIL_USERNAME','Lifeforce') )
+        				 ->cc(env('MAIL_USERNAME'))
+        				 ->subject(config('app.sitename').' - Feedback from customer'.$dataFeedback['fullname']);
+        		 }); 
+
+         }
+         catch(Exception $e){
+        	// fail
+         }
+         $msg = array(
+    		'class' => 'alert-success',
+    		'detail' => 'Thanks for your feedback'
+    	);
+        return view('front.contact_us',array('message' => $msg));
+       
    
     }
 }

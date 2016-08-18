@@ -21,7 +21,7 @@ Route::get('initialize-site',array('as' => 'init', 'uses' => 'HomeController@ini
 
 Route::group( 
     array( 
-        'middleware' => ['web']
+        'middlewareGroups' => ['web']
     ),function () {
 
         Route::get('/',array('as'=>'front.index', 'uses' => 'HomeController@index'));
@@ -58,6 +58,8 @@ Route::group(
 
          Route::get('/about-us',array('as'=>'front.aboutus', 'uses' => 'BlogController@aboutUs'));
          Route::get('/contact-us',array('as'=>'front.contactus', 'uses' => 'BlogController@contactUs'));
+         Route::post('/contact-us',array('as'=>'front.contactus.post', 'uses' => 'BlogController@feedbackUsSubmit'));
+         
          Route::get('/feedback-us',array('as'=>'front.feedback', 'uses' => 'BlogController@feedbackUs'));
          Route::post('/feedback-us',array('as'=>'front.feedback.submit', 'uses' => 'BlogController@feedbackUsSubmit'));
 
@@ -82,7 +84,7 @@ Route::group(
 
 Route::group(
     array( 
-        'middleware' => array('web','auth')
+        'middlewareGroups' => array('web','auth')
 
     ),function () {
        
@@ -126,7 +128,7 @@ Route::group(
 
 Route::group( 
     array( 
-        'middleware' => ['web','auth','admin'],
+        'middlewareGroups' => ['web','auth','admin'],
         'prefix' => 'admin'
     ),function () {
             
@@ -139,7 +141,7 @@ Route::group(
         Route::get('product/categories/create',array('as'=>'back.categories.create', 'uses' => 'AdminController@categoriesCreate'));
         Route::get('product/categories/edit/{id}',array('as'=>'back.categories.edit', 'uses' => 'AdminController@categoriesEdit'));
         Route::post('product/categories/edit/{id}',array('as'=>'back.categories.update', 'uses' => 'AdminController@categoriesUpdate'));
-        Route::post('product/categories/delete/{id}',array('as'=>'back.categories.delete', 'uses' => 'AdminController@categoriesDelete'));
+        Route::get('product/categories/delete/{id}',array('as'=>'back.categories.delete', 'uses' => 'AdminController@categoriesDelete'));
 
         // Product
         Route::get('product/create',array('as'=>'back.product.create', 'uses' => 'AdminController@createProduct'));
@@ -173,6 +175,8 @@ Route::group(
         Route::get('reportation/wm',array('as'=>'back.report', 'uses' => 'ReportController@reportboard'));
         Route::get('user/commission/{id}',array('as'=>'back.users.commission', 'uses' => 'AdminController@userCommission'));
         Route::post('user/commission/{id}',array('as'=>'back.users.commission.post', 'uses' => 'AdminController@userCommission'));
+
+        Route::resource('city','CityController');
     });
 
 

@@ -4,7 +4,7 @@
     <div class="container ">
         <div class="pull-xs-right">
             <h1 class="header text-xs-right text-white">Our Products</h1>
-            <p class="text-xs-right text-white">Parallax is an effect where the background content or image in this case, is moved at a different speed than the foreground content while scrolling.</p>
+            <p class="text-xs-right text-white">{{ Site::getConfig('product_page_title')}}</p>
         </div>
     </div>
     <div class="parallax"><img src="{{url('images/product-page-banner.jpg')}}"></div>

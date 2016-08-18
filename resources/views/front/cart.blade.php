@@ -89,16 +89,19 @@
 	                     <tbody>
 	                        <tr>
 	                           <td>Total products</td>
-	                           <td class="price">{{ PriceHelper::formatPrice($total) }}</td>
+	                           <td class="price" align="right">{{ PriceHelper::formatPrice($total) }}</td>
 	                        </tr>
 	                        <tr style="">
-
-	                           <td class="price" colspan="2"><span class="success">Shipping 10$ in Australia</span></td>
+	                           <td class="price"><span class="success">Shipping </span></td>
+								<td align="right">{{ PriceHelper::formatPrice(10) }}</td>
 	                        </tr>
-
+							<tr style="">
+								<td class="price"><span class="success">GST Tax</span></td>
+								<td align="right">{{ \App\Helpers\PriceHelper::formatPrice(Site::getConfig('gst_tax')/100*$total)  }}</td>
+							</tr>
 	                        <tr>
 	                           <td> Total</td>
-	                           <td class=" site-color" id="total-price">{{ PriceHelper::formatPrice($total + 10) }}</td>
+	                           <td class=" site-color" id="total-price" align="right">{{ PriceHelper::formatPrice(Site::getConfig('gst_tax')/100*$total + 10 + $total) }}</td>
 	                        </tr>
 	                        <!--
 	                        <tr>
@@ -111,7 +114,6 @@
 	                        </tr>
 	                        -->
 	                     </tbody>
-	                     <tbody></tbody>
 	                  </table>
 	               </div>
 	            </div>

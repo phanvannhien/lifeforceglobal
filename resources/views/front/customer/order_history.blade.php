@@ -47,11 +47,13 @@
                                 <td>{{ $order->id }}</td>
                                 <td>{{ CustomerHelper::getCountItemOrders($order->id) }}
                                     <small>item(s)</small>
-                                
+                                    <small>Shipping fee:{{\App\Helpers\PriceHelper::formatPrice($order->shipping_fee)}}</small>
+                                    <small>GST Tax:{{PriceHelper::formatPrice($order->gst_tax/100)}}</small>
+
                                 </td>
                                 <td><a target="_blank">-</a>
                                 </td>
-                                <td>{{ PriceHelper::formatPrice($order->total) }}</td>
+                                <td>{{ PriceHelper::formatPrice($order->total_include_tax) }}</td>
                                 <td data-value="">{{ $order->created_at }}</td>
                                 <td data-value=""><span class="label label-success">{{ $order->status }}</span>
                                 </td>

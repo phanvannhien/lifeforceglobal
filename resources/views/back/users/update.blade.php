@@ -10,7 +10,7 @@
     <h1>
       Edit Users
       <small>it all starts here</small>
-      <a class="btn btn-success" href="{{ route('back.users.create') }}">Create new</a>
+      <a class="btn btn-success" href="{{ route('back.users') }}">Back</a>
     </h1>
     <ol class="breadcrumb">
       <li><a href="/admin"><i class="fa fa-dashboard"></i> Home</a></li>

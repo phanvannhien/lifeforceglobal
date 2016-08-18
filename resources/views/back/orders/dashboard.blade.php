@@ -24,7 +24,7 @@
         <h3 class="box-title">Orders</h3>
       </div>
       <div class="box-body">
-        <form action="{{route('back.orders.post')}}" class="form-horizontal" method="post">
+        <form action="{{route('back.orders.post')}}" class="form-horizontal" method="get">
           <input type="hidden" value="{{ csrf_token() }}" name="_token">
           <table id="" class="table table-bordered table-hover">
             <thead>
@@ -49,6 +49,7 @@
               <td><input value="{{Input::get('filter')['email']}}" type="email" name="filter[email]" class="form-control" placeholder=""></td>
               <td>
                   <select class="form-control" name="filter[status]" id="">
+                      <option {{ (Input::get('filter')['status'] == '') ? 'selected' :'' }} value="">All</option>
                       <option {{ (Input::get('filter')['status'] == 'pending') ? 'selected' :'' }} value="pending">pending</option>
                       <option {{ (Input::get('filter')['status'] == 'cancel') ? 'selected' :'' }} value="cancel">cancel</option>
                       <option {{ (Input::get('filter')['status'] == 'done') ? 'selected' :'' }} value="done">done</option>
@@ -56,7 +57,9 @@
               </td>
               <td><input value="{{Input::get('filter')['created_at']}}" type="text" size="8" name="filter[created_at]" class="form-control reservation" placeholder="From - To"><br></td>
               <td>
-                <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-search"></i> Filter</button>
+
+                  <input type="submit" value="Filter" name="_order_filter" class="btn btn-primary">
+                  <input type="submit" value="Export Excel" name="_order_export_excel" class="btn btn-info">
               </td>
             </tr>
           </table>
@@ -71,6 +74,7 @@
                       <td>Customer</td>
                       <td>Order Total</td>
                       <td>Shipping Fee</td>
+                      <td>GST Tax(%)</td>
                       <td>Total</td>
                       <td>Status</td>
                       <td>Order Date</td>
@@ -82,26 +86,49 @@
                     @foreach( $orders as $item)
                     <tr>
                       <td>{{ $item->id }}</td>
-                      <td>{{ $item->orderable->email }}</td>
+                      <td>
+                       
+                      <a href="{{ route('back.users',[
+                          'filter[name]' => '',
+                          'filter[email]' => $item->orderable->email,
+                          'filter[user_code]' => '',
+                          'filter[user_refferal]' => '',
+                          'filter[user_status]' => '',
+                          'filter[membership_number]' => '',
+                          'filter[user_role]' =>'',
+                          'filter[registration_date]' => '',
+                          'filter[purchase_date]' => '',
+                          'filter[perpage]' => 20
+
+                      ]) }}">{{ $item->orderable->email }}</a></td>
                       <td>{{ PriceHelper::formatPrice($item->total) }}</td>
                       <td>{{ PriceHelper::formatPrice($item->shipping_fee) }}</td>
-                      <td>{{ PriceHelper::formatPrice($item->total + $item->shipping_fee ) }}</td>
+                      <td>{{ PriceHelper::formatPrice( $item->gst_tax ) }}</td>
+                      <td>{{ PriceHelper::formatPrice($item->total_include_tax ) }}</td>
                       <td><lalel class="label label-info">{{ $item->status }}</lalel> </td>
                       <td>{{ $item->created_at }}</td>
                       <td>
                       <a href="{{ route('back.orders.edit',$item->id) }}"><i class="fa fa-edit"></i> View</a>   <br>
                       </td>
                     </tr>
-                      <?php  $total += $item->total + $item->shipping_fee;?>
+                      <?php  $total += $item->total + $item->gst_tax/100;?>
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="7">Orders not found</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
                     </tr>
                 @endif
                 <tfoot>
                     <tr>
-                        <td colspan="8" align="right">Total: <strong>{{ PriceHelper::formatPrice($total)}}</strong></td>
+                        <td colspan="9" align="right">Total: <strong>{{ PriceHelper::formatPrice($total)}}</strong></td>
                     </tr>
                 </tfoot>
        		</table>

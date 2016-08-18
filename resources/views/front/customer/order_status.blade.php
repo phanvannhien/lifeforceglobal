@@ -15,6 +15,9 @@
                      <p><strong>Order Date:</strong> {{ $order->created_at }}</p>
                      <p><strong>Order Number:</strong> {{ $order->id }} </p>
                      <p><strong>Shipping Address:</strong> {{ $order->address }} </p>
+                     <p><strong>Shipping Fee:</strong> {{ \App\Helpers\PriceHelper::formatPrice($order->shipping_fee) }} </p>
+                     <p><strong>GST Tax:</strong> {{ PriceHelper::formatPrice($order->gst_tax) }} </p>
+                     <p><strong>Total included shipping fee:</strong> {{ PriceHelper::formatPrice($order->shipping_fee + $order->total_include_tax) }} </p>
                   </div>
                </div>
  
@@ -33,7 +36,7 @@
                                  <tr class="cartProduct">
                                     <td class="cartProductThumb" style="width:20%">
                                        <div><a href="">
-                                             <img alt="img" src="{{ Image::url(ProductHelper::getThumbnail($item->id),80,100,array('crop')) }}">
+                                             <img alt="img" src="{{ Image::url(ProductHelper::getThumbnail($item->product_id),80,100,array('crop')) }}">
                                           </a>
                                        </div>
                                     </td>

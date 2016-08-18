@@ -36,8 +36,20 @@
 		                  <span class="info-box-number">{{ Site::getTotalUsers() }}</span>
 		                </div><!-- /.info-box-content -->
 		              </div><!-- /.info-box -->
-		            </div><!-- /.col -->
-		        </a>    
+		        </a>
+			</div><!-- /.col -->
+			<div class="col-md-3 col-sm-6 col-xs-12">
+				<a href="#">
+					<div class="info-box">
+						<span class="info-box-icon bg-yellow"><i class="fa fa-dollar"></i></span>
+						<div class="info-box-content">
+							<span class="info-box-text">GST Report</span>
+							<span class="info-box-number">{{ \App\Helpers\PriceHelper::formatPrice(number_format( (App\User::getTotalSale() - App\User::calCommissionForUserRootLevel())/1.1*0.1,2 )) }}</span>
+							<p>{{date('Y-m-01').' to '.date('Y-m-d')}}</p>
+						</div><!-- /.info-box-content -->
+					</div><!-- /.info-box -->
+				</a>
+			</div><!-- /.col -->
         </div><!-- /.row -->
 
         <div class="row">

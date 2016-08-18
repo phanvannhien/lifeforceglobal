@@ -16,6 +16,7 @@ use App\Models\Orders;
 use Site;
 use Cart;
 use CustomerHelper;
+use Validator;
 
 class UserController extends Controller
 {
@@ -112,9 +113,9 @@ class UserController extends Controller
             if ( count($userFind) <= 0 ){
                 return response()->json(array('success'=> false, 'msg' => "User Referal Code not found"));
             }else{
-                $userCode = $userFind->membership_number;
+               
                 $user_level = (int)$userFind->user_level + 1;
-                $user_uplinepath = $userFind->uplinepath.$userFind->id;
+                $user_uplinepath = $userFind->uplinepath.','.$userFind->id;
             }
 
         }
@@ -123,8 +124,8 @@ class UserController extends Controller
         $userCreated->name_suffix = '_a_w';
         $userCreated->email =  $request->input('email');
         $userCreated->password = Hash::make($request->input('password'));
-        $userCreated->user_code = str_random(32);
-        $userCreated->membership_number = User::getUserCode($userCode,$request->input('user_city'));
+        $userCreated->user_code = '';
+        $userCreated->membership_number = '';
         $userCreated->user_role = 'OM';
         $userCreated->user_level = $user_level;
         $userCreated->uplinepath = $user_uplinepath;
@@ -134,7 +135,11 @@ class UserController extends Controller
         $userCreated->register_fee = \App\Helpers\SiteHelper::getConfig('register_fee');
         $userCreated->save();
 
-      
+        $newCode =  User::getMembersNumber($userCreated->id);
+        $userCreated->user_code = $newCode;
+        $userCreated->membership_number = User::getUserCode($newCode,$request->input('user_refferal'),$request->input('user_city'));
+        $userCreated->save();
+
         if($userCreated){
             
             // Email to registed user
@@ -250,7 +255,8 @@ class UserController extends Controller
 
     public function userAddress(){
 
-        $address = DB::table('customers_address')->where('user_id', Auth::user()->id )->get();
+        $address = DB::table('customers_address')
+        ->where('user_id', Auth::user()->id )->get();
         return view('front.customer.address',array('address' =>  $address));
     }
 
@@ -289,12 +295,14 @@ class UserController extends Controller
     }
 
     public function userAddressEdit($id){
-        $address = DB::table('customers_address')->where('user_id', Auth::user()->id )->get();
+        $address = DB::table('customers_address')
+        ->where('user_id', Auth::user()->id )->get();
+
         $addressEdit = DB::table('customers_address')->where('id',$id)->first();
         if($address){
             return view('front.customer.address',
-                array('address' =>  $address, 'address_edit' 
-                => $addressEdit )); 
+                array('address' =>  $address, 
+                    'address_edit'=> $addressEdit )); 
         }
 
     }
@@ -314,17 +322,36 @@ class UserController extends Controller
     }
 
     public function userAddressAdd(Request $request){
+        
+        $rules = array(
+            'suburb' => 'required',
+            'postalcode' => 'required',
+            'address' => 'required',
+        );
+
+        $v = Validator::make($request->all(),$rules);
+        if ($v->fails())
+        {
+            return back()->withInput()->withErrors($v);
+        }
+
         if( $request->has('address') ){
 
             if( $request->has('mode_edit') ){
                 $updated = DB::table('customers_address')
                     ->where('user_id', Auth::user()->id)
-                    ->where('id',$request->input('id'))
-                    ->update(
+                    ->where('id',$request->input('id'))->first();
+
+                DB::table('customers_address')->update(
                         array(
+                            'cityname' => $request->input('city'),
+                            'suburb' => $request->input('suburb'),
+                            'postalcode' => $request->input('postalcode'),
                             'address' => $request->input('address'),
-                        )
+                        ),$updated->id
                     );
+                   
+
                 if ($updated){
                     Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'Updated successful!') );
                     
@@ -336,6 +363,9 @@ class UserController extends Controller
                 $inserted = DB::table('customers_address')->insert(
                     array(
                         'user_id' => Auth::user()->id,
+                        'cityname' => $request->input('city'),
+                        'suburb' => $request->input('suburb'),
+                        'postalcode' => $request->input('postalcode'),
                         'address' => $request->input('address'),
                         'created_at' => date('Y-m-d H:s:i')
                     )

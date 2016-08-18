@@ -13,6 +13,7 @@ use App\Models\Orders;
 use App\Models\Guest;
 use App\User;
 use Mail;
+use Session;
 use Site;
 
 class CheckoutController extends Controller
@@ -38,6 +39,13 @@ class CheckoutController extends Controller
     	if($exitsCart <= 0){
     		return redirect('/');
     	}
+
+        if($request->input('add') == 'current_address'){
+            if( $request->input('SelectAddress') == '' ){
+                Session::flash( 'message', array('class' => 'alert-danger', 'detail' => 'Please selected your shipping address!') );
+                return back();
+            }
+        }
     	// Get cart
     	$cart = Cart::content();
     	$orderID = '';
@@ -85,7 +93,9 @@ class CheckoutController extends Controller
     	$order->user_id = (Auth::check()) ? Auth::user()->id : $guest->id;
         $order->checkout_type = (Auth::check()) ? 'member' : 'guest';
     	$order->total = Cart::total();
+    	$order->total_include_tax = number_format(Cart::total() + Cart::total()*Site::getConfig('gst_tax')/100,2);
     	$order->shipping_fee = Site::getConfig('shipping_fee');
+		$order->gst_tax = Cart::total()*Site::getConfig('gst_tax')/100;
     	$order->status = 'pending';
     	$order->updated_by =  (Auth::check()) ? Auth::user()->id : $guest->id;
     	$order->address = $addedAddress;
@@ -94,8 +104,7 @@ class CheckoutController extends Controller
     	}else{
     		$guest->orders()->save($order);
     	}
-    	
-    	
+
 		// saving detail
 		if($order){
 
@@ -112,8 +121,7 @@ class CheckoutController extends Controller
 					)
 				);
 			}
-			
-			 
+
 			 try{
 				// try
 				$to = (Auth::check()) ? Auth::user()->email : $guest->email ;
@@ -129,16 +137,12 @@ class CheckoutController extends Controller
 			 catch(Exception $e){
 				// fail
 			 }
-
 			 Cart::destroy();
-
 			 //Return checkout success page
 			 return view('front.checkout_success',array('orderID' => $order->id ) );
-
 		}
 		//Return checkout fail page
 		return view('front.checkout_fail');
-
     }//end function
 
 }//end class

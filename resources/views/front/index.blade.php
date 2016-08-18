@@ -12,7 +12,7 @@
 <div class="container main-container">
     <div class="container">
         <div class="row">
-            @foreach (\App\Models\Categories::all() as $cat)
+            @foreach (\App\Models\Categories::where('category_status',1)->get() as $cat)
          
             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                 <div class="service-item">

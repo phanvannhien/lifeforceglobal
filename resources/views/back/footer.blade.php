@@ -14,6 +14,5 @@
 
     @include('back.modal')
     @yield('footer')
-
   </body>
 </html>

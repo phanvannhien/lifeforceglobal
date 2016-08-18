@@ -28,6 +28,7 @@
                         <label for="">Purchase From date - To date</label>
                         <input type="text" class="form-control" name="date_range" id="date-range" style="margin-bottom: 0">
                         <button type="submit" name="submit" class="btn btn-primary">Filter</button>
+                        <input type="submit" value="Export Excel" name="_commission_export_excel" class="btn btn-info">
                     </div>
                 </form>
 
@@ -41,8 +42,8 @@
                         <th> Member Name</th>
                         <th> Member Status</th>
                         <th> Upline level</th>
-                        <th> Total Purchase</th>
-                        <td> Commission Upline</td>
+                        <th> Total Purchase <br> (included tax)</th>
+                        <th> Commission Upline</th>
                     </tr>
                     </thead>
                     <tbody>
