@@ -50,6 +50,20 @@
 					</div><!-- /.info-box -->
 				</a>
 			</div><!-- /.col -->
+            
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <a href="{{ route('admin.bmreportnotpurchase2motnth') }}">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-yellow"><i class="fa fa-dollar"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">BM report</span>
+                            <span class="info-box-number">{{ count(CustomerHelper::checkUserNotPurchase2Month()) }}</span>
+                            <p>users report not purchase for 2 month ago</p>
+                        </div><!-- /.info-box-content -->
+                    </div><!-- /.info-box -->
+                </a>
+            </div><!-- /.col -->
+
         </div><!-- /.row -->
 
         <div class="row">
@@ -57,7 +71,7 @@
             {!! CustomerHelper::checkWMUserRevanue3Month() !!}
         </div>
          <div class="col-md-6 col-sm-12">
-            {!! CustomerHelper::checkUserNotPurchase2Month() !!}
+            
         </div>
 
 	  <div class="col-md-12">

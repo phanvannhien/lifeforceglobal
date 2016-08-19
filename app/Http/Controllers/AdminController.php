@@ -647,4 +647,51 @@ class AdminController extends Controller
         return view('back.configuration',array('configuration' => DB::table('configuration')->get()) ); 
         
     }
+
+    public function reportBMnotPurchase2Month(){
+        return view('back.report.bmnotpurchase2month');
+    }
+
+    public function sendmail(Request $request){
+
+        $rules = array('userids' => 'required');
+        $v = Validator::make($request->all(), $rules);
+        if( $v->fails() ){
+            Session::flash( 'message', array('class' => 'alert-danger', 'detail' => 'Select email to send') );
+            return back();
+        }
+
+        if( count($request->input('userids')) > 0 ){
+
+
+            if( is_array( $request->input('userids')) ){
+                // Get Upline Email
+                $userUpline = User::whereIn('id',$request->input('userids'))->get();
+
+                $arrEmail = array();
+                foreach ( $userUpline as $user ){
+                    $parentUser = User::where('user_code',$user->user_refferal)->first();
+                    if( $parentUser ){
+                        array_push($arrEmail,$parentUser->email);
+                    }
+
+                }
+                //dd($arrEmail);
+                if( count($arrEmail) > 0 ){
+                    Mail::send('emails.bmpurchase2month', array('data' => $arrEmail)
+                        ,function($message) use ($arrEmail) {
+                            $message->from( env('MAIL_USERNAME','Lifeforce') );
+                            $message->to( $arrEmail )
+                                //->cc()
+                                ->subject(config('app.sitename').' - Alert BM user not purchase in 2 month ago');
+                        });
+                }
+
+            }
+            Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'Send mail successful!') );
+
+        }
+
+        return back();
+    }
 }

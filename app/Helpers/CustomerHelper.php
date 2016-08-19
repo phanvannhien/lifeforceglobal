@@ -107,6 +107,7 @@
 		}
 
 		public static function checkUserNotPurchase2Month(){
+
 			$sql = "select 
 				u.id,
 				u.name, 
@@ -129,12 +130,10 @@
 				) AND
 
 				u.user_status = '1' AND
-				u.registration_date <= DATE(NOW() - INTERVAL 2 MONTH) AND 
 				u.user_role = 'BM' ";
 
-			$data = DB::select($sql);	
-			
-			return view('back.renders.member_perchase', [ 'data' => $data ]);
+			return DB::select($sql);
+			//--u.registration_date <= DATE(NOW() - INTERVAL 2 MONTH) AND
 		}
 		
 		public static function getCommissionOneMonthofHeadMembers($members,$totalPurchase,$date){

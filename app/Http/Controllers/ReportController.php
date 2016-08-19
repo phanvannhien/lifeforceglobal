@@ -23,9 +23,7 @@ use Illuminate\Support\Collection;
 
 class ReportController extends Controller
 {
-	public function __construct(){
-		DB::enableQueryLog();
-	}
+	
 	public function reportboard(Request $request){
 				
 		// Create rules
@@ -65,10 +63,11 @@ class ReportController extends Controller
 			u.membership_number,
 			u.registration_date,
 			o.totals,
-			IF (o.totals > 3000,o.totals * 10 / 100, 0 ) as commission
+			IF (o.totals > 3000,o.totals * 10 / 100, 0 ) as commission,
+			IF (o.totals < 1500,1,0 ) as purchase
 		from 
 			(
-				select orders.user_id, sum(orders.total) as totals
+				select orders.user_id, sum(orders.total_include_tax) as totals
 				from orders
 				where 
 					{$whereOrders}
@@ -96,6 +95,35 @@ class ReportController extends Controller
 
         return view('back.reportboard',[ 'users' => $paginatedSearchResults ]);
 
+	}
+
+	public function reportWMSendMail(Request $request)
+	{
+
+		$rules = array('userids' => 'required');
+		$v = Validator::make($request->all(), $rules);
+		if ($v->fails()) {
+			Session::flash('message', array('class' => 'alert-danger', 'detail' => 'Select email to send'));
+			return back();
+		}
+
+		if (count($request->input('userids')) > 0) {
+
+			$arrIDs = $request->input('userids');
+			$users = User::whereIn('id',$arrIDs)->get();
+
+			Mail::send('emails.wmreport', array('users' => $users)
+				,function($message) {
+					$message->from( env('MAIL_USERNAME','Lifeforce') );
+					$message->to( env('MAIL_USERNAME','Lifeforce') )
+						->cc('phanvannhien@gmail.com')
+						->subject(config('app.sitename').' - Alert WM user having purchase < $1500');
+				});
+
+			Session::flash( 'message', array('class' => 'alert-success', 'detail' => 'Send mail successful!') );
+		}
+		Session::flash( 'message', array('class' => 'alert-danger', 'detail' => 'Send mail fail!') );
+		return back();
 	}
 	
 }

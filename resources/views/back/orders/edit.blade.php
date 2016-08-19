@@ -68,6 +68,11 @@
                                         <option value="cancel">cancel</option>
                                         </select><br>
                                         <button type="submit" class="btn btn-primary">Submit</button>
+                                    @elseif ( $order->status == 'done' )
+                                    <select name="status" id="" class="form-control">
+                                        <option value="return">Return</option>
+                                    </select><br>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
                                     @else
                                         <p>Can't change status</p>
                                     @endif

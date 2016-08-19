@@ -131,8 +131,10 @@ Route::group(
         'middlewareGroups' => ['web','auth','admin'],
         'prefix' => 'admin'
     ),function () {
-            
-      
+
+
+        Route::post('/report/bm-not-purchase-2-month',array('as'=>'back.admin.send.mail', 'uses' => 'AdminController@sendmail'));
+        Route::get('/report/bm-not-purchase-2-month',array('as'=>'admin.bmreportnotpurchase2motnth', 'uses' => 'AdminController@reportBMnotPurchase2Month'));
         Route::get('/',array('as'=>'back.admin.dashboard', 'uses' => 'AdminController@adminDashboard'));
         Route::post('ajax/uploadfile',array('as'=>'back.admin.upload', 'uses' => 'MediaController@uploadFile'));
         Route::post('ajax/category/uploadfile',array('as'=>'back.categories.upload', 'uses' => 'MediaController@categoriesUpload'));
@@ -173,10 +175,13 @@ Route::group(
         
         // Report
         Route::get('reportation/wm',array('as'=>'back.report', 'uses' => 'ReportController@reportboard'));
+        Route::post('reportation/wm',array('as'=>'admin.sendmail.wm', 'uses' => 'ReportController@reportWMSendMail'));
         Route::get('user/commission/{id}',array('as'=>'back.users.commission', 'uses' => 'AdminController@userCommission'));
         Route::post('user/commission/{id}',array('as'=>'back.users.commission.post', 'uses' => 'AdminController@userCommission'));
 
         Route::resource('city','CityController');
+
+
     });
 
 

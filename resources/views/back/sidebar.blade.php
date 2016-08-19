@@ -80,6 +80,7 @@
               <i class="fa fa-cogs"></i> <span>Report</span><i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu">
                 <li><a href="{{ route('back.report') }}"><i class="fa fa-fa-cube-o"></i> WM report</a></li>
+                <li><a href="{{ route('admin.bmreportnotpurchase2motnth') }}"><i class="fa fa-fa-cube-o"></i> BM Report</a></li>
               </ul>
             </li>
             <li class="treeview">

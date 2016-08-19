@@ -52,9 +52,12 @@
           <div class="clearfix">
             <p class="pull-right"> Showing <strong></strong> orders </p>
           </div>
+        <form action="{{ route('admin.sendmail.wm') }}" method="post">
+          <input type="hidden" name="_token" value="{{ csrf_token() }}">
        		<table id="data-table" class="table table-bordered table-hover">
             <thead>
               <tr>
+                <td><input type="checkbox" name="checkall" /> Purchase < $1500 </td>
                 <td>Name</td>
                 <td>Email</td>
                 <td>UserCode</td>
@@ -62,13 +65,20 @@
                 <td>MemberCode</td>
                 <td>RegistrationDate</td>
                 <td>Total</td>
-                <td>Commission (10%)</td>
+                <td>Commission (10%) if Total > $3000 </td>
               </tr>
             </thead>
             <tbody>
+            <?php $total = 0 ?>
             @if( isset( $users) && count($users) > 0 )
               @foreach ($users as $u)
+                <?php $total+= $u->totals ?>
               <tr>
+                <td>
+                  @if ( $u->purchase == 1 )
+                  <input type="checkbox" name="userids[]" value="{{ $u->id }}" />
+                  @endif
+                </td>
                 <td>{{ $u->name }}</td>
                 <td>{{ $u->email }}</td>
                 <td>{{ $u->user_code }}</td>
@@ -90,15 +100,20 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
               </tr>
             @endif  
             </tbody>
             <tfoot>
+              <td colspan="2">
+                <button type="submit" name="sendmail" class="btn btn-primary">Send mail alarm to MR Roger Lin</button>
+              </td>
                 <tr>
-                    <td colspan="8" align="right">Total: <strong></strong></td>
+                    <td colspan="7" align="right">Total: <strong>{{ $total }}</strong></td>
                 </tr>
             </tfoot>
        		</table>
+        </form>
         <div class="dataTables_paginate paging_simple_numbers">
           @if( isset( $users) && count($users) > 0 )
           {!! $users->render() !!}
